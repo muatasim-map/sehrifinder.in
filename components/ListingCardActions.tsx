@@ -56,7 +56,12 @@ export const ListingCardActions: React.FC<ListingCardActionsProps> = ({ data }) 
   };
 
   const handleDirectionsClick = () => {
-    window.open(`${APP_CONFIG.MAPS_BASE_URL}${encodeURIComponent(data.address + ", " + APP_CONFIG.DEFAULT_CITY)}`, '_blank');
+    if (data.latitude && data.longitude) {
+      window.open(`https://www.google.com/maps/dir/?api=1&destination=${data.latitude},${data.longitude}`, '_blank');
+    } else {
+      const query = data.address || `${data.name}, ${data.area}, ${data.city}`;
+      window.open(`${APP_CONFIG.MAPS_BASE_URL}${encodeURIComponent(query)}`, '_blank');
+    }
   };
 
   const handleWhatsAppChat = () => {

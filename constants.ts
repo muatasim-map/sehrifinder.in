@@ -35,3 +35,4 @@ const RAW_DATA = [
  */
 export const SAMPLE_DATA: SehriSpot[] = RAW_DATA.map(transformRawSpot);
 
+

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import {
   Moon, MapPin, ShieldCheck, Users,
   Heart, Coffee, Bus, BookOpen,
@@ -6,7 +7,7 @@ import {
 } from 'lucide-react';
 import { IslamicPattern, IslamicDivider, IslamicCorner, IslamicFiligree, IslamicStar } from './Pattern';
 import { Logo } from './Logo';
-import { motion, useScroll, useTransform, Variants } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, Variants } from 'framer-motion';
 import { ParallaxLantern } from './ParallaxLantern';
 
 // Configs & Components
@@ -14,6 +15,7 @@ import { LANTERN_CONFIG } from '../config/lanterns';
 import { fadeInUp, staggerContainer, textReveal } from '../config/animations';
 import { FeatureCard } from './landing/FeatureCard';
 import { HelpCard } from './landing/HelpCard';
+import { DisclaimerSection } from './landing/DisclaimerSection';
 import { CityCard } from './landing/CityCard';
 
 interface LandingPageProps {
@@ -24,7 +26,12 @@ interface LandingPageProps {
 export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubmit }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { scrollY } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   // Parallax Transforms based on ScrollY
   const heroBgY = useTransform(scrollY, [0, 1000], [0, 150]);
@@ -59,7 +66,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
     onOpenSubmit();
   };
 
-  const currentYear = new Date().getFullYear() + 1; // For generic next year
+  const currentYear = 2026;
 
   return (
     <div className="font-landing-body text-neutral-800 overflow-x-hidden w-full bg-emerald-midnight">
@@ -77,6 +84,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
       `}</style>
 
       {/* NAVBAR */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gold-lantern origin-left z-[100]"
+        style={{ scaleX }}
+      />
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-emerald-midnight/95 backdrop-blur-md py-3 shadow-lg border-b border-gold-lantern/10' : 'bg-transparent py-6'}`}>
         <div className="container mx-auto px-6 flex items-center justify-between">
           <div className="flex items-center gap-2 text-neutral-pearl animate-fade-in">
@@ -119,7 +130,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
           style={{ y: heroBgY }}
           className="absolute inset-0 will-change-transform pointer-events-none"
         >
-          <IslamicPattern variant="geometric" opacity={0.15} className="text-gold-lantern scale-150" />
+          <IslamicPattern variant="geometric" opacity={0.15} className="text-gold-lantern scale-110" />
         </motion.div>
 
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-emerald-midnight/50 to-emerald-midnight z-0 pointer-events-none"></div>
@@ -164,10 +175,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
           >
             No One Should <br />
             Eat
-            <span
-              className="text-transparent bg-clip-text bg-gradient-to-r from-gold-lantern via-gold-highlight to-gold-lantern font-script italic px-2"
-              style={{ WebkitBackgroundClip: 'text', backgroundClip: 'text' }}
-            >
+            <span className="text-gold-lantern font-script italic px-2">
               Sehri
             </span>
             Alone
@@ -504,9 +512,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
 
             {/* Other Cities Grid */}
             <div className="grid grid-cols-1 gap-4">
-              <CityCard name="Bengaluru" status="Coming Soon" desc="Shivajinagar, Frazer Town" delay={100} />
-              <CityCard name="Hyderabad" status="Coming Soon" desc="Old City, Charminar, Tolichowki" delay={200} />
-              <CityCard name="Mumbai" status="Coming Soon" desc="Mohammed Ali Road, Bandra, Kurla" delay={300} />
+              <CityCard name="Bengaluru" status="Live" desc="Shivajinagar, Frazer Town" delay={100} />
+              <CityCard name="Hyderabad" status="Live" desc="Old City, Charminar, Tolichowki" delay={200} />
+              <CityCard name="Mumbai" status="Live" desc="Mohammed Ali Road, Bandra, Kurla" delay={300} />
             </div>
           </motion.div>
         </div>
@@ -610,6 +618,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
         </div>
       </section>
 
+      {/* DISCLAIMER SECTION */}
+      <DisclaimerSection />
+
       {/* FOOTER */}
       <footer className="bg-[#020a08] pt-20 pb-10 border-t border-white/5 relative overflow-hidden font-landing-body text-neutral-400">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
@@ -690,7 +701,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
                     className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-sm text-neutral-300 focus:outline-none focus:border-gold-lantern/50 transition-colors focus:shadow-lg"
                   />
                 </div>
-                <button className="btn-gold text-emerald-midnight px-4 py-3 rounded-lg font-bold text-sm transition-transform hover:scale-105 active:scale-95 w-full">
+                <button
+                  onClick={() => toast.info("Newsletter coming soon!", { description: "We are still setting up our newsletter system." })}
+                  className="btn-gold text-emerald-midnight px-4 py-3 rounded-lg font-bold text-sm transition-transform hover:scale-105 active:scale-95 w-full">
                   Subscribe for Updates
                 </button>
               </div>
@@ -708,6 +721,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
         </div>
       </footer>
 
-    </div>
+    </div >
   );
 };

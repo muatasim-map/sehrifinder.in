@@ -31,6 +31,8 @@ export interface RawSehriSpot {
   // New fields for Bangalore
   city?: string;
   zone?: string;
+  last_verified?: string;
+  address?: string;
 }
 
 /**

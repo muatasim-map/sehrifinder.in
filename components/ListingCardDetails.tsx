@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Navigation, Building2, Clock, UserCircle, Compass } from 'lucide-react';
+import { MapPin, Navigation, Building2, Clock, UserCircle, Compass, Users } from 'lucide-react';
 import { SehriSpot } from '../types';
 
 /**
@@ -63,9 +63,13 @@ export const ListingCardDetails: React.FC<SehriSpot> = ({
       {/* Target Audience Tags */}
       {targetAudience && targetAudience.length > 0 && (
         <div className="mb-3">
+          <div className="flex items-center gap-1.5 mb-1.5">
+            <Users size={11} className="text-stone-400" />
+            <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Target Audience</span>
+          </div>
           <div className="flex flex-wrap gap-1.5">
             {targetAudience.map((aud, idx) => (
-              <span key={idx} className="bg-stone-50 text-stone-500 text-[10px] font-bold px-2 py-1 rounded border border-stone-200">
+              <span key={idx} className="bg-stone-100 text-stone-600 text-[10px] font-bold px-2 py-1 rounded-md border border-stone-200">
                 {aud}
               </span>
             ))}

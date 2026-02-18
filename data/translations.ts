@@ -20,6 +20,7 @@ export type TranslationKey =
     // Filters
     | 'spotsFound'
     | 'filter'
+    | 'filters'
     | 'masjid'
     | 'restaurant'
     | 'home'
@@ -35,6 +36,9 @@ export type TranslationKey =
     | 'allCities'
     | 'selectCity'
     | 'selectArea'
+    | 'direction'
+    | 'any'
+    | 'anyDirection'
 
     // Listing Card
     | 'directions'
@@ -77,6 +81,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
         spotsFound: 'spots found',
         filter: 'Filter',
+        filters: 'Filters',
         masjid: 'Masjid',
         restaurant: 'Restaurant',
         home: 'Home',
@@ -92,6 +97,9 @@ export const translations: Record<Language, Record<string, string>> = {
         allCities: 'All Cities',
         selectCity: 'Select City',
         selectArea: 'Select Area',
+        direction: 'Direction',
+        any: 'Any',
+        anyDirection: 'Any Direction',
 
         directions: 'Directions',
         share: 'Share',
@@ -130,6 +138,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
         spotsFound: 'இடங்கள் கிடைத்தன',
         filter: 'வடிகட்டி',
+        filters: 'வடிகட்டிகள்',
         masjid: 'மஸ்ஜித்',
         restaurant: 'உணவகம்',
         home: 'வீடு',
@@ -145,6 +154,9 @@ export const translations: Record<Language, Record<string, string>> = {
         allCities: 'அனைத்து நகரங்களும்',
         selectCity: 'நகரத்தைத் தேர்ந்தெடுக்கவும்',
         selectArea: 'பகுதியைத் தேர்ந்தெடுக்கவும்',
+        direction: 'திசை',
+        any: 'எந்த',
+        anyDirection: 'எந்த திசையும்',
 
         directions: 'வழி',
         share: 'பகிர்',
@@ -183,6 +195,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
         spotsFound: 'مقامات ملے',
         filter: 'فلٹر',
+        filters: 'فلٹرز',
         masjid: 'مسجد',
         restaurant: 'ریستوراں',
         home: 'گھر',
@@ -198,6 +211,9 @@ export const translations: Record<Language, Record<string, string>> = {
         allCities: 'تمام شہر',
         selectCity: 'شہر منتخب کریں',
         selectArea: 'علاقہ منتخب کریں',
+        direction: 'سمت',
+        any: 'کوئی بھی',
+        anyDirection: 'کوئی بھی سمت',
 
         directions: 'راستہ',
         share: 'شیئر',

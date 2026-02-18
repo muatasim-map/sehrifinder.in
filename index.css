@@ -1,10 +1,139 @@
 @import "tailwindcss";
 
 @theme {
+  /* COLORS */
+  --color-primary: #1a4d2e;
+  --color-primary-dark: #0f2e1c;
+
+  /* Editorial Palette */
+  --color-emerald-midnight: #0A2E23;
+  --color-emerald-sacred: #1B4D3E;
+  --color-emerald-forest: #2D5F4F;
+  --color-emerald-sage: #4A7C6B;
+
+  --color-gold: #d4af37;
+  --color-gold-DEFAULT: #d4af37;
+  --color-gold-antique: #B8860B;
+  --color-gold-lantern: #d4af37;
+  --color-gold-amber: #F4A460;
+  --color-gold-highlight: #FFF9C4;
+  /* Using the lighter one */
+  --color-gold-light: #f0e6d2;
+  --color-gold-bronze: #C59237;
+  --color-gold-bright: #FFD700;
+
   --color-neutral-moonlight: #F5F3EE;
+  --color-neutral-pearl: #FDFBF7;
   --color-neutral-charcoal: #1F1F1F;
+  --color-neutral-ivory: #E8E6DF;
+
+  /* Aliases */
+  --color-cream: #faf8f3;
+  --color-cream-dark: #f5f1e8;
+
+  /* FONTS */
+  --font-sans: "Outfit", sans-serif;
+  --font-serif: "Cormorant Garamond", serif;
+  --font-brand: "Cinzel", serif;
+  --font-script: "Great Vibes", cursive;
+
+  /* Landing Page Typography */
+  --font-landing-heading: "Playfair Display", serif;
+  --font-landing-subhead: "Lora", serif;
+  --font-landing-body: "Source Serif 4", serif;
+  --font-landing-accent: "Montserrat", sans-serif;
+
+  /* Arabic Fonts */
   --font-reem: "Reem Kufi", sans-serif;
   --font-amiri: "Amiri", serif;
+  --font-arabic-calligraphy: "Reem Kufi", sans-serif;
+  --font-arabic-text: "Amiri", serif;
+
+  /* Additional Languages */
+  --font-tamil: "Noto Sans Tamil", sans-serif;
+  --font-urdu: "Noto Nastaliq Urdu", serif;
+
+  /* ANIMATIONS */
+  --animate-fade-in: fadeIn 0.6s ease-out forwards;
+  --animate-slide-up: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-shimmer: shimmer 2.5s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-scale-in: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-shine: shine 1.5s ease-in-out infinite;
+
+  /* KEYFRAMES */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% center;
+    }
+
+    100% {
+      background-position: 200% center;
+    }
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes scaleIn {
+    0% {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes shine {
+    0% {
+      left: -100%;
+      opacity: 0;
+    }
+
+    50% {
+      opacity: 0.5;
+    }
+
+    100% {
+      left: 100%;
+      opacity: 0;
+    }
+  }
 }
 
 @layer base {
@@ -98,6 +227,19 @@
     background-size: 10px 10px;
     background-position: 0 0, 5px 5px;
     opacity: 0.1;
+  }
+
+  /* 2.5 Geometric Grid (Diamond) Pattern for Hero - "This Ramadan" variant (Subtle) */
+  .bg-geometric-grid {
+    background-color: var(--color-emerald-midnight);
+    /* No glow, opacity 25% for stroke as requested */
+    background-image:
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23d4af37' stroke-width='1.5' stroke-opacity='0.25'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z' /%3E%3Crect x='25' y='25' width='10' height='10' transform='rotate(45 30 30)' fill='%23d4af37' fill-opacity='0.15' stroke='none' /%3E%3Ccircle cx='30' cy='30' r='2' fill='%23d4af37' fill-opacity='0.5' stroke='none' /%3E%3C/g%3E%3C/svg%3E");
+
+    background-size: 54px 54px;
+    background-position: 0 0;
+
+    border-bottom: 4px solid var(--color-gold-lantern);
   }
 
   /* 3. Mihrab Arch Shape (Revertable Utility) */

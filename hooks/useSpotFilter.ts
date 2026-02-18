@@ -9,8 +9,22 @@ interface UseSpotFilterProps {
     selectedCity: string;
     searchTerm: string;
     selectedArea: string | null;
+    selectedZone: string | null;
     activeFilters: FilterType[];
 }
+
+const KEYWORD_MAPPINGS: Record<string, string[]> = {
+    'biryani': ['Restaurant', 'Paid'],
+    'rice': ['Restaurant'],
+    'meals': ['Restaurant', 'Hotel'],
+    'free': ['Free', 'Masjid', 'Foundation'],
+    'prayer': ['Masjid'],
+    'namaz': ['Masjid'],
+    'hotel': ['Restaurant'],
+    'restaurant': ['Restaurant'],
+    'masjid': ['Masjid'],
+    'mosque': ['Masjid'],
+};
 
 export const useSpotFilter = ({
     allSpots,
@@ -19,6 +33,7 @@ export const useSpotFilter = ({
     selectedCity,
     searchTerm,
     selectedArea,
+    selectedZone,
     activeFilters
 }: UseSpotFilterProps) => {
 
@@ -40,18 +55,7 @@ export const useSpotFilter = ({
 
             // Smart Search: Check if term matches a category/type mapping
             // Allows users to find "Restaurants" by typing "Rice" or "Biryani"
-            const KEYWORD_MAPPINGS: Record<string, string[]> = {
-                'biryani': ['Restaurant', 'Paid'],
-                'rice': ['Restaurant'],
-                'meals': ['Restaurant', 'Hotel'],
-                'free': ['Free', 'Masjid', 'Foundation'],
-                'prayer': ['Masjid'],
-                'namaz': ['Masjid'],
-                'hotel': ['Restaurant'],
-                'restaurant': ['Restaurant'],
-                'masjid': ['Masjid'],
-                'mosque': ['Masjid'],
-            };
+
 
             const smartCategories: string[] = [];
             Object.entries(KEYWORD_MAPPINGS).forEach(([key, values]) => {
@@ -83,6 +87,11 @@ export const useSpotFilter = ({
             data = data.filter(item => item.area === selectedArea);
         }
 
+        // 3.5. Filter by Zone (Direction)
+        if (selectedZone) {
+            data = data.filter(item => item.zone && item.zone.toLowerCase().includes(selectedZone.toLowerCase()));
+        }
+
         // 4. Advanced Filters (Chips)
         if (activeFilters.length > 0) {
             if (activeFilters.includes('Verified')) {
@@ -100,10 +109,18 @@ export const useSpotFilter = ({
                     item.targetAudience?.some(t => t.toLowerCase().includes('women') || t.toLowerCase().includes('families'))
                 );
             }
+            if (activeFilters.includes('Hospital')) {
+                data = data.filter(item =>
+                    item.name.toLowerCase().includes('hospital') ||
+                    item.address.toLowerCase().includes('hospital') ||
+                    item.specialNotes.toLowerCase().includes('hospital') ||
+                    item.targetAudience?.some(t => t.toLowerCase().includes('patient') || t.toLowerCase().includes('hospital'))
+                );
+            }
         }
 
         return data;
-    }, [searchTerm, selectedArea, selectedCity, allSpots, activeTab, savedSpotIds, activeFilters]);
+    }, [searchTerm, selectedArea, selectedZone, selectedCity, allSpots, activeTab, savedSpotIds, activeFilters]);
 
     return filteredData;
 };

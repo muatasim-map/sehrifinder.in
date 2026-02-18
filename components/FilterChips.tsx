@@ -1,9 +1,9 @@
 import React from 'react';
-import { Check, Star, Users, Home } from 'lucide-react';
+import { Check, Star, Users, Home, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 
-export type FilterType = 'Verified' | 'Free' | 'Masjid' | 'Women Friendly';
+export type FilterType = 'Verified' | 'Free' | 'Masjid' | 'Women Friendly' | 'Hospital';
 
 interface FilterChipsProps {
   activeFilters: FilterType[];
@@ -18,6 +18,7 @@ export const FilterChips: React.FC<FilterChipsProps> = ({ activeFilters, onToggl
     { id: 'Free', label: t('free'), icon: <Star size={14} className="fill-current" /> },
     { id: 'Masjid', label: t('masjid'), icon: <Home size={14} /> },
     { id: 'Women Friendly', label: t('ladiesSection'), icon: <Users size={14} /> },
+    { id: 'Hospital', label: 'Near Hospital', icon: <div className="text-red-500 font-bold text-xs"><Plus size={14} strokeWidth={4} /></div> },
   ];
 
   return (

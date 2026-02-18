@@ -1,9 +1,10 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
 import { LanguageProvider } from './context/LanguageContext';
+import { SehriProvider } from './context/SehriContext';
+import { BrowserRouter } from 'react-router-dom';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -14,7 +15,11 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <LanguageProvider>
-      <App />
+      <SehriProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </SehriProvider>
     </LanguageProvider>
   </React.StrictMode>
 );

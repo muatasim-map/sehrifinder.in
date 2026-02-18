@@ -63,8 +63,9 @@ export const transformRawSpot = (d: RawSehriSpot): SehriSpot => {
 
         // Re-populated fields for UI request
         distance: "X km",
-        verified: VERIFIED_IDS.includes(d.location_id),
-        lastVerified: "2025",
+        // Verified if last_verified is present and is essentially current/valid
+        verified: !!d.last_verified,
+        lastVerified: d.last_verified || "2025",
 
         // Join various note fields into one string
         specialNotes: [

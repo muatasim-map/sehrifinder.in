@@ -33,11 +33,22 @@ export const fetchSehriSpots = async (): Promise<SehriSpot[]> => {
       if (error) {
         console.warn("Supabase fetch error, falling back to local data:", error);
       } else if (data) {
+        if (import.meta.env.DEV) {
+          console.log(`Supabase fetch successful. Found ${data.length} spots.`);
+        }
+
+        if (data.length === 0) {
+          console.warn("Supabase table is EMPTY. Showing local data as fallback.");
+          return Promise.resolve(SAMPLE_DATA);
+        }
+
         // @ts-ignore - Supabase types might be inferred loosely, but our schema matches RawSehriSpot
         return data.map(transformRawSpot);
       }
     } else {
-      console.log("Supabase not configured (missing env vars). Using local data.");
+      if (import.meta.env.DEV) {
+        console.log("Supabase not configured (missing env vars). Using local data.");
+      }
     }
 
     // 2. Fallback to Local Data

@@ -29,14 +29,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSubmit }) => {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-primary shadow-lg h-16 relative overflow-hidden" dir="ltr">
-        {/* Pattern Background - Reduced opacity to 0.18 */}
-        <IslamicPattern opacity={0.18} className="text-gold-bright" />
-
+      <header className="absolute top-0 w-full z-50 bg-transparent h-20" dir="ltr">
         <div className={`container mx-auto px-4 h-full flex items-center justify-between relative z-10 ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
           {/* Logo */}
-          <div className="flex items-center gap-2 text-primary-dark">
-            <Logo variant="dark" />
+          <div className="flex items-center gap-2">
+            <Logo variant="light" />
           </div>
 
           <div className="flex items-center gap-2">
