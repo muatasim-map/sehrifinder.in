@@ -131,9 +131,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
         {/* ARABIC BACKGROUND */}
         <motion.div
           style={{ y: bismillahY }}
-          className="absolute top-[20%] left-1/2 -translate-x-1/2 z-10 opacity-20 pointer-events-none select-none w-full text-center will-change-transform"
+          className="absolute top-[25%] md:top-[20%] left-1/2 -translate-x-1/2 z-10 opacity-20 pointer-events-none select-none w-full text-center will-change-transform"
         >
-          <span className="font-arabic-calligraphy text-[120px] md:text-[280px] text-gold-antique leading-none whitespace-nowrap blur-[0.5px] text-shadow-gold">
+          <span className="font-arabic-calligraphy text-[80px] md:text-[280px] text-gold-antique leading-none whitespace-nowrap blur-[0.5px] text-shadow-gold">
             رمضان كريم
           </span>
         </motion.div>
@@ -164,9 +164,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             variants={textReveal}
             initial="hidden"
             animate="visible"
-            className="font-landing-heading text-5xl md:text-8xl text-neutral-pearl mb-6 drop-shadow-2xl leading-[1.1]"
+            className="font-landing-heading text-4xl md:text-8xl text-neutral-pearl mb-6 drop-shadow-2xl leading-[1.2] md:leading-[1.1]"
           >
-            No One Should <br />
+            No One Should <br className="hidden md:block" />
             Eat
             <span className="text-gold-lantern font-script italic px-2">
               Sehri
@@ -201,18 +201,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             </button>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 md:gap-12 text-center border-t border-white/10 pt-8 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: '0.4s' }}>
+          <div className="grid grid-cols-3 gap-2 md:gap-12 text-center border-t border-white/10 pt-8 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: '0.4s' }}>
             <div>
-              <div className="text-2xl md:text-3xl font-bold text-gold-lantern font-landing-heading">4+</div>
-              <div className="text-[10px] md:text-xs text-neutral-400 uppercase tracking-widest mt-1">Major Cities</div>
+              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-landing-heading">4+</div>
+              <div className="text-[8px] md:text-xs text-neutral-400 uppercase tracking-widest mt-1">Cities</div>
             </div>
             <div>
-              <div className="text-2xl md:text-3xl font-bold text-gold-lantern font-landing-heading">150+</div>
-              <div className="text-[10px] md:text-xs text-neutral-400 uppercase tracking-widest mt-1">Sehri Spots</div>
+              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-landing-heading">150+</div>
+              <div className="text-[8px] md:text-xs text-neutral-400 uppercase tracking-widest mt-1">Spots</div>
             </div>
             <div>
-              <div className="text-2xl md:text-3xl font-bold text-gold-lantern font-landing-heading">100%</div>
-              <div className="text-[10px] md:text-xs text-neutral-400 uppercase tracking-widest mt-1">Community Verified</div>
+              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-landing-heading">100%</div>
+              <div className="text-[8px] md:text-xs text-neutral-400 uppercase tracking-widest mt-1">Verified</div>
             </div>
           </div>
         </motion.div>
