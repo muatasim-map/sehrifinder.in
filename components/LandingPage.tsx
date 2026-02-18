@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { IslamicPattern, IslamicDivider, IslamicCorner, IslamicFiligree, IslamicStar } from './Pattern';
 import { Logo } from './Logo';
-import { motion, useScroll, useTransform, useSpring, Variants } from 'framer-motion';
+import { motion, useScroll, useTransform, Variants } from 'framer-motion';
 import { ParallaxLantern } from './ParallaxLantern';
 
 // Configs & Components
@@ -27,11 +27,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY, scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+
 
   // Parallax Transforms based on ScrollY
   const heroBgY = useTransform(scrollY, [0, 1000], [0, 150]);
@@ -84,10 +80,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
       `}</style>
 
       {/* NAVBAR */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gold-lantern origin-left z-[100]"
-        style={{ scaleX }}
-      />
+
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-emerald-midnight/95 backdrop-blur-md py-3 shadow-lg border-b border-gold-lantern/10' : 'bg-transparent py-6'}`}>
         <div className="container mx-auto px-6 flex items-center justify-between">
           <div className="flex items-center gap-2 text-neutral-pearl animate-fade-in">
