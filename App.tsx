@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { Toaster } from 'sonner';
+import { Toaster, toast } from 'sonner';
 import { ReloadPrompt } from './components/ReloadPrompt';
 import { SplashScreen } from './components/SplashScreen';
 import { IslamicPattern } from './components/Pattern';
@@ -19,10 +19,26 @@ export default function App() {
     return !sessionStorage.getItem('hasShownSplash');
   });
 
+  const navigate = useNavigate();
+
   const handleSplashComplete = () => {
     setShowSplash(false);
     sessionStorage.setItem('hasShownSplash', 'true');
   };
+
+  // Keyboard Shortcut for Admin
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Shift + A for Admin
+      if (e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        navigate('/admin');
+        toast.info('Opening Admin Login...');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [navigate]);
 
   return (
     <ErrorBoundary>
