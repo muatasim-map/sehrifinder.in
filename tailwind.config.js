@@ -53,7 +53,7 @@ module.exports = {
         'landing-accent': ['Montserrat', 'sans-serif'],
 
         // Arabic Fonts
-        'arabic-calligraphy': ['"Reem Kufi"', 'sans-serif'],
+        'arabic-calligraphy': ['"Amiri"', 'serif'],
         'arabic-text': ['"Amiri"', 'serif'],
       },
       animation: {
