@@ -11,6 +11,7 @@ import { motion, useScroll, useTransform, Variants } from 'framer-motion';
 import { ParallaxLantern } from './ParallaxLantern';
 
 // Configs & Components
+import { APP_CONFIG } from '../config';
 import { LANTERN_CONFIG } from '../config/lanterns';
 import { fadeInUp, staggerContainer, textReveal } from '../config/animations';
 import { FeatureCard } from './landing/FeatureCard';
@@ -594,7 +595,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               title="Add a Spot"
               desc="Know a Masjid, trust, or restaurant offering Sehri? Submit the details so others can benefit."
               action="Submit Details"
-              onClick={() => window.open('mailto:contribute@sehrifinder.com')}
+              onClick={onOpenSubmit}
             />
             <HelpCard
               delay={100}
@@ -602,7 +603,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               title="Verify Data"
               desc="Spotted an error? Closed location? Timing change? Let us know immediately to fix it."
               action="Report Issue"
-              onClick={() => window.open('mailto:contribute@sehrifinder.com')}
+              onClick={() => window.open(`${APP_CONFIG.WHATSAPP_BASE_URL}/${APP_CONFIG.ADMIN_PHONE}?text=${encodeURIComponent('Assalamu Alaikum, I want to report an issue or update details for a Sehri spot.')}`, '_blank')}
             />
             <HelpCard
               delay={200}
@@ -610,7 +611,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               title="Join the Team"
               desc="We need city leads, verifiers, and tech volunteers. Be part of the team behind Sehri Finder."
               action="Volunteer"
-              onClick={onOpenSubmit}
+              onClick={handleVolunteer}
             />
           </div>
         </div>
@@ -680,7 +681,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               </h4>
               <ul className="space-y-4 text-sm">
                 <li><button onClick={onOpenSubmit} className="hover:text-gold-lantern transition-colors text-left">Add a Spot</button></li>
-                <li><a href="mailto:contribute@sehrifinder.com" className="hover:text-gold-lantern transition-colors">Report Issue</a></li>
+                <li><a href={`${APP_CONFIG.WHATSAPP_BASE_URL}/${APP_CONFIG.ADMIN_PHONE}?text=${encodeURIComponent('Assalamu Alaikum, I want to report an issue on Sehri Finder.')}`} target="_blank" rel="noopener noreferrer" className="hover:text-gold-lantern transition-colors">Report Issue</a></li>
                 <li><a href="mailto:salam@sehrifinder.com" className="hover:text-gold-lantern transition-colors">Partner with us</a></li>
               </ul>
             </div>
