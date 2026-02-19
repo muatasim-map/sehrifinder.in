@@ -21,9 +21,10 @@ import { CityCard } from './landing/CityCard';
 interface LandingPageProps {
   onEnterApp: () => void;
   onOpenSubmit: () => void;
+  onSelectCity: (city: string) => void;
 }
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubmit }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubmit, onSelectCity }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY, scrollYProgress } = useScroll();
@@ -83,7 +84,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
 
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-emerald-midnight/95 backdrop-blur-md py-3 shadow-lg border-b border-gold-lantern/10' : 'bg-transparent py-6'}`}>
         <div className="container mx-auto px-6 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-neutral-pearl animate-fade-in">
+          <div
+            className="flex items-center gap-2 text-neutral-pearl animate-fade-in cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
             <Logo variant={isScrolled ? 'dark' : 'gold'} />
           </div>
 
@@ -207,7 +211,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               <div className="text-[8px] md:text-xs text-neutral-400 uppercase tracking-widest mt-1">Cities</div>
             </div>
             <div>
-              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-landing-heading">150+</div>
+              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-landing-heading">200+</div>
               <div className="text-[8px] md:text-xs text-neutral-400 uppercase tracking-widest mt-1">Spots</div>
             </div>
             <div>
@@ -472,7 +476,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             {/* Chennai (Active) */}
             <motion.div
               variants={fadeInUp}
-              className="bg-emerald-midnight rounded-xl p-8 text-white relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300 border border-gold-lantern/20 shadow-xl"
+              onClick={() => onSelectCity('Chennai')}
+              className="bg-emerald-midnight rounded-xl p-8 text-white relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300 border border-gold-lantern/20 shadow-xl cursor-pointer"
             >
               <div className="absolute top-0 right-0 text-gold-lantern/10 -mt-2 -mr-2">
                 <IslamicCorner className="w-20 h-20 rotate-90" />
@@ -497,7 +502,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
                   <span className="opacity-60">Triplicane, Royapettah, Mount Road, and more.</span>
                 </p>
 
-                <button onClick={onEnterApp} className="btn-gold flex items-center gap-2 text-emerald-midnight px-6 py-2 rounded-full font-bold text-xs uppercase tracking-wide transition-all shadow-lg hover:shadow-gold-lantern/40 hover:scale-105 active:scale-95">
+                <button onClick={(e) => { e.stopPropagation(); onSelectCity('Chennai'); }} className="btn-gold flex items-center gap-2 text-emerald-midnight px-6 py-2 rounded-full font-bold text-xs uppercase tracking-wide transition-all shadow-lg hover:shadow-gold-lantern/40 hover:scale-105 active:scale-95">
                   Explore Chennai <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -505,9 +510,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
 
             {/* Other Cities Grid */}
             <div className="grid grid-cols-1 gap-4">
-              <CityCard name="Bengaluru" status="Live" desc="Shivajinagar, Frazer Town" delay={100} />
-              <CityCard name="Hyderabad" status="Live" desc="Old City, Charminar, Tolichowki" delay={200} />
-              <CityCard name="Mumbai" status="Live" desc="Mohammed Ali Road, Bandra, Kurla" delay={300} />
+              <CityCard name="Bengaluru" status="Live" desc="Shivajinagar, Frazer Town" delay={100} onClick={() => onSelectCity('Bangalore')} />
+              <CityCard name="Hyderabad" status="Live" desc="Old City, Charminar, Tolichowki" delay={200} onClick={() => onSelectCity('Hyderabad')} />
+              <CityCard name="Mumbai" status="Live" desc="Mohammed Ali Road, Bandra, Kurla" delay={300} onClick={() => onSelectCity('Mumbai')} />
             </div>
           </motion.div>
         </div>

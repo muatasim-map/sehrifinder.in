@@ -43,7 +43,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         {/* Main Filters Row */}
         <div className="flex flex-col md:flex-row gap-3 md:items-center justify-between mb-3">
 
-          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+          <div className="flex flex-col sm:flex-row gap-2 md:gap-3 w-full md:w-auto">
             {/* City Selector Dropdown */}
             <div className="relative w-full sm:w-56 z-50">
               <button

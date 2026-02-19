@@ -19,6 +19,7 @@ const LandingPage: React.FC = () => {
             <LandingPageBase
                 onEnterApp={() => navigate('/find')}
                 onOpenSubmit={() => navigate('/submit')}
+                onSelectCity={(city) => navigate(`/find/${city.toLowerCase()}`)}
             />
         </Suspense>
     );

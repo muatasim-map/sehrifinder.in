@@ -123,11 +123,11 @@ export const MapView: React.FC<MapViewProps> = ({
     }), []);
 
     return (
-        <div className="h-[600px] w-full rounded-2xl overflow-hidden shadow-2xl border border-gold-lantern/30 relative z-0 bg-zillij">
+        <div className="h-[400px] md:h-[600px] w-full rounded-2xl overflow-hidden shadow-2xl border border-gold-lantern/30 relative z-0 bg-zillij">
             <MapContainer
                 center={center}
                 zoom={zoom}
-                scrollWheelZoom={true}
+                scrollWheelZoom={typeof window !== 'undefined' && window.innerWidth > 768}
                 style={{ height: '100%', width: '100%' }}
                 maxZoom={18}
             >

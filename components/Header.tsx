@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Menu, X, Share2, Info, Flag, PlusCircle, Globe } from 'lucide-react';
 import { Logo } from './Logo';
 import { IslamicPattern } from './Pattern';
@@ -9,6 +10,7 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ onOpenSubmit }) => {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const { language, setLanguage, t, dir } = useLanguage();
 
@@ -32,7 +34,10 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSubmit }) => {
       <header className="absolute top-0 w-full z-50 bg-transparent h-20" dir="ltr">
         <div className={`container mx-auto px-4 h-full flex items-center justify-between relative z-10 ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
           {/* Logo */}
-          <div className="flex items-center gap-2">
+          <div
+            className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => navigate('/')}
+          >
             <Logo variant="light" />
           </div>
 

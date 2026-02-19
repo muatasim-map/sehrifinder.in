@@ -81,7 +81,7 @@ const AppPage: React.FC = () => {
                 onNearMe={handleNearMe}
             />
 
-            <main className="flex-1 container mx-auto px-4 py-8 max-w-[1440px] relative z-10 -mt-8">
+            <main className="flex-1 container mx-auto px-4 py-8 max-w-[1440px] relative z-10 -mt-2 md:-mt-8">
                 <FilterBar
                     selectedCity={selectedCity}
                     onSelectCity={handleCityChange}

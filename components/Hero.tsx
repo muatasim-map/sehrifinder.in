@@ -62,7 +62,7 @@ export const Hero: React.FC<HeroProps> = ({
   };
 
   return (
-    <div className="relative bg-geometric-grid text-white min-h-[600px] flex flex-col justify-center items-center overflow-hidden pt-20">
+    <div className="relative bg-geometric-grid text-white min-h-[450px] md:min-h-[600px] flex flex-col justify-center items-center overflow-hidden pt-20">
       {/* Background Overlay for better text contrast if needed */}
       <div className="absolute inset-0 bg-gradient-to-t from-emerald-midnight via-transparent to-transparent opacity-60 pointer-events-none" />
 
@@ -78,24 +78,24 @@ export const Hero: React.FC<HeroProps> = ({
         animate="visible"
       >
         {/* Header Text with Parallax */}
-        <motion.div className="mb-10" variants={itemVariants} style={{ y: yText }}>
+        <motion.div className="mb-6 md:mb-10" variants={itemVariants} style={{ y: yText }}>
 
-          <div className="flex items-center justify-center gap-4 mb-4 opacity-90">
+          <div className="flex items-center justify-center gap-4 mb-2 md:mb-4 opacity-90">
             <span className="h-[1px] w-12 md:w-20 bg-gold-lantern/40"></span>
-            <h3 className={`text-gold-lantern text-5xl md:text-7xl leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] ${language === 'ur' ? 'font-urdu' : 'font-script'}`}>
+            <h3 className={`text-gold-lantern text-3xl md:text-7xl leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] ${language === 'ur' ? 'font-urdu' : 'font-script'}`}>
               {t('ramadanKareem')}
             </h3>
             <span className="h-[1px] w-12 md:w-20 bg-gold-lantern/40"></span>
           </div>
 
-          <h1 className={`text-4xl md:text-6xl text-white font-serif leading-tight drop-shadow-lg mt-2 ${language === 'ur' ? 'font-urdu' : ''}`}>
+          <h1 className={`text-3xl md:text-6xl text-white font-serif leading-tight drop-shadow-lg mt-1 md:mt-2 ${language === 'ur' ? 'font-urdu' : ''}`}>
             {language === 'en' ? (
               <>
                 Find Your <span className="text-gold-lantern italic font-serif px-2 align-baseline relative">Sehri</span>
               </>
             ) : t('findSehri')}
             <br />
-            <span className="text-3xl md:text-5xl block mt-3 text-white/90 font-light tracking-wide">{t('distributionPoints')}</span>
+            <span className="text-xl md:text-5xl block mt-2 md:mt-3 text-white/90 font-light tracking-wide">{t('distributionPoints')}</span>
           </h1>
         </motion.div>
 

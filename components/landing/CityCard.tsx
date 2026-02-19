@@ -7,12 +7,14 @@ interface CityCardProps {
     status: string;
     desc: string;
     delay?: number;
+    onClick?: () => void;
 }
 
-export const CityCard = ({ name, status, desc, delay = 0 }: CityCardProps) => (
+export const CityCard = ({ name, status, desc, delay = 0, onClick }: CityCardProps) => (
     <motion.div
         variants={fadeInUp}
-        className="flex items-center justify-between p-6 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow group"
+        onClick={onClick}
+        className={`flex items-center justify-between p-6 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow group ${onClick ? 'cursor-pointer' : ''}`}
     >
         <div>
             <div className="flex items-center gap-3 mb-1">
