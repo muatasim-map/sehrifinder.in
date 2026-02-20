@@ -5,6 +5,16 @@ import App from './App.tsx';
 import { LanguageProvider } from './context/LanguageContext';
 import { SehriProvider } from './context/SehriContext';
 import { BrowserRouter } from 'react-router-dom';
+import posthog from 'posthog-js';
+
+// Safely initialize PostHog Analytics if the developer has provided a key in their .env
+if (import.meta.env.VITE_POSTHOG_KEY) {
+  posthog.init(import.meta.env.VITE_POSTHOG_KEY, {
+    api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://us.i.posthog.com',
+    autocapture: true, // Automatically captures button clicks and form inputs
+    capture_pageview: true, // Automatically intercepts React Router History API for route tracking
+  });
+}
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
