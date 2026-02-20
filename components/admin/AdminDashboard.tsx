@@ -4,6 +4,7 @@ import { supabase } from '../../utils/supabase';
 import { Check, X, MapPin, Clock, LogOut, Loader2, Edit, AlertCircle, RefreshCw, Search, Filter } from 'lucide-react';
 import { ApprovalModal } from './ApprovalModal';
 import { EditSpotModal } from './EditSpotModal';
+import { CreateSpotModal } from './CreateSpotModal';
 
 interface AdminDashboardProps {
     onLogout: () => void;
@@ -56,6 +57,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     // Modals
     const [selectedPendingSpot, setSelectedPendingSpot] = useState<PendingSpot | null>(null);
     const [selectedLiveSpot, setSelectedLiveSpot] = useState<LiveSpot | null>(null);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
     const fetchPendingSpots = async () => {
         setLoading(true);
@@ -145,6 +147,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         showToast("Spot deleted permanently.", 'success');
     };
 
+    const handleCreateSuccess = (newSpot: LiveSpot) => {
+        setLiveSpots(prev => [newSpot, ...prev]);
+        setActiveTab('active'); // Switch to active tab to see the new spot
+        showToast("Spot published directly to the live map!", 'success');
+    };
+
 
     // Helper to safely display timing
     const formatTiming = (timing: any) => {
@@ -175,7 +183,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                     <h1 className="font-bold text-2xl flex items-center gap-2 font-reem">
                         <span className="text-gold-lantern">Sehri Finder</span> Admin
                     </h1>
-                    <div className="hidden md:flex bg-emerald-900/50 rounded-lg p-1 border border-emerald-800">
+                    <button
+                        onClick={() => setIsCreateModalOpen(true)}
+                        className="hidden md:flex ml-4 items-center gap-1.5 bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-sm font-bold border border-emerald-500 transition-colors shadow-lg"
+                    >
+                        + Add New Spot
+                    </button>
+                    <div className="hidden md:flex bg-emerald-900/50 rounded-lg p-1 border border-emerald-800 ml-2">
                         <button
                             onClick={() => setActiveTab('pending')}
                             className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${activeTab === 'pending' ? 'bg-gold-lantern text-emerald-midnight font-bold shadow-sm' : 'text-emerald-100 hover:text-white hover:bg-emerald-800'}`}
@@ -217,6 +231,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                     className={`flex-1 py-2 text-center text-sm font-bold border-b-2 transition-colors ${activeTab === 'active' ? 'border-emerald-600 text-emerald-800' : 'border-transparent text-gray-500'}`}
                 >
                     Active Spots
+                </button>
+            </div>
+
+            {/* Mobile Add New Button */}
+            <div className="md:hidden px-4 py-3 bg-white border-b border-gray-100">
+                <button
+                    onClick={() => setIsCreateModalOpen(true)}
+                    className="w-full flex justify-center items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-lg text-sm font-bold transition-colors shadow-md"
+                >
+                    + Add New Spot
                 </button>
             </div>
 
@@ -409,6 +433,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                         onClose={() => setSelectedLiveSpot(null)}
                         onSuccess={handleEditSuccess}
                         onDelete={handleDeleteSuccess}
+                    />
+                )
+            }
+
+            {
+                isCreateModalOpen && (
+                    <CreateSpotModal
+                        onClose={() => setIsCreateModalOpen(false)}
+                        onSuccess={handleCreateSuccess}
                     />
                 )
             }
