@@ -8,9 +8,10 @@ interface EditSpotModalProps {
     spot: any; // The existing spot data
     onClose: () => void;
     onSuccess: (updatedSpot: any) => void;
+    onDelete: (locationId: number) => void;
 }
 
-export const EditSpotModal: React.FC<EditSpotModalProps> = ({ spot, onClose, onSuccess }) => {
+export const EditSpotModal: React.FC<EditSpotModalProps> = ({ spot, onClose, onSuccess, onDelete }) => {
     const [formData, setFormData] = useState({
         venue_name: '',
         city: '',
@@ -25,7 +26,9 @@ export const EditSpotModal: React.FC<EditSpotModalProps> = ({ spot, onClose, onS
         features: [] as string[],
         zone: '',
         address: '',
-        target_audience: [] as string[]
+        target_audience: [] as string[],
+        google_maps_link: '',
+        verified: true
     });
 
     const [loading, setLoading] = useState(false);
@@ -48,7 +51,9 @@ export const EditSpotModal: React.FC<EditSpotModalProps> = ({ spot, onClose, onS
                 features: Array.isArray(spot.features) ? spot.features : [],
                 zone: spot.zone || '',
                 address: spot.address || '',
-                target_audience: Array.isArray(spot.target_audience) ? spot.target_audience : []
+                target_audience: Array.isArray(spot.target_audience) ? spot.target_audience : [],
+                google_maps_link: spot.google_maps_link || '',
+                verified: spot.verified !== false // Default to true unless explicitly false
             });
         }
     }, [spot]);
@@ -120,7 +125,8 @@ export const EditSpotModal: React.FC<EditSpotModalProps> = ({ spot, onClose, onS
                 zone: formData.zone,
                 address: formData.address,
                 target_audience: formData.target_audience,
-                verified: true,
+                google_maps_link: formData.google_maps_link,
+                verified: formData.verified,
                 last_verified_year: new Date().getFullYear().toString()
             };
 
@@ -144,7 +150,33 @@ export const EditSpotModal: React.FC<EditSpotModalProps> = ({ spot, onClose, onS
         }
     };
 
-    // Optional: Delete functionality could be added here, but maybe risky for now.
+    // Delete functionality
+    const handleDelete = async () => {
+        if (!confirm(`Are you absolutely sure you want to PERMANENTLY delete "${formData.venue_name}"? This action cannot be undone.`)) {
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
+
+        try {
+            const { error: deleteError } = await supabase
+                .from('spots')
+                .delete()
+                .eq('location_id', spot.location_id);
+
+            if (deleteError) throw deleteError;
+
+            onDelete(spot.location_id); // Notify parent to remove from UI
+            onClose();
+
+        } catch (err: any) {
+            console.error("Error deleting spot:", err);
+            setError(err.message || "Failed to delete spot");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-emerald-midnight/80 backdrop-blur-md animate-fade-in">
@@ -186,12 +218,18 @@ export const EditSpotModal: React.FC<EditSpotModalProps> = ({ spot, onClose, onS
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">City</label>
-                                <input
+                                <select
                                     name="city"
                                     value={formData.city}
                                     onChange={handleChange}
-                                    className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:border-emerald-500 outline-none"
-                                />
+                                    className="w-full p-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white focus:border-emerald-500 outline-none"
+                                >
+                                    <option value="">Select City</option>
+                                    <option value="Chennai">Chennai</option>
+                                    <option value="Bangalore">Bangalore</option>
+                                    <option value="Hyderabad">Hyderabad</option>
+                                    <option value="Mumbai">Mumbai</option>
+                                </select>
                             </div>
                             <div>
                                 <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Area</label>
@@ -228,7 +266,18 @@ export const EditSpotModal: React.FC<EditSpotModalProps> = ({ spot, onClose, onS
                                 value={formData.address}
                                 onChange={handleChange}
                                 placeholder="Full address or landmark"
-                                className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:border-emerald-500 outline-none"
+                                className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:border-emerald-500 outline-none mb-4"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Google Maps Link</label>
+                            <input
+                                name="google_maps_link"
+                                value={formData.google_maps_link}
+                                onChange={handleChange}
+                                placeholder="https://maps.google.com/..."
+                                className="w-full p-2.5 border border-emerald-200 bg-emerald-50 rounded-lg text-sm focus:border-emerald-500 focus:bg-white outline-none"
                             />
                         </div>
 
@@ -273,8 +322,8 @@ export const EditSpotModal: React.FC<EditSpotModalProps> = ({ spot, onClose, onS
                                         type="button"
                                         onClick={() => toggleFeature(f)}
                                         className={`px-2 py-1 text-xs rounded-md border transition-all ${formData.features.includes(f)
-                                                ? 'bg-emerald-100 border-emerald-300 text-emerald-800 font-bold'
-                                                : 'bg-white border-gray-200 text-gray-500 hover:border-emerald-200'
+                                            ? 'bg-emerald-100 border-emerald-300 text-emerald-800 font-bold'
+                                            : 'bg-white border-gray-200 text-gray-500 hover:border-emerald-200'
                                             }`}
                                     >
                                         {f}
@@ -293,8 +342,8 @@ export const EditSpotModal: React.FC<EditSpotModalProps> = ({ spot, onClose, onS
                                         type="button"
                                         onClick={() => toggleAudience(a)}
                                         className={`px-2 py-1 text-xs rounded-md border transition-all ${formData.target_audience.includes(a)
-                                                ? 'bg-blue-100 border-blue-300 text-blue-800 font-bold'
-                                                : 'bg-white border-gray-200 text-gray-500 hover:border-blue-200'
+                                            ? 'bg-blue-100 border-blue-300 text-blue-800 font-bold'
+                                            : 'bg-white border-gray-200 text-gray-500 hover:border-blue-200'
                                             }`}
                                     >
                                         {a}
@@ -341,6 +390,24 @@ export const EditSpotModal: React.FC<EditSpotModalProps> = ({ spot, onClose, onS
                                 />
                             </div>
                         </div>
+
+                        {/* Verification Toggle */}
+                        <div className="bg-white p-4 rounded-xl border border-gray-200 flex items-center justify-between">
+                            <div>
+                                <div className="font-bold text-sm text-emerald-900">Verification Status</div>
+                                <div className="text-xs text-gray-500">Unverified spots will be hidden from the map</div>
+                            </div>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    name="verified"
+                                    checked={formData.verified}
+                                    onChange={(e) => setFormData(prev => ({ ...prev, verified: e.target.checked }))}
+                                    className="sr-only peer"
+                                />
+                                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                            </label>
+                        </div>
                     </div>
 
                     {/* Full Width Notes */}
@@ -363,25 +430,34 @@ export const EditSpotModal: React.FC<EditSpotModalProps> = ({ spot, onClose, onS
                     </div>
                 )}
 
-                <div className="p-6 border-t border-gray-100 flex justify-end gap-3 bg-gray-50/80 sticky bottom-0 z-10 backdrop-blur-md">
+                <div className="p-6 border-t border-gray-100 flex justify-between gap-3 bg-gray-50/80 sticky bottom-0 z-10 backdrop-blur-md">
                     <button
-                        onClick={onClose}
+                        onClick={handleDelete}
                         disabled={loading}
-                        className="px-6 py-3 rounded-xl text-gray-500 font-bold text-sm hover:bg-gray-200 hover:text-gray-700 transition-colors"
+                        className="px-4 py-3 rounded-xl border border-red-200 text-red-600 font-bold text-sm hover:bg-red-50 hover:border-red-300 transition-colors flex items-center gap-2"
                     >
-                        Cancel
+                        <Trash2 size={16} /> Delete Spot
                     </button>
-                    <button
-                        onClick={handleUpdate}
-                        disabled={loading}
-                        className="px-8 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 text-white font-bold text-sm hover:from-emerald-700 hover:to-emerald-600 shadow-lg shadow-emerald-600/20 transition-all flex items-center gap-2 transform hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                        {loading ? 'Saving...' : (
-                            <>
-                                <Save size={18} /> Update Spot
-                            </>
-                        )}
-                    </button>
+                    <div className="flex gap-3">
+                        <button
+                            onClick={onClose}
+                            disabled={loading}
+                            className="px-6 py-3 rounded-xl text-gray-500 font-bold text-sm hover:bg-gray-200 hover:text-gray-700 transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleUpdate}
+                            disabled={loading}
+                            className="px-8 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 text-white font-bold text-sm hover:from-emerald-700 hover:to-emerald-600 shadow-lg shadow-emerald-600/20 transition-all flex items-center gap-2 transform hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                            {loading ? 'Saving...' : (
+                                <>
+                                    <Save size={18} /> Update Spot
+                                </>
+                            )}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

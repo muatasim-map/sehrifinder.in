@@ -140,6 +140,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         showToast("Spot updated successfully!", 'success');
     };
 
+    const handleDeleteSuccess = (deletedId: number) => {
+        setLiveSpots(prev => prev.filter(s => s.location_id !== deletedId));
+        showToast("Spot deleted permanently.", 'success');
+    };
+
 
     // Helper to safely display timing
     const formatTiming = (timing: any) => {
@@ -403,6 +408,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                         spot={selectedLiveSpot}
                         onClose={() => setSelectedLiveSpot(null)}
                         onSuccess={handleEditSuccess}
+                        onDelete={handleDeleteSuccess}
                     />
                 )
             }
