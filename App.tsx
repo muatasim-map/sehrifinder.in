@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { Analytics } from '@vercel/analytics/react';
 import { Toaster, toast } from 'sonner';
 import { ReloadPrompt } from './components/ReloadPrompt';
 import { SplashScreen } from './components/SplashScreen';
@@ -42,6 +43,7 @@ export default function App() {
 
   return (
     <ErrorBoundary>
+      <Analytics />
       <div className="min-h-screen bg-zillij font-sans relative overflow-x-hidden">
         {/* Global Background Pattern */}
         <div className="fixed inset-0 z-0 pointer-events-none">
