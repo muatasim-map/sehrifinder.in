@@ -1,0 +1,219 @@
+# Deep Architecture Audit
+
+This document tracks our systematic, batch-by-batch deep audit of the Sehri Finder application.
+
+## Batch 1 Complete: Global Entry, Routing & Context
+
+### Scope Inspected
+- `src/index.tsx` (Entry point)
+- `src/App.tsx` (Routing & Layout)
+- `src/context/LanguageContext.tsx` (Localization)
+
+### Findings & Risks
+
+#### 1. CRITICAL: Missing Suspense Boundary (App.tsx)
+**Smell/Bug**: [AppPage](file:///c:/Users/HP/Downloads/sehri/pages/AppPage.tsx#17-282), [SubmitPage](file:///c:/Users/HP/Downloads/sehri/pages/SubmitPage.tsx#6-20), and Admin pages are dynamically imported via `React.lazy()`. However, the `<Routes>` tree in [App.tsx](file:///c:/Users/HP/Downloads/sehri/App.tsx) is **not wrapped in a `<Suspense>` boundary**. 
+**Risk**: If a user navigates from the Landing Page to `/find` or `/submit`, React will throw an uncaught error because the lazy component hasn't downloaded yet and there is no fallback UI provided.
+
+#### 2. UX Bug: Rogue Keyboard Shortcut (App.tsx)
+**Smell/Bug**: The `Shift + A` global event listener for the Admin panel does not check `event.target`.
+**Risk**: If a user holds `Shift` to type a capital 'A' inside the Search Bar or a Form Input, they will be instantly redirected to the login page, destroying their session/input data.
+
+#### 3. Bug: Initial RTL Hydration Failure (LanguageContext.tsx)
+**Smell/Bug**: When reading the user's saved language from `localStorage` on initial load (inside `useEffect`), it updates the React state but *forgets* to sync `document.documentElement.dir` to `rtl`. 
+**Risk**: If an Urdu user refreshes the page, the text will translate, but the physical DOM layout will revert to Left-To-Right until they manually toggle the language again.
+
+### Incremental Fix Plan (Batch 1)
+- [ ] Add `<Suspense fallback={<GlobalLoader/>}>` inside [App.tsx](file:///c:/Users/HP/Downloads/sehri/App.tsx).
+- [ ] Add `tagName` checks to the `Shift+A` listener to ignore `INPUT` and `TEXTAREA`.
+- [ ] Move the `dir` and `lang` DOM mutation into a synchronized effect inside [LanguageContext](file:///c:/Users/HP/Downloads/sehri/context/LanguageContext.tsx#5-11).
+
+---
+
+## Batch 5 Complete: Admin & Submission Flows
+
+### Scope Inspected
+- `src/pages/AdminDashboardPage.tsx`
+- `src/components/admin/AdminDashboard.tsx`
+- `src/components/SubmitSpot.tsx`
+- `src/components/admin/ApprovalModal.tsx`
+
+### Findings & Risks
+
+#### 1. SECURITY VULNERABILITY: Missing Route Guards ([AdminDashboardPage.tsx](file:///c:/Users/HP/Downloads/sehri/pages/AdminDashboardPage.tsx))
+**Smell/Bug**: The [AdminDashboardPage](file:///c:/Users/HP/Downloads/sehri/pages/AdminDashboardPage.tsx#5-16) simply renders `<AdminDashboard />` without verifying if a Supabase authentication session exists on mount.
+**Risk**: Anyone who navigates directly to `/admin/dashboard` will load the full React admin UI. While Supabase RLS (Row Level Security) might block the actual data fetching, the UI will still mount, show errors, and expose the internal layout.
+**Fix**: Add an `AuthContext` or a simple `useEffect` in the page wrapper to call `supabase.auth.getSession()`. If no session, `navigate('/admin')`.
+
+#### 2. ARCHITECTURE BUG: No Pagination Limits Editing ([AdminDashboard.tsx](file:///c:/Users/HP/Downloads/sehri/components/admin/AdminDashboard.tsx))
+**Smell/Bug**: [fetchLiveSpots()](file:///c:/Users/HP/Downloads/sehri/components/admin/AdminDashboard.tsx#74-98) uses `.limit(100)`. There is no "Load More" button or pagination.
+**Risk**: With over 260+ spots already seeded, Admins can never see, select, or edit spots past the first 100 unless they luckily search for the exact name.
+**Fix**: Change the UI to fetch more as the user scrolls, or increase the limit to 1000 for the admin view, or add simple `offset` pagination.
+
+#### 3. UX/SCHEMA FLAW: Submission Data Incompleteness ([SubmitSpot.tsx](file:///c:/Users/HP/Downloads/sehri/components/SubmitSpot.tsx) vs [ListingCard.tsx](file:///c:/Users/HP/Downloads/sehri/components/ListingCard.tsx))
+**Smell/Bug**: The [SubmitSpot](file:///c:/Users/HP/Downloads/sehri/components/SubmitSpot.tsx#24-263) public form only asks for basic info (Name, City, Timing). However, [ApprovalModal](file:///c:/Users/HP/Downloads/sehri/components/admin/ApprovalModal.tsx#13-310) and the actual [SehriSpot](file:///c:/Users/HP/Downloads/sehri/types.ts#42-100) UI rely heavily on arrays like `features[]` (e.g. DeliveryAvailable, LadiesFriendly) and `phones[]` to render rich cards.
+**Risk**: When users submit spots, the Admin has to manually guess or call the user to find out if there is a Women's section or Delivery. As a result, community-submitted spots look very empty on the frontend compared to the initial seeded data.
+**Fix**: Add checkboxes in [SubmitSpot.tsx](file:///c:/Users/HP/Downloads/sehri/components/SubmitSpot.tsx) for core features (`Delivery`, `Dine-In`, `Women's Section`) and an input for `Phone Number`.
+
+### Incremental Fix Plan (Batch 5)
+- [ ] Add a top-level route guard to [AdminDashboardPage.tsx](file:///c:/Users/HP/Downloads/sehri/pages/AdminDashboardPage.tsx).
+- [ ] Increase live spot limit or add basic pagination in [AdminDashboard.tsx](file:///c:/Users/HP/Downloads/sehri/components/admin/AdminDashboard.tsx).
+- [ ] Enhance public [SubmitSpot.tsx](file:///c:/Users/HP/Downloads/sehri/components/SubmitSpot.tsx) to collect Phone and basic Features.
+
+---
+
+## Batch 6 Complete: Performance, PWA & Configuration
+
+### Scope Inspected
+- [vite.config.ts](file:///c:/Users/HP/Downloads/sehri/vite.config.ts) (Build Strategy)
+- [index.html](file:///c:/Users/HP/Downloads/sehri/index.html) (Bootstrap & Fonts)
+- [index.css](file:///c:/Users/HP/Downloads/sehri/index.css) (Style Bloat)
+- `src/components/ErrorBoundary.tsx`
+- `src/components/ReloadPrompt.tsx`
+
+### Findings & Risks
+
+#### 1. CRITICAL PERFORMANCE: Extreme Font Overload ([index.html](file:///c:/Users/HP/Downloads/sehri/index.html))
+**Smell/Bug**: The application is currently loading **9 separate Google Font families** (Outfit, Cormorant Garamond, Cinzel, Great Vibes, Amiri, Reem Kufi, Playfair Display, Lora, Source Serif 4, Montserrat).
+**Risk**: Every font family requires a high-priority network request. Loading 9 different fonts (and their weights) will destroy the Performance score on mobile devices, causing high Cumulative Layout Shift (CLS) and blocking the Largest Contentful Paint (LCP) for several seconds. 
+**Fix**: Consolidate to exactly **3 brand fonts** (e.g., Reem Kufi for Arabic/Headings, Outfit for Sans, and Playfair for Serif). Use standard system fallbacks for the rest.
+
+#### 2. ARCHITECTURE SMELL: Environment-Specific build paths ([vite.config.ts](file:///c:/Users/HP/Downloads/sehri/vite.config.ts))
+**Smell/Bug**: The `prerender` plugin has a hardcoded `executablePath` pointing to a local Windows C: drive path for Chrome.
+**Risk**: The build will immediately fail on Vercel, GitHub Actions, or any other developer's machine that isn't yours.
+**Fix**: Remove the hardcoded path; `puppeteer` should find the browser automatically or we should use an environment variable.
+
+#### 3. BUILD OPTIMIZATION: Heavy Dependency Chunking ([vite.config.ts](file:///c:/Users/HP/Downloads/sehri/vite.config.ts))
+**Smell/Bug**: Only `react` and `lucide` are split into manual chunks.
+**Risk**: `framer-motion` and `leaflet` are both ~100kb+ and are likely being bundled into the main `index.js`, making the initial load unnecessarily heavy.
+**Fix**: Create dedicated chunks for `vendor-framer` and `vendor-maps`.
+
+### Incremental Fix Plan (Batch 6)
+- [ ] Reduce Google Fonts to the critical minimum in [index.html](file:///c:/Users/HP/Downloads/sehri/index.html).
+- [ ] Remove hardcoded Windows paths from [vite.config.ts](file:///c:/Users/HP/Downloads/sehri/vite.config.ts).
+- [ ] Refine Rollup manual chunks for heavy dependencies.
+
+---
+
+## 🚀 Execution Strategy: Phase 6 Roadmap
+
+The Deep Audit is complete. We will now move into **Execution Mode** to apply these surgical fixes. We will proceed by batch to ensure the app remains stable and testable.
+
+### 🛡️ The "Safety Net" Strategy (Zero Regression Framework)
+
+To guarantee that these deep architectural fixes do not break the existing UI or user flows, I will enforce the following strict protocols during execution:
+
+1. **Atomic, Isolated Changes (One File at a Time)**
+   We will not do a "big bang" rewrite. Each batch will be executed individually. For example, when fixing the [useSpotFilter](file:///c:/Users/HP/Downloads/sehri/hooks/useSpotFilter.ts#29-127) hook, we will *only* touch that hook and verify it before moving to the [AdminDashboard](file:///c:/Users/HP/Downloads/sehri/components/admin/AdminDashboard.tsx#42-412).
+2. **Pre-Flight Dependency Mapping**
+   Before changing the signature of any exported Context, Hook, or Utility (like [formatTiming](file:///c:/Users/HP/Downloads/sehri/utils/transformers.ts#18-31) or [SehriContext](file:///c:/Users/HP/Downloads/sehri/context/SehriContext.tsx#10-33)), I will run a global `grep_search` to find *every single component* that consumes it. I will update the providers and consumers in the exact same step.
+3. **TypeScript Compilation as a Firewall**
+   After every logical batch of changes, I will run the TypeScript compiler (`npx tsc --noEmit` or equivalent build checks). If the types mismatch (e.g., if a component tries to read `spot.distance` instead of dynamically computing it), the compiler will catch it before the browser does.
+4. **Vite Build Verification**
+   Since Phase 4 introduced SSG Prerendering, the build process is highly sensitive to DOM manipulations (like the Portals bug). After completing the high-risk batches, I will run a dry-run `npm run build` to ensure the Node SSR engine does not crash and the Vite bundle successfully compiles.
+5. **No Visual Destructivism**
+   The CSS and UI components (like [FilterBar.tsx](file:///c:/Users/HP/Downloads/sehri/components/FilterBar.tsx) and [ListingCard.tsx](file:///c:/Users/HP/Downloads/sehri/components/ListingCard.tsx)) will have their *prop-drilling* removed, but the underlying Tailwind classes and JSX layout will remain 100% untouched.
+
+### Execution Sequence:
+1. **Critical High-Impact**: Fonts (Batch 6), Suspense (Batch 1), JSONB Schema (Batch 4).
+2. **Security & State**: Auth Guards (Batch 5), Context Fetching (Batch 2).
+3. **Performance & UX**: Debouncing (Batch 3), O(1) Sets (Batch 2), Pagination (Batch 5).
+4. **Cleanup**: Prop Drilling (Batch 3), Hardcoded IDs (Batch 4).
+
+---
+
+## Next Up: Shift to Execution Mode
+I will now await your final signal to begin surgically applying these fixes batch by batch.
+
+---
+
+## Batch 4 Complete: Core Utilities & Database Types
+
+### Scope Inspected
+- `src/types.ts` (Data Shapes)
+- `src/utils/transformers.ts` (Data Mapping)
+- [seed_full_database.sql](file:///c:/Users/HP/Downloads/sehri/seed_full_database.sql) (Supabase Schema)
+- `src/utils/distance.ts` (Math)
+
+### Findings & Risks
+
+#### 1. CRITICAL: JSON Type Parsing Mismatch ([transformers.ts](file:///c:/Users/HP/Downloads/sehri/utils/transformers.ts) vs `schema`)
+**Smell/Bug**: The [RawSehriSpot](file:///c:/Users/HP/Downloads/sehri/types.ts#8-37) interface currently defines `timing` as an inline object (`{ start?: string, end?: string... }`), but in [seed_full_database.sql](file:///c:/Users/HP/Downloads/sehri/seed_full_database.sql), `timing` is being inserted as stringified JSON (e.g., `'{"start":"03:00","end":"04:00"}'`).
+**Risk**: Today, the app uses static local [.ts](file:///c:/Users/HP/Downloads/sehri/types.ts) files where objects are native JavaScript objects. However, when we switch fully to Supabase, `timing` will be returned by the Postgres API. If Supabase treats this column as `TEXT` rather than `JSONB`, the frontend [formatTiming(d.timing)](file:///c:/Users/HP/Downloads/sehri/utils/transformers.ts#18-31) will crash because it expects an object, not a string. 
+**Fix**: Update the Supabase SQL schema to strictly use `jsonb` for the `timing` (and potentially `phones` / `features`) columns. Add a type guard in [formatTiming](file:///c:/Users/HP/Downloads/sehri/utils/transformers.ts#18-31) to attempt `JSON.parse` if a string is received.
+
+#### 2. Architecture Smell: Hardcoded Business Logic ([transformers.ts](file:///c:/Users/HP/Downloads/sehri/utils/transformers.ts))
+**Smell/Bug**: The `VERIFIED_IDS` array (containing ~50 hardcoded integer IDs for Chennai/Bangalore/Mumbai) is still manually hardcoded inside [transformers.ts](file:///c:/Users/HP/Downloads/sehri/utils/transformers.ts).
+**Risk**: Every time an Admin verifies a new spot, we have to push a code update to Vercel just to update the `VERIFIED_IDS` list.
+**Fix**: We already added `last_verified` to the Supabase schema in the SQL file. We need to completely delete the `VERIFIED_IDS` array and rely strictly on `!!d.last_verified` as implemented on line 67 of [transformers.ts](file:///c:/Users/HP/Downloads/sehri/utils/transformers.ts).
+
+#### 3. UX/Math Bug: Distance State Hydration ([SehriContext.tsx](file:///c:/Users/HP/Downloads/sehri/context/SehriContext.tsx) & [distance.ts](file:///c:/Users/HP/Downloads/sehri/utils/distance.ts))
+**Smell/Bug**: [calculateDistance](file:///c:/Users/HP/Downloads/sehri/utils/distance.ts#1-21) dynamically computes distances based on the user's GPS. However, [transformRawSpot](file:///c:/Users/HP/Downloads/sehri/utils/transformers.ts#32-80) currently hardcodes the initial value of `distance` to `"X km"`.
+**Risk**: If a user clicks "Near Me", the context manually mutates `allSpots` and overwrites `"X km"`. If they refresh the page, the Context loses the user's location, but the cards still display "0.0 km" or "X km" inaccurately.
+**Fix**: `distance` should not be a static property of [SehriSpot](file:///c:/Users/HP/Downloads/sehri/types.ts#42-100). It should be computed dynamically *during the React render phase* via a utility hook (`useDistance(spot.lat, spot.long, user.lat, user.long)`). 
+
+### Incremental Fix Plan (Batch 4)
+- [ ] Refactor [formatTiming](file:///c:/Users/HP/Downloads/sehri/utils/transformers.ts#18-31) in [transformers.ts](file:///c:/Users/HP/Downloads/sehri/utils/transformers.ts) to cleanly handle raw strings via `parseJSON` fallback.
+- [ ] Remove the obsolete `VERIFIED_IDS` array from [transformers.ts](file:///c:/Users/HP/Downloads/sehri/utils/transformers.ts) completely.
+- [ ] Remove `distance` from the static data model; compute distances dynamically in the UI representation layer.
+
+---
+
+## Batch 3 Complete: Maps, UI Components, and Layout Shifts
+
+### Scope Inspected
+- `src/components/MapView.tsx` (Leaflet Map)
+- `src/components/Hero.tsx` (Search & Parallax)
+- `src/components/FilterBar.tsx` (Complex State UI)
+- `src/pages/AppPage.tsx` (Parent Mount)
+
+### Findings & Risks
+
+#### 1. Performance/UX Bug: Missing Search Input Debounce (Hero.tsx)
+**Smell/Bug**: The [Hero](file:///c:/Users/HP/Downloads/sehri/components/Hero.tsx#39-205) search input triggers `onSearch(e.target.value)` on every single keystroke. This instantly updates [SehriContext](file:///c:/Users/HP/Downloads/sehri/context/SehriContext.tsx#10-33) and forces the massive [useSpotFilter](file:///c:/Users/HP/Downloads/sehri/hooks/useSpotFilter.ts#29-127) algorithm to recalculate the entire database on every letter typed.
+**Risk**: On lower-end mobile devices, typing "Biryani" will freeze the UI thread 7 times context-switching between rendering the input and filtering the array. 
+**Fix**: Implement `useDeferredValue` (React 18) or a standard 300ms debounce timeout on the local search state before pushing to context.
+
+#### 2. Architecture Smell: Unnecessary Prop Drilling (FilterBar.tsx)
+**Smell/Bug**: [AppPage.tsx](file:///c:/Users/HP/Downloads/sehri/pages/AppPage.tsx) extracts `selectedCity`, `selectedArea`, `selectedZone`, `onSelectCity`, etc. from [useSehri()](file:///c:/Users/HP/Downloads/sehri/context/SehriContext.tsx#171-178) and manually drills them down into `<FilterBar ...props />` as 10 different props.
+**Risk**: This is textbook prop-drilling anti-pattern. Because [FilterBar](file:///c:/Users/HP/Downloads/sehri/components/FilterBar.tsx#22-219) is a heavy component, whenever *any* context value changes, [AppPage](file:///c:/Users/HP/Downloads/sehri/pages/AppPage.tsx#17-282) forces a full re-render of the prop tree. 
+**Fix**: [FilterBar](file:///c:/Users/HP/Downloads/sehri/components/FilterBar.tsx#22-219) should just call [useSehri()](file:///c:/Users/HP/Downloads/sehri/context/SehriContext.tsx#171-178) internally to read/write its own slice of state, drastically simplifying [AppPage](file:///c:/Users/HP/Downloads/sehri/pages/AppPage.tsx#17-282) and React's diffing algorithm.
+
+#### 3. Fragile Logic: Imperative DOM Manipulation (Hero.tsx)
+**Smell/Bug**: Clicking the "Filters" button in the Hero triggers `document.getElementById('filters-section')?.scrollIntoView()`. 
+**Risk**: Breaking React's declarative nature. If a developer accidentally renames that ID or if the ID hasn't mounted yet, the button silently fails.
+**Fix**: Use a React `useRef` passed via context, or at least abstract the scroll logic into a stable utility function.
+
+### Incremental Fix Plan (Batch 3)
+- [ ] Add `useDeferredValue` to the search term in [Hero.tsx](file:///c:/Users/HP/Downloads/sehri/components/Hero.tsx) (or debounce the context push).
+- [ ] Refactor [FilterBar.tsx](file:///c:/Users/HP/Downloads/sehri/components/FilterBar.tsx) to consume [useSehri()](file:///c:/Users/HP/Downloads/sehri/context/SehriContext.tsx#171-178) directly and remove the extreme prop drilling from [AppPage.tsx](file:///c:/Users/HP/Downloads/sehri/pages/AppPage.tsx).
+- [ ] Add `useMemo` caching to the Leaflet Icons in [MapView](file:///c:/Users/HP/Downloads/sehri/components/MapView.tsx#87-199) to prevent DOM node recreation on every re-render.
+
+---
+
+## Batch 2 Complete: Core Data State & Services
+
+### Scope Inspected
+- `src/context/SehriContext.tsx` (Global State)
+- `src/services/spotService.ts` (API Integration)
+- `src/hooks/useSpotFilter.ts` (Data Transformation)
+- `src/utils/storage.ts` (Persistence)
+
+### Findings & Risks
+
+#### 1. Code Smell: Strict Mode Network Waterfall (SehriContext.tsx)
+**Smell/Bug**: The `useEffect` that fetches [fetchSehriSpots()](file:///c:/Users/HP/Downloads/sehri/services/spotService.ts#27-62) has no cleanup/cancellation logic.
+**Risk**: In React 18 Strict Mode (which we use in Dev), `useEffect` fires twice. Because there is no AbortController or mount check, the app makes *two* simultaneous network requests to Supabase on startup, wasting bandwidth and potentially causing race conditions when parsing the JSON payload.
+
+#### 2. Performance: O(N) Inclusion Checks in Filter Loop (useSpotFilter.ts)
+**Smell/Bug**: Inside the smart search logic, we construct a `smartCategories` array. Then, for *every single database item* (potentially thousands), we run `smartCategories.includes(item.venueType)`. 
+**Risk**: `.includes()` on an array is an [O(N)](file:///c:/Users/HP/Downloads/sehri/components/FooterSEO.tsx#5-44) operation. Running an [O(N)](file:///c:/Users/HP/Downloads/sehri/components/FooterSEO.tsx#5-44) operation inside an [O(M)](file:///c:/Users/HP/Downloads/sehri/components/FooterSEO.tsx#5-44) filter loop creates an [O(N * M)](file:///c:/Users/HP/Downloads/sehri/components/FooterSEO.tsx#5-44) bottleneck. For large datasets, this will cause the UI to stutter while typing in the search bar. We should use a [Set](file:///c:/Users/HP/Downloads/sehri/context/LanguageContext.tsx#24-32) for [O(1)](file:///c:/Users/HP/Downloads/sehri/components/FooterSEO.tsx#5-44) lookups.
+
+#### 3. Data Masking Bug: The "Empty DB" Fallback (spotService.ts)
+**Smell/Bug**: When fetching from Supabase, if `data.length === 0`, the service forcibly returns local `SAMPLE_DATA`. 
+**Risk**: If an Admin intentionally deletes all spots in the database, the frontend will ignore the live database state and suddenly show dummy text to the user. The fallback should only trigger on `error`, not on empty valid state.
+
+### Incremental Fix Plan (Batch 2)
+- [ ] Add an `isMounted` or `AbortController` flag to [loadData](file:///c:/Users/HP/Downloads/sehri/context/SehriContext.tsx#51-63) in [SehriContext.tsx](file:///c:/Users/HP/Downloads/sehri/context/SehriContext.tsx).
+- [ ] Convert `smartCategories` array to `new Set()` inside [useSpotFilter.ts](file:///c:/Users/HP/Downloads/sehri/hooks/useSpotFilter.ts).
+- [ ] Remove the `data.length === 0` fallback trigger from [spotService.ts](file:///c:/Users/HP/Downloads/sehri/services/spotService.ts).

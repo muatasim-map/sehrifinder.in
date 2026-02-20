@@ -1,6 +1,4 @@
-
 import { SehriSpot } from '../types';
-import { SAMPLE_DATA } from '../constants';
 
 /**
  * SERVICE LAYER - THE INTEGRATION SEAM
@@ -38,8 +36,8 @@ export const fetchSehriSpots = async (): Promise<SehriSpot[]> => {
         }
 
         if (data.length === 0) {
-          console.warn("Supabase table is EMPTY. Showing local data as fallback.");
-          return Promise.resolve(SAMPLE_DATA);
+          console.warn("Supabase table is EMPTY.");
+          return Promise.resolve([]);
         }
 
         // @ts-ignore - Supabase types might be inferred loosely, but our schema matches RawSehriSpot
@@ -51,11 +49,11 @@ export const fetchSehriSpots = async (): Promise<SehriSpot[]> => {
       }
     }
 
-    // 2. Fallback to Local Data
-    return Promise.resolve(SAMPLE_DATA);
+    // 2. Fallback
+    return Promise.resolve([]);
 
   } catch (error) {
     console.error("Unexpected error in spotService:", error);
-    return Promise.resolve(SAMPLE_DATA);
+    return Promise.resolve([]);
   }
 };
