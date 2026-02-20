@@ -8,9 +8,10 @@ interface SplashScreenProps {
 
 // --- Cinematic Particle System (Gold Dust) ---
 const GoldParticles = () => {
-    const particles = Array.from({ length: 40 }).map((_, i) => ({
+    // Optimized particle count for a rich, balanced cinematic atmosphere
+    const particles = Array.from({ length: 65 }).map((_, i) => ({
         id: i,
-        size: Math.random() * 3 + 1,
+        size: Math.random() * 3 + 1.5, // Slightly larger base size
         x: Math.random() * 100,
         y: Math.random() * 100,
         duration: Math.random() * 4 + 3,
@@ -107,11 +108,11 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
     const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
-        // Reduced duration for faster load (4.5s total)
+        // Full cinematic duration allowing shimmer and particles to complete
         const timer = setTimeout(() => {
             setIsVisible(false);
             setTimeout(onComplete, 1000);
-        }, 4500);
+        }, 7000);
 
         return () => clearTimeout(timer);
     }, [onComplete]);
