@@ -172,7 +172,7 @@ export const MapView: React.FC<MapViewProps> = ({
                                     </div>
 
                                     <a
-                                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.address)}`}
+                                        href={spot.googleMapsLink && spot.googleMapsLink.startsWith('http') ? spot.googleMapsLink : (spot.latitude && spot.longitude ? `https://www.google.com/maps/dir/?api=1&destination=${spot.latitude},${spot.longitude}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.address)}`)}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="flex items-center justify-center gap-2 w-full py-2 bg-emerald-midnight text-gold-lantern text-xs font-bold uppercase tracking-widest hover:bg-emerald-900 transition-colors rounded"

@@ -74,6 +74,7 @@ export const transformRawSpot = (d: RawSehriSpot): SehriSpot => {
             d.price ? `Price: ${d.price}` : ''
         ].filter(Boolean).join(". "),
 
-        features: d.features || []
+        features: d.features || [],
+        googleMapsLink: d.google_maps_link
     };
 };

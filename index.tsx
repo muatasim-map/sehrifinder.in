@@ -6,6 +6,8 @@ import { LanguageProvider } from './context/LanguageContext';
 import { SehriProvider } from './context/SehriContext';
 import { BrowserRouter } from 'react-router-dom';
 
+import { HelmetProvider } from 'react-helmet-async';
+
 const rootElement = document.getElementById('root');
 if (!rootElement) {
   throw new Error("Could not find root element to mount to");
@@ -14,13 +16,15 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
-    <LanguageProvider>
-      <SehriProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </SehriProvider>
-    </LanguageProvider>
+    <HelmetProvider>
+      <LanguageProvider>
+        <SehriProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </SehriProvider>
+      </LanguageProvider>
+    </HelmetProvider>
   </React.StrictMode>
 );
 

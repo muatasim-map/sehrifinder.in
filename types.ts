@@ -33,6 +33,7 @@ export interface RawSehriSpot {
   zone?: string;
   last_verified?: string;
   address?: string;
+  google_maps_link?: string;
 }
 
 /**
@@ -96,6 +97,9 @@ export interface SehriSpot {
 
   /** Array of feature tags */
   features: string[];
+
+  /** Generated Google Maps Link from DB */
+  googleMapsLink?: string;
 }
 
 export interface LanternConfig {

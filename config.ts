@@ -1,7 +1,7 @@
 
 export const APP_CONFIG = {
   // The WhatsApp number for the admin receiving reports
-  ADMIN_PHONE: "917824030122",
+  ADMIN_PHONE: "966599597645",
 
   // Default city suffix for map searches
   DEFAULT_CITY: "Chennai",

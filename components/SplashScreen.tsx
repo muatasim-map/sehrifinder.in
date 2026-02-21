@@ -137,8 +137,33 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                                 100% { background-position: -200% center; }
                             }
                             .animate-shimmer {
+                                background-image: linear-gradient(
+                                    110deg,
+                                    #D4AF37 35%,
+                                    #FFF8DC 50%,
+                                    #D4AF37 65%
+                                );
                                 background-size: 200% auto;
-                                animation: shimmer 4s linear infinite;
+                                animation: shimmer 3s linear infinite;
+                            }
+                            
+                            @keyframes liquid-gold {
+                                0% { background-position: 0% 50%; }
+                                50% { background-position: 100% 50%; }
+                                100% { background-position: 0% 50%; }
+                            }
+
+                            .animate-liquid-gold {
+                                background-image: linear-gradient(
+                                    -45deg,
+                                    #B8860B 0%,
+                                    #FFD700 25%,
+                                    #FFFFFF 50%,
+                                    #FFD700 75%,
+                                    #B8860B 100%
+                                );
+                                background-size: 400% 400%;
+                                animation: liquid-gold 8s ease infinite;
                             }
                         `}
                     </style>
@@ -157,7 +182,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3, duration: 1.0, ease: "easeOut" }}
-                                className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#FFF8DC] to-[#FFD700] drop-shadow-[0_0_12px_rgba(255,215,0,0.6)] leading-relaxed py-2" // Brighter Gold for contrast
+                                className="text-transparent bg-clip-text animate-liquid-gold drop-shadow-[0_0_12px_rgba(255,215,0,0.6)] leading-relaxed py-2" // Premium Liquid Gold
                                 dir="rtl"
                             >
                                 بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
@@ -182,7 +207,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                                 initial={{ clipPath: "inset(0 50% 0 50%)", filter: "blur(10px)", scale: 0.9 }} // Reveal from center
                                 animate={{ clipPath: "inset(0 0% 0 0%)", filter: "blur(0px)", scale: 1 }}
                                 transition={{ delay: 1.2, duration: 1.8, ease: "easeOut" }}
-                                className="relative text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#FFFFF0] to-[#DAA520] drop-shadow-[0_4px_20px_rgba(255,215,0,0.7)] animate-shimmer py-4"
+                                className="relative text-transparent bg-clip-text animate-liquid-gold drop-shadow-[0_4px_20px_rgba(255,215,0,0.7)] py-4"
                                 dir="rtl"
                             >
                                 رَمَضَان كَرِيم

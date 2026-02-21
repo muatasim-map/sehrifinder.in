@@ -56,7 +56,9 @@ export const ListingCardActions: React.FC<ListingCardActionsProps> = ({ data }) 
   };
 
   const handleDirectionsClick = () => {
-    if (data.latitude && data.longitude) {
+    if (data.googleMapsLink) {
+      window.open(data.googleMapsLink, '_blank');
+    } else if (data.latitude && data.longitude) {
       window.open(`https://www.google.com/maps/dir/?api=1&destination=${data.latitude},${data.longitude}`, '_blank');
     } else {
       const query = data.address || `${data.name}, ${data.area}, ${data.city}`;
