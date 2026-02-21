@@ -42,6 +42,16 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSubmit }) => {
           </div>
 
           <div className="flex items-center gap-2">
+            {/* Doubts Link */}
+            <a
+              href="https://www.lighthousementoring.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gold-bright/20 bg-gold-bright/10 text-gold-bright hover:bg-gold-bright/20 transition-all text-xs font-bold whitespace-nowrap"
+            >
+              <span>Have doubts about Islam?</span>
+            </a>
+
             {/* Language Switcher */}
             <button
               onClick={toggleLanguage}
@@ -98,6 +108,17 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSubmit }) => {
                 <PlusCircle size={20} />
                 <span>{t('submitSpot')}</span>
               </button>
+
+              <a
+                href="https://www.lighthousementoring.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex sm:hidden items-center gap-4 w-full p-3 rounded-lg text-gold-bright hover:bg-gray-100 transition-colors font-bold ${dir === 'rtl' ? 'flex-row-reverse text-right' : 'text-left'}`}
+              >
+                <Globe size={20} />
+                <span>Have doubts about Islam?</span>
+              </a>
+
               <MenuItem icon={<Info size={20} />} label="About This Service" dir={dir} />
               <MenuItem icon={<Flag size={20} />} label={t('reportIssue')} dir={dir} />
               <MenuItem icon={<Share2 size={20} />} label={t('shareApp')} dir={dir} />

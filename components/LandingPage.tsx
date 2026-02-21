@@ -96,6 +96,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             <button onClick={() => scrollToSection('story')} className="hover:text-gold-lantern transition-colors">About</button>
             <button onClick={() => scrollToSection('features')} className="hover:text-gold-lantern transition-colors">Features</button>
             <button onClick={handleVolunteer} className="hover:text-gold-lantern transition-colors">Volunteer</button>
+            <a href="https://www.lighthousementoring.org/" target="_blank" rel="noopener noreferrer" className="text-gold-lantern hover:text-gold-bright transition-colors font-bold whitespace-nowrap">Have doubts about Islam?</a>
             <button
               onClick={onEnterApp}
               className="px-6 py-2 bg-white/10 border border-white/20 rounded-full text-neutral-pearl font-bold text-sm hover:bg-white/20 hover:border-white/30 transition-all backdrop-blur-sm shadow-sm"
@@ -116,6 +117,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               <button onClick={() => scrollToSection('story')} className="text-left text-neutral-pearl py-2 border-b border-white/5">About</button>
               <button onClick={() => scrollToSection('features')} className="text-left text-neutral-pearl py-2 border-b border-white/5">Features</button>
               <button onClick={handleVolunteer} className="text-left text-neutral-pearl py-2 border-b border-white/5">Volunteer</button>
+              <a href="https://www.lighthousementoring.org/" target="_blank" rel="noopener noreferrer" className="text-left text-gold-lantern py-2 border-b border-white/5 font-bold">Have doubts about Islam?</a>
               <button onClick={onEnterApp} className="bg-gold-lantern text-emerald-midnight w-full py-3 rounded-lg font-bold mt-2">Launch App</button>
             </div>
           </>
@@ -671,6 +673,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
                 <li><button onClick={() => scrollToSection('story')} className="hover:text-gold-lantern transition-colors">About</button></li>
                 <li><button onClick={() => scrollToSection('features')} className="hover:text-gold-lantern transition-colors">Features</button></li>
                 <li><button onClick={() => scrollToSection('cities')} className="hover:text-gold-lantern transition-colors">Cities</button></li>
+                <li><a href="https://www.lighthousementoring.org/" target="_blank" rel="noopener noreferrer" className="text-gold-lantern hover:text-white transition-colors font-bold">Have doubts about Islam?</a></li>
               </ul>
             </div>
 
