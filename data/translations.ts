@@ -34,6 +34,8 @@ export type TranslationKey =
     | 'mensSection'
     | 'allAreas'
     | 'allCities'
+    | 'allCountries'
+    | 'selectCountry'
     | 'selectCity'
     | 'selectArea'
     | 'direction'
@@ -95,6 +97,8 @@ export const translations: Record<Language, Record<string, string>> = {
         mensSection: 'Mens Section',
         allAreas: 'All Areas',
         allCities: 'All Cities',
+        allCountries: 'All Countries',
+        selectCountry: 'Select Country',
         selectCity: 'Select City',
         selectArea: 'Select Area',
         direction: 'Direction',
@@ -152,6 +156,8 @@ export const translations: Record<Language, Record<string, string>> = {
         mensSection: 'ஆண்கள் பகுதி',
         allAreas: 'அனைத்து பகுதிகளும்',
         allCities: 'அனைத்து நகரங்களும்',
+        allCountries: 'அனைத்து நாடுகளும்',
+        selectCountry: 'நாட்டைத் தேர்ந்தெடுக்கவும்',
         selectCity: 'நகரத்தைத் தேர்ந்தெடுக்கவும்',
         selectArea: 'பகுதியைத் தேர்ந்தெடுக்கவும்',
         direction: 'திசை',
@@ -209,6 +215,8 @@ export const translations: Record<Language, Record<string, string>> = {
         mensSection: 'مردوں کا حصہ',
         allAreas: 'تمام علاقے',
         allCities: 'تمام شہر',
+        allCountries: 'تمام ممالک',
+        selectCountry: 'ملک منتخب کریں',
         selectCity: 'شہر منتخب کریں',
         selectArea: 'علاقہ منتخب کریں',
         direction: 'سمت',

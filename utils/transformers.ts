@@ -1,19 +1,7 @@
 import { SehriSpot, RawSehriSpot } from "../types";
 
 // List of Verified IDs (Only existing real IDs + Major Mosques)
-const VERIFIED_IDS = [
-    // Chennai Verified (Range 1-68)
-    1, 2, 3, 5, 8, 9, 14, 20, 22, 24, 35, 40, 41, 42, 55, 60, 68,
-
-    // Bangalore Verified (Range 3001-3115)
-    3001, 3002, 3010, 3020, 3028, 3080,
-
-    // Mumbai Verified (Range 4001-4011)
-    4001, 4002, 4003, 4004, 4005, 4006, 4007, 4008,
-
-    // Hyderabad Verified (Range 5001-5013)
-    5001, 5002, 5003, 5004, 5011
-];
+// List of Verified IDs removed - now handled via database last_verified column.
 
 // Helper to format timing object to string
 export const formatTiming = (timing: any): string => {
@@ -35,14 +23,13 @@ export const formatTiming = (timing: any): string => {
 export const transformRawSpot = (d: RawSehriSpot): SehriSpot => {
     // Normalize City Name
     let city = d.city || "Chennai";
-    if (city === "Bengaluru") city = "Bangalore";
 
     // Construct Address
     const addressParts = [
         d.landmark,
         d.locality,
         d.primary_area,
-        city !== "Chennai" ? city : null // Append city if not default
+        city // Always include city for clarity, esp. important for international locations
     ].filter(Boolean);
 
     return {
@@ -50,7 +37,7 @@ export const transformRawSpot = (d: RawSehriSpot): SehriSpot => {
         name: d.venue_name,
         area: d.primary_area,
         city: city,
-        zone: d.zone, // Only available for Bangalore
+        zone: d.zone, // Primarily used for Bengaluru, London, and New York
         latitude: d.latitude,
         longitude: d.longitude,
         address: addressParts.join(", "),

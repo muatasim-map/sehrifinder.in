@@ -28,7 +28,7 @@ export interface RawSehriSpot {
   price?: string;
   notes?: string;
   target_audience?: string[];
-  // New fields for Bangalore
+  // New fields for Bengaluru
   city?: string;
   zone?: string;
   last_verified?: string;
@@ -57,7 +57,7 @@ export interface SehriSpot {
   /** City Name */
   city: string;
 
-  /** Zone (e.g. North, South, West) - Specific to Bangalore */
+  /** Zone (e.g. North, South, West) - Specific to Bengaluru */
   zone?: string;
 
   /** Full address or landmark string for display and maps */

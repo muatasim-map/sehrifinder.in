@@ -43,7 +43,7 @@ export const ListingCardActions: React.FC<ListingCardActionsProps> = ({ data }) 
   };
 
   const handleShareClick = () => {
-    const message = APP_CONFIG.MESSAGES.SHARE_TEMPLATE(data.name, data.area, data.timing);
+    const message = APP_CONFIG.MESSAGES.SHARE_TEMPLATE(data.name, data.area, data.timing, data.city);
     if (navigator.share) {
       navigator.share({
         title: `Sehri @ ${data.name}`,

@@ -18,6 +18,7 @@ import { FeatureCard } from './landing/FeatureCard';
 import { HelpCard } from './landing/HelpCard';
 import { DisclaimerSection } from './landing/DisclaimerSection';
 import { CityCard } from './landing/CityCard';
+import { COUNTRIES } from '../data/locations';
 
 interface LandingPageProps {
   onEnterApp: () => void;
@@ -210,11 +211,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
 
           <div className="grid grid-cols-3 gap-2 md:gap-12 text-center border-t border-white/10 pt-8 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: '0.4s' }}>
             <div>
-              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-landing-heading">4+</div>
+              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-landing-heading">12</div>
               <div className="text-[8px] md:text-xs text-neutral-400 uppercase tracking-widest mt-1">Cities</div>
             </div>
             <div>
-              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-landing-heading">200+</div>
+              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-landing-heading">400+</div>
               <div className="text-[8px] md:text-xs text-neutral-400 uppercase tracking-widest mt-1">Spots</div>
             </div>
             <div>
@@ -252,7 +253,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               <IslamicDivider className="text-gold-antique/50 w-full" />
             </div>
 
-            <blockquote className="font-landing-heading text-2xl md:text-4xl text-emerald-midnight leading-snug mb-6 italic px-4 relative">
+            <blockquote className="font-serif font-medium text-2xl md:text-3xl lg:text-4xl text-emerald-midnight leading-snug mb-6 italic px-4 relative tracking-wide">
               "Whoever provides food for a fasting person to break his fast will have a reward like his, without decreasing the reward of the fasting person."
             </blockquote>
           </div>
@@ -317,11 +318,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
                   Some have families to share Sehri with. Others — students in hostels, workers in new cities, travelers far from home — eat alone. Or skip it entirely.
                 </p>
 
-                <div className="my-8 pl-6 border-l-4 border-gold-antique/60 py-2 bg-emerald-50/50 rounded-r-lg relative">
-                  <p className="font-landing-heading italic text-xl text-emerald-sacred mb-2">
+                <div className="my-8 pl-6 md:pl-8 border-l-[3px] border-gold-antique py-3 bg-emerald-50/30 rounded-r-xl relative shadow-sm">
+                  <p className="font-landing-body italic text-[1.2875rem] md:text-[1.545rem] text-emerald-midnight mb-4 leading-snug tracking-wider">
                     "He is not a believer whose stomach is filled while the neighbor to his side goes hungry."
                   </p>
-                  <p className="text-xs font-bold uppercase tracking-wider text-gold-antique">— Prophet Muhammad (ﷺ)</p>
+                  <p className="text-[11.3px] md:text-[12.3px] font-bold uppercase tracking-[0.2em] text-gold-antique font-landing-accent">
+                    — PROPHET MUHAMMAD (ﷺ)
+                  </p>
                 </div>
 
                 <p>
@@ -474,49 +477,32 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
+            className="max-w-6xl mx-auto space-y-16"
           >
-            {/* Chennai (Active) */}
-            <motion.div
-              variants={fadeInUp}
-              onClick={() => onSelectCity('Chennai')}
-              className="bg-emerald-midnight rounded-xl p-8 text-white relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300 border border-gold-lantern/20 shadow-xl cursor-pointer"
-            >
-              <div className="absolute top-0 right-0 text-gold-lantern/10 -mt-2 -mr-2">
-                <IslamicCorner className="w-20 h-20 rotate-90" />
-              </div>
-
-              <div className="absolute inset-0 opacity-10 pointer-events-none">
-                <IslamicPattern variant="geometric" className="text-gold-lantern" />
-              </div>
-              <div className="absolute top-0 right-0 p-32 bg-gold-lantern/10 rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform blur-2xl"></div>
-
-              <div className="relative z-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-[10px] font-bold uppercase tracking-widest border border-green-500/30 mb-6 backdrop-blur-sm">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ripple absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                  </span>
-                  Live Now
+            {COUNTRIES.map((country, countryIndex) => (
+              <div key={country.code} className="space-y-6 text-center md:text-left">
+                <div className="flex items-center gap-4">
+                  <h3 className="font-serif font-bold text-2xl text-emerald-midnight opacity-40 uppercase tracking-[0.2em]">{country.name}</h3>
+                  <div className="h-px flex-1 bg-emerald-midnight/10"></div>
                 </div>
-                <h3 className="font-landing-heading text-4xl mb-2 text-white">Chennai</h3>
-                <p className="text-white/70 mb-8 text-sm font-landing-body">
-                  50+ Verified Spots<br />
-                  <span className="opacity-60">Triplicane, Royapettah, Mount Road, and more.</span>
-                </p>
 
-                <button onClick={(e) => { e.stopPropagation(); onSelectCity('Chennai'); }} className="btn-gold flex items-center gap-2 text-emerald-midnight px-6 py-2 rounded-full font-bold text-xs uppercase tracking-wide transition-all shadow-lg hover:shadow-gold-lantern/40 hover:scale-105 active:scale-95">
-                  Explore Chennai <ArrowRight className="w-4 h-4" />
-                </button>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {country.cities.map((city, cityIndex) => {
+                    const isChennai = city === 'Chennai';
+                    return (
+                      <CityCard
+                        key={city}
+                        name={city}
+                        status="Live"
+                        desc={isChennai ? "50+ Verified Spots" : "Verified Spots"}
+                        delay={(countryIndex * 100) + (cityIndex * 50)}
+                        onClick={() => onSelectCity(city)}
+                      />
+                    );
+                  })}
+                </div>
               </div>
-            </motion.div>
-
-            {/* Other Cities Grid */}
-            <div className="grid grid-cols-1 gap-4">
-              <CityCard name="Bengaluru" status="Live" desc="Shivajinagar, Frazer Town" delay={100} onClick={() => onSelectCity('Bangalore')} />
-              <CityCard name="Hyderabad" status="Live" desc="Old City, Charminar, Tolichowki" delay={200} onClick={() => onSelectCity('Hyderabad')} />
-              <CityCard name="Mumbai" status="Live" desc="Mohammed Ali Road, Bandra, Kurla" delay={300} onClick={() => onSelectCity('Mumbai')} />
-            </div>
+            ))}
           </motion.div>
         </div>
       </section>

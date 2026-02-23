@@ -38,7 +38,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
                 {activeTab === 'saved'
                     ? "Tap the heart icon on any spot to save it here for quick access."
                     : !isCitySupported
-                        ? `We are currently live only in Chennai, Bangalore, Hyderabad and Mumbai.`
+                        ? `We are currently live in 12 cities across India, UK, USA, Canada, and Malaysia.`
                         : hasFilters
                             ? "No spots match your selected filters. Try unchecking some."
                             : "Try adjusting your filters or searching for a different area."}

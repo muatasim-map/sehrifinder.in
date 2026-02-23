@@ -4,7 +4,7 @@ import { SehriSpot } from '../types';
 
 /**
  * Displays the main content of the card: Location, Timing, Audience tags, and Notes.
- * Adapted to handle Bangalore-specific fields (Zone, Contact Person).
+ * Adapted to handle Bengaluru-specific fields (Zone, Contact Person).
  */
 export const ListingCardDetails: React.FC<SehriSpot> = ({
   area, distance, venueType, timing, targetAudience, specialNotes, zone, contactPerson

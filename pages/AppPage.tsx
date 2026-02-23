@@ -10,6 +10,7 @@ import { Loader2, Heart } from 'lucide-react';
 import { MapView } from '../components/MapView';
 import { EmptyState } from '../components/EmptyState';
 import { useSehri } from '../context/SehriContext';
+import { COUNTRIES } from '../data/locations';
 
 const AppPage: React.FC = () => {
     const navigate = useNavigate();
@@ -20,12 +21,15 @@ const AppPage: React.FC = () => {
         isLoadingData,
         filteredData,
         savedSpotIds,
+        selectedCountry,
         selectedCity,
         selectedArea,
         selectedZone,
         activeFilters,
         availableAreas,
+        availableZones,
         isCitySupported,
+        setSelectedCountry,
         setSelectedCity,
         setSelectedArea,
         setSelectedZone,
@@ -41,7 +45,7 @@ const AppPage: React.FC = () => {
     // Sync route param with context city (URL -> State)
     useEffect(() => {
         if (city && city.toLowerCase() !== selectedCity.toLowerCase()) {
-            const supported = ['Chennai', 'Bangalore', 'Hyderabad', 'Mumbai'];
+            const supported = COUNTRIES.flatMap(c => c.cities);
             const match = supported.find(c => c.toLowerCase() === city.toLowerCase());
             if (match) setSelectedCity(match);
         }
@@ -85,6 +89,8 @@ const AppPage: React.FC = () => {
                 <FilterBar
                     selectedCity={selectedCity}
                     onSelectCity={handleCityChange}
+                    selectedCountry={selectedCountry}
+                    onSelectCountry={setSelectedCountry}
                     selectedArea={selectedArea}
                     onSelectArea={setSelectedArea}
                     selectedZone={selectedZone}
@@ -92,6 +98,7 @@ const AppPage: React.FC = () => {
                     activeFilters={activeFilters}
                     onToggleFilter={handleToggleFilter}
                     areas={availableAreas}
+                    zones={availableZones}
                     totalSpots={filteredData.length}
                 />
 

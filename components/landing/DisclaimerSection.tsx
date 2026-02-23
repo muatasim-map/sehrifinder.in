@@ -1,18 +1,28 @@
 import React from 'react';
 import { ShieldAlert, Info, AlertTriangle, Scale, Building2, FileWarning } from 'lucide-react';
+import { IslamicPattern, IslamicStar } from '../Pattern';
 
 export const DisclaimerSection = React.memo(() => {
     return (
         <section className="py-24 bg-emerald-midnight relative border-t border-red-500/10 overflow-hidden text-neutral-300">
-            {/* Background Texture - Subtle Red Tint */}
+            {/* Background Texture - Subtle Red Tint & Islamic Patterns */}
             <div className="absolute inset-0 bg-red-950/20 pointer-events-none"></div>
-            <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#ff0000 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+                <IslamicPattern variant="hexagonal" className="text-red-500" />
+            </div>
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="max-w-5xl mx-auto">
 
                     {/* Header */}
-                    <div className="text-center mb-16">
+                    <div className="text-center mb-16 relative">
+                        <div className="absolute top-1/2 left-0 md:left-12 -translate-y-1/2 opacity-20 hidden md:block">
+                            <IslamicStar className="w-16 h-16 text-red-500 animate-pulse-slow" />
+                        </div>
+                        <div className="absolute top-1/2 right-0 md:right-12 -translate-y-1/2 opacity-20 hidden md:block">
+                            <IslamicStar className="w-16 h-16 text-red-500 animate-pulse-slow" />
+                        </div>
+
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-bold uppercase tracking-widest mb-4">
                             <ShieldAlert className="w-3 h-3" />
                             <span>Community Advisory</span>
@@ -20,7 +30,11 @@ export const DisclaimerSection = React.memo(() => {
                         <h2 className="font-landing-heading text-3xl md:text-5xl text-neutral-pearl mb-6">
                             Important <span className="text-red-500 italic">Disclaimer</span>
                         </h2>
-                        <div className="h-1 w-24 bg-red-900/30 mx-auto rounded-full"></div>
+                        <div className="h-1 w-24 bg-red-900/30 mx-auto rounded-full relative">
+                            <div className="absolute left-1/2 -translate-x-1/2 -top-1">
+                                <IslamicStar className="w-3 h-3 text-red-500/50" />
+                            </div>
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">

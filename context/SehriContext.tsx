@@ -6,11 +6,13 @@ import { calculateDistance } from '../utils/distance';
 import { toast } from 'sonner';
 import { FilterType } from '../components/FilterChips';
 import { useSpotFilter } from '../hooks/useSpotFilter';
+import { COUNTRIES, getCountryByCity, Country } from '../data/locations';
 
 interface SehriContextType {
     allSpots: SehriSpot[];
     isLoadingData: boolean;
     savedSpotIds: number[];
+    selectedCountry: string;
     selectedCity: string;
     searchTerm: string;
     selectedArea: string | null;
@@ -18,10 +20,12 @@ interface SehriContextType {
     activeFilters: FilterType[];
     filteredData: SehriSpot[];
     availableAreas: string[];
+    availableZones: string[];
     isCitySupported: boolean;
     setSearchTerm: (term: string) => void;
     setSelectedArea: (area: string | null) => void;
     setSelectedZone: (zone: string | null) => void;
+    setSelectedCountry: (country: string) => void;
     setSelectedCity: (city: string) => void;
     toggleSave: (id: number) => void;
     handleToggleFilter: (filter: FilterType) => void;
@@ -33,7 +37,8 @@ interface SehriContextType {
 
 const SehriContext = createContext<SehriContextType | undefined>(undefined);
 
-const SUPPORTED_CITIES = ['Chennai', 'Bangalore', 'Hyderabad', 'Mumbai'];
+// Derived from COUNTRIES - the single source of truth. Prevents isCitySupported from going stale.
+const SUPPORTED_CITIES = COUNTRIES.flatMap(c => c.cities);
 
 
 export const SehriProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -45,6 +50,10 @@ export const SehriProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const [selectedZone, setSelectedZone] = useState<string | null>(null);
     const [activeFilters, setActiveFilters] = useState<FilterType[]>([]);
     const [selectedCity, setSelectedCity] = useState<string>(() => getStoredCity('Chennai'));
+    const [selectedCountry, setSelectedCountry] = useState<string>(() => {
+        const country = getCountryByCity(getStoredCity('Chennai'));
+        return country ? country.name : 'India';
+    });
     const [activeTab, setActiveTab] = useState<'home' | 'search' | 'saved'>('home');
 
     useEffect(() => {
@@ -66,9 +75,20 @@ export const SehriProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const handleCityChange = (city: string) => {
         setSelectedCity(city);
         setStoredCity(city);
+        const country = getCountryByCity(city);
+        if (country) setSelectedCountry(country.name);
         setSelectedArea(null);
         setSelectedZone(null);
         if (activeTab === 'saved') setActiveTab('home');
+    };
+
+    const handleCountryChange = (countryName: string) => {
+        setSelectedCountry(countryName);
+        const country = COUNTRIES.find(c => c.name === countryName);
+        if (country && !country.cities.includes(selectedCity)) {
+            // Pick first city if current city not in new country
+            handleCityChange(country.cities[0]);
+        }
     };
 
     const toggleSave = (id: number) => {
@@ -141,6 +161,13 @@ export const SehriProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         return Array.from(new Set(sourceData.map(d => d.area))).sort();
     }, [selectedCity, allSpots, activeTab, savedSpotIds]);
 
+    const availableZones = useMemo(() => {
+        let sourceData = activeTab === 'saved'
+            ? allSpots.filter(item => savedSpotIds.includes(item.id))
+            : allSpots.filter(item => item.city === selectedCity);
+        return Array.from(new Set(sourceData.map(d => d.zone).filter(Boolean))).sort() as string[];
+    }, [selectedCity, allSpots, activeTab, savedSpotIds]);
+
     const isCitySupported = SUPPORTED_CITIES.includes(selectedCity);
 
     const handleClearFilters = () => {
@@ -157,9 +184,9 @@ export const SehriProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     return (
         <SehriContext.Provider value={{
-            allSpots, isLoadingData, savedSpotIds, selectedCity, searchTerm, selectedArea, selectedZone,
-            activeFilters, filteredData, availableAreas, isCitySupported,
-            setSearchTerm, setSelectedArea, setSelectedZone, setSelectedCity: handleCityChange,
+            allSpots, isLoadingData, savedSpotIds, selectedCountry, selectedCity, searchTerm, selectedArea, selectedZone,
+            activeFilters, filteredData, availableAreas, availableZones, isCitySupported,
+            setSearchTerm, setSelectedArea, setSelectedZone, setSelectedCountry: handleCountryChange, setSelectedCity: handleCityChange,
             toggleSave, handleToggleFilter, handleNearMe, handleClearFilters,
             activeTab, setActiveTab
         }}>

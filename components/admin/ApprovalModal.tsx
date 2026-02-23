@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
-import { X, Check, MapPin, Save, AlertCircle } from 'lucide-react';
+import { X, Check, MapPin, Save, AlertCircle, Globe } from 'lucide-react';
 import { supabase } from '../../utils/supabase';
 import { TimingInput } from './TimingInput';
+import { COUNTRIES } from '../../data/locations';
 
 interface ApprovalModalProps {
     spot: any; // Using 'any' for the raw pending spot data for flexibility
@@ -13,6 +14,7 @@ interface ApprovalModalProps {
 export const ApprovalModal: React.FC<ApprovalModalProps> = ({ spot, onClose, onSuccess }) => {
     const [formData, setFormData] = useState({
         venue_name: '',
+        country: 'India',
         city: 'Chennai',
         primary_area: '',
         venue_type: 'Masjid',
@@ -33,6 +35,7 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({ spot, onClose, onS
         if (spot) {
             setFormData({
                 venue_name: spot.venue_name || '',
+                country: spot.country || 'India',
                 city: spot.city || 'Chennai',
                 primary_area: spot.primary_area || '',
                 venue_type: spot.venue_type || 'Masjid',
@@ -52,7 +55,14 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({ spot, onClose, onS
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData(prev => {
+            const newData = { ...prev, [name]: value };
+            if (name === 'country') {
+                const country = COUNTRIES.find(c => c.name === value);
+                if (country) newData.city = country.cities[0];
+            }
+            return newData;
+        });
     };
 
     const handleTimingChange = (newTiming: { start: string, end: string }) => {
@@ -73,6 +83,7 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({ spot, onClose, onS
             // 1. Construct the Payload for 'spots' table
             const payload = {
                 venue_name: formData.venue_name,
+                country: formData.country,
                 city: formData.city,
                 primary_area: formData.primary_area,
                 venue_type: formData.venue_type,
@@ -143,41 +154,52 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({ spot, onClose, onS
                 </div>
 
                 {/* Form Body */}
-                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-white">
-
-                    {/* Basic Info */}
-                    <div className="space-y-5">
-                        <div className="flex items-center gap-2 mb-2 pb-2 border-b border-gray-100">
-                            <span className="text-xs font-bold text-gold-antic uppercase tracking-widest text-[#B8860B]">Venue Details</span>
-                        </div>
-
-                        <div>
-                            <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Venue Name</label>
-                            <input
-                                name="venue_name"
-                                value={formData.venue_name}
-                                onChange={handleChange}
-                                className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all font-reem text-lg text-emerald-900 bg-gray-50 focus:bg-white"
-                                placeholder="e.g. Jamia Masjid"
-                            />
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">City</label>
-                                <select
-                                    name="city"
-                                    value={formData.city}
-                                    onChange={handleChange}
-                                    className="w-full p-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white focus:border-emerald-500 outline-none"
-                                >
-                                    <option value="">Select City</option>
-                                    <option value="Chennai">Chennai</option>
-                                    <option value="Bangalore">Bangalore</option>
-                                    <option value="Hyderabad">Hyderabad</option>
-                                    <option value="Mumbai">Mumbai</option>
-                                </select>
+                <div className="p-6 space-y-8 bg-white">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Basic Info */}
+                        <div className="space-y-5">
+                            <div className="flex items-center gap-2 mb-2 pb-2 border-b border-gray-100">
+                                <span className="text-xs font-bold text-gold-antic uppercase tracking-widest text-[#B8860B]">Venue Details</span>
                             </div>
+
+                            <div>
+                                <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Venue Name</label>
+                                <input
+                                    name="venue_name"
+                                    value={formData.venue_name}
+                                    onChange={handleChange}
+                                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all font-reem text-lg text-emerald-900 bg-gray-50 focus:bg-white"
+                                    placeholder="e.g. Jamia Masjid"
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Country</label>
+                                    <select
+                                        name="country"
+                                        value={formData.country}
+                                        onChange={handleChange}
+                                        className="w-full p-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white focus:border-emerald-500 outline-none"
+                                    >
+                                        {COUNTRIES.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">City</label>
+                                    <select
+                                        name="city"
+                                        value={formData.city}
+                                        onChange={handleChange}
+                                        className="w-full p-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white focus:border-emerald-500 outline-none"
+                                    >
+                                        {COUNTRIES.find(c => c.name === formData.country)?.cities.map(city => (
+                                            <option key={city} value={city}>{city}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+
                             <div>
                                 <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Area</label>
                                 <input
@@ -187,98 +209,98 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({ spot, onClose, onS
                                     className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:border-emerald-500 outline-none"
                                 />
                             </div>
-                        </div>
 
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Type</label>
-                                <select
-                                    name="venue_type"
-                                    value={formData.venue_type}
-                                    onChange={handleChange}
-                                    className="w-full p-2.5 border border-gray-200 rounded-lg bg-gray-50 text-sm focus:bg-white outline-none"
-                                >
-                                    <option value="Masjid">Masjid</option>
-                                    <option value="Restaurant">Restaurant</option>
-                                    <option value="Home">Home</option>
-                                    <option value="Association">Association</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Food</label>
-                                <select
-                                    name="food_type"
-                                    value={formData.food_type}
-                                    onChange={handleChange}
-                                    className="w-full p-2.5 border border-gray-200 rounded-lg bg-gray-50 text-sm focus:bg-white outline-none"
-                                >
-                                    <option value="Free">Free</option>
-                                    <option value="Paid">Paid</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Technical Info */}
-                    <div className="space-y-5">
-                        <div className="flex items-center gap-2 mb-2 pb-2 border-b border-gray-100">
-                            <span className="text-xs font-bold text-gold-antic uppercase tracking-widest text-[#B8860B]">Configuration</span>
-                        </div>
-
-                        {/* Timing Component Replacement */}
-                        <div>
-                            <TimingInput
-                                value={formData.timing}
-                                onChange={handleTimingChange}
-                            />
-                        </div>
-
-                        {/* Geocoding */}
-                        <div className="bg-emerald-50/30 p-4 rounded-xl border border-emerald-100/50">
-                            <div className="flex items-center justify-between mb-3">
-                                <div className="flex items-center gap-2 text-emerald-800">
-                                    <MapPin size={14} className="text-emerald-600" />
-                                    <span className="font-bold text-xs uppercase tracking-wide">Coordinates</span>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Type</label>
+                                    <select
+                                        name="venue_type"
+                                        value={formData.venue_type}
+                                        onChange={handleChange}
+                                        className="w-full p-2.5 border border-gray-200 rounded-lg bg-gray-50 text-sm focus:bg-white outline-none"
+                                    >
+                                        <option value="Masjid">Masjid</option>
+                                        <option value="Restaurant">Restaurant</option>
+                                        <option value="Home">Home</option>
+                                        <option value="Association">Association</option>
+                                    </select>
                                 </div>
-                                {spot.google_maps_link && (
-                                    <a href={spot.google_maps_link} target="_blank" rel="noopener noreferrer" className="text-[10px] text-blue-600 hover:underline font-medium bg-blue-50 px-2 py-1 rounded">
-                                        Open User Link ↗
-                                    </a>
-                                )}
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Food</label>
+                                    <select
+                                        name="food_type"
+                                        value={formData.food_type}
+                                        onChange={handleChange}
+                                        className="w-full p-2.5 border border-gray-200 rounded-lg bg-gray-50 text-sm focus:bg-white outline-none"
+                                    >
+                                        <option value="Free">Free</option>
+                                        <option value="Paid">Paid</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Technical Info */}
+                        <div className="space-y-5">
+                            <div className="flex items-center gap-2 mb-2 pb-2 border-b border-gray-100">
+                                <span className="text-xs font-bold text-gold-antic uppercase tracking-widest text-[#B8860B]">Configuration</span>
                             </div>
 
-                            <div className="mb-3">
-                                <label className="block text-[10px] font-bold text-emerald-800 mb-1 uppercase tracking-wide">Google Maps Link</label>
-                                <input
-                                    name="google_maps_link"
-                                    value={formData.google_maps_link}
-                                    onChange={handleChange}
-                                    placeholder="https://maps.google.com/..."
-                                    className="w-full p-2 border border-emerald-200 rounded-md text-sm font-mono text-emerald-900 placeholder-emerald-800/20 focus:ring-1 focus:ring-emerald-500 outline-none bg-white"
+                            {/* Timing Component Replacement */}
+                            <div>
+                                <TimingInput
+                                    value={formData.timing}
+                                    onChange={handleTimingChange}
                                 />
                             </div>
 
-                            <div className="grid grid-cols-2 gap-3">
-                                <input
-                                    name="latitude"
-                                    placeholder="Lat (e.g. 13.0827)"
-                                    value={formData.latitude}
-                                    onChange={handleChange}
-                                    className="w-full p-2 border border-emerald-200 rounded-md text-sm font-mono text-emerald-900 placeholder-emerald-800/20 focus:ring-1 focus:ring-emerald-500 outline-none"
-                                />
-                                <input
-                                    name="longitude"
-                                    placeholder="Lng (e.g. 80.2707)"
-                                    value={formData.longitude}
-                                    onChange={handleChange}
-                                    className="w-full p-2 border border-emerald-200 rounded-md text-sm font-mono text-emerald-900 placeholder-emerald-800/20 focus:ring-1 focus:ring-emerald-500 outline-none"
-                                />
+                            {/* Geocoding */}
+                            <div className="bg-emerald-50/30 p-4 rounded-xl border border-emerald-100/50">
+                                <div className="flex items-center justify-between mb-3">
+                                    <div className="flex items-center gap-2 text-emerald-800">
+                                        <MapPin size={14} className="text-emerald-600" />
+                                        <span className="font-bold text-xs uppercase tracking-wide">Coordinates</span>
+                                    </div>
+                                    {spot.google_maps_link && (
+                                        <a href={spot.google_maps_link} target="_blank" rel="noopener noreferrer" className="text-[10px] text-blue-600 hover:underline font-medium bg-blue-50 px-2 py-1 rounded">
+                                            Open User Link ↗
+                                        </a>
+                                    )}
+                                </div>
+
+                                <div className="mb-3">
+                                    <label className="block text-[10px] font-bold text-emerald-800 mb-1 uppercase tracking-wide">Google Maps Link</label>
+                                    <input
+                                        name="google_maps_link"
+                                        value={formData.google_maps_link}
+                                        onChange={handleChange}
+                                        placeholder="https://maps.google.com/..."
+                                        className="w-full p-2 border border-emerald-200 rounded-md text-sm font-mono text-emerald-900 placeholder-emerald-800/20 focus:ring-1 focus:ring-emerald-500 outline-none bg-white"
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-3">
+                                    <input
+                                        name="latitude"
+                                        placeholder="Lat (e.g. 13.0827)"
+                                        value={formData.latitude}
+                                        onChange={handleChange}
+                                        className="w-full p-2 border border-emerald-200 rounded-md text-sm font-mono text-emerald-900 placeholder-emerald-800/20 focus:ring-1 focus:ring-emerald-500 outline-none"
+                                    />
+                                    <input
+                                        name="longitude"
+                                        placeholder="Lng (e.g. 80.2707)"
+                                        value={formData.longitude}
+                                        onChange={handleChange}
+                                        className="w-full p-2 border border-emerald-200 rounded-md text-sm font-mono text-emerald-900 placeholder-emerald-800/20 focus:ring-1 focus:ring-emerald-500 outline-none"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Full Width Notes */}
-                    <div className="md:col-span-2 mt-2">
+                    <div className="mt-2">
                         <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Admin Notes / Description</label>
                         <textarea
                             name="notes"

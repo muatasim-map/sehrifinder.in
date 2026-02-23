@@ -1,16 +1,4 @@
 import { SehriSpot } from '../types';
-
-/**
- * SERVICE LAYER - THE INTEGRATION SEAM
- * ------------------------------------
- * Currently: Returns static JSON data from local files.
- * Future: Will fetch data from Supabase/API.
- * 
- * Why this exists:
- * 1. Allows the UI to be "Async Ready" (handling loading states).
- * 2. Isolates the backend logic. When you add Supabase, you only edit this file.
- */
-
 import { supabase } from '../utils/supabase';
 import { transformRawSpot } from '../utils/transformers';
 
@@ -19,7 +7,7 @@ import { transformRawSpot } from '../utils/transformers';
  * ------------------------------------
  * Hybrid Implementation:
  * 1. Tries to fetch from Supabase first.
- * 2. Falls back to static SAMPLE_DATA if Supabase is unconfigured or fails.
+ * 2. Falls back to empty array if Supabase is unconfigured or unavailable.
  */
 
 export const fetchSehriSpots = async (): Promise<SehriSpot[]> => {

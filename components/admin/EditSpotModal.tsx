@@ -226,7 +226,7 @@ export const EditSpotModal: React.FC<EditSpotModalProps> = ({ spot, onClose, onS
                                 >
                                     <option value="">Select City</option>
                                     <option value="Chennai">Chennai</option>
-                                    <option value="Bangalore">Bangalore</option>
+                                    <option value="Bengaluru">Bengaluru</option>
                                     <option value="Hyderabad">Hyderabad</option>
                                     <option value="Mumbai">Mumbai</option>
                                 </select>

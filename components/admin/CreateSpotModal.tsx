@@ -172,9 +172,17 @@ export const CreateSpotModal: React.FC<CreateSpotModalProps> = ({ onClose, onSuc
                                 >
                                     <option value="">Select City</option>
                                     <option value="Chennai">Chennai</option>
-                                    <option value="Bangalore">Bangalore</option>
+                                    <option value="Bengaluru">Bengaluru</option>
                                     <option value="Hyderabad">Hyderabad</option>
                                     <option value="Mumbai">Mumbai</option>
+                                    <option value="London">London</option>
+                                    <option value="New York">New York</option>
+                                    <option value="San Francisco">San Francisco</option>
+                                    <option value="Toronto">Toronto</option>
+                                    <option value="Chicago">Chicago</option>
+                                    <option value="Houston">Houston</option>
+                                    <option value="Detroit">Detroit</option>
+                                    <option value="Kuala Lumpur">Kuala Lumpur</option>
                                 </select>
                             </div>
                             <div>

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Send, MapPin, Building2, Clock, Map, FileText } from 'lucide-react';
+import { ArrowLeft, Send, MapPin, Building2, Clock, Map, FileText, Globe } from 'lucide-react';
 import { APP_CONFIG } from '../config';
+import { COUNTRIES } from '../data/locations';
 import { IslamicPattern } from './Pattern';
 
 interface SubmitSpotProps {
     onBack: () => void;
 }
 
-const CITIES = ["Chennai", "Bangalore", "Hyderabad", "Mumbai"];
+// CITIES moved to data/locations.ts
 const VENUE_TYPES = [
     { value: "Masjid", label: "Masjid" },
     { value: "Association", label: "Association / Foundation" },
@@ -24,6 +25,7 @@ const FOOD_TYPES = [
 export const SubmitSpot: React.FC<SubmitSpotProps> = ({ onBack }) => {
     const [formData, setFormData] = useState({
         name: '',
+        country: 'India',
         city: 'Chennai',
         area: '',
         type: 'Masjid',
@@ -47,6 +49,7 @@ export const SubmitSpot: React.FC<SubmitSpotProps> = ({ onBack }) => {
             if (supabase) {
                 const { error } = await supabase.from('pending_spots').insert([{
                     venue_name: formData.name,
+                    country: formData.country,
                     city: formData.city,
                     primary_area: formData.area,
                     venue_type: formData.type,
@@ -85,7 +88,15 @@ export const SubmitSpot: React.FC<SubmitSpotProps> = ({ onBack }) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData(prev => {
+            const newData = { ...prev, [name]: value };
+            // If country changes, reset city to the first city of that country
+            if (name === 'country') {
+                const country = COUNTRIES.find(c => c.name === value);
+                if (country) newData.city = country.cities[0];
+            }
+            return newData;
+        });
     };
 
     return (
@@ -130,8 +141,23 @@ export const SubmitSpot: React.FC<SubmitSpotProps> = ({ onBack }) => {
                             />
                         </div>
 
-                        {/* City & Area Row */}
+                        {/* Country, City & Area */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">Country *</label>
+                                <div className="relative">
+                                    <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                    <select
+                                        name="country"
+                                        value={formData.country}
+                                        onChange={handleChange}
+                                        className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white appearance-none"
+                                    >
+                                        {COUNTRIES.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
+                                    </select>
+                                </div>
+                            </div>
+
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">City *</label>
                                 <div className="relative">
@@ -142,25 +168,27 @@ export const SubmitSpot: React.FC<SubmitSpotProps> = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white appearance-none"
                                     >
-                                        {CITIES.map(city => <option key={city} value={city}>{city}</option>)}
+                                        {COUNTRIES.find(c => c.name === formData.country)?.cities.map(city => (
+                                            <option key={city} value={city}>{city}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
+                        </div>
 
-                            <div>
-                                <label className="block text-sm font-bold text-gray-700 mb-2">Area / Locality *</label>
-                                <div className="relative">
-                                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                                    <input
-                                        type="text"
-                                        name="area"
-                                        required
-                                        placeholder="e.g. Triplicane"
-                                        value={formData.area}
-                                        onChange={handleChange}
-                                        className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-gray-400"
-                                    />
-                                </div>
+                        <div>
+                            <label className="block text-sm font-bold text-gray-700 mb-2">Area / Locality *</label>
+                            <div className="relative">
+                                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                <input
+                                    type="text"
+                                    name="area"
+                                    required
+                                    placeholder="e.g. Triplicane"
+                                    value={formData.area}
+                                    onChange={handleChange}
+                                    className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-gray-400"
+                                />
                             </div>
                         </div>
 

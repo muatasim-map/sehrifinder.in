@@ -1,18 +1,22 @@
 
 import React, { useState } from 'react';
-import { ArrowUpDown, ChevronDown, Check, MapPin, Building2, Compass } from 'lucide-react';
+import { ArrowUpDown, ChevronDown, Check, MapPin, Building2, Compass, Globe } from 'lucide-react';
+import { COUNTRIES } from '../data/locations';
 import { FilterChips, FilterType } from './FilterChips';
 import { useLanguage } from '../context/LanguageContext';
 
-const CITIES = ["Chennai", "Bangalore", "Hyderabad", "Mumbai"];
+// CITIES moved to data/locations.ts
 
 interface FilterBarProps {
   selectedArea: string | null;
   onSelectArea: (area: string | null) => void;
   selectedCity: string;
   onSelectCity: (city: string) => void;
+  selectedCountry: string;
+  onSelectCountry: (country: string) => void;
   totalSpots: number;
   areas: string[];
+  zones: string[];
   selectedZone: string | null;
   onSelectZone: (zone: string | null) => void;
   activeFilters: FilterType[];
@@ -24,9 +28,12 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   onSelectArea,
   selectedCity,
   onSelectCity,
+  selectedCountry,
+  onSelectCountry,
   totalSpots,
 
   areas,
+  zones,
   selectedZone,
   onSelectZone,
   activeFilters,
@@ -35,6 +42,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   const [isAreaOpen, setIsAreaOpen] = useState(false);
   const [isZoneOpen, setIsZoneOpen] = useState(false);
   const [isCityOpen, setIsCityOpen] = useState(false);
+  const [isCountryOpen, setIsCountryOpen] = useState(false);
   const { t, language } = useLanguage();
 
   return (
@@ -44,10 +52,52 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         <div className="flex flex-col md:flex-row gap-3 md:items-center justify-between mb-3">
 
           <div className="flex flex-col sm:flex-row gap-2 md:gap-3 w-full md:w-auto">
+            {/* Country Selector Dropdown */}
+            <div className="relative w-full sm:w-48 z-50">
+              <button
+                onClick={() => { setIsCountryOpen(!isCountryOpen); setIsCityOpen(false); setIsAreaOpen(false); setIsZoneOpen(false); }}
+                className="w-full flex items-center justify-between bg-white border border-stone-200 text-stone-700 py-2.5 px-4 rounded-xl shadow-sm hover:border-gold/50 hover:shadow-md transition-all group active:scale-[0.99]"
+              >
+                <div className="flex items-center gap-3 overflow-hidden">
+                  <div className="p-1.5 rounded-full bg-cream group-hover:bg-gold/10 transition-colors">
+                    <Globe size={16} className="text-gold-bright" />
+                  </div>
+                  <div className={`flex flex-col items-start truncate ${language === 'ur' ? 'items-end' : 'items-start'}`}>
+                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider">{t('selectCountry')}</span>
+                    <span className="truncate font-serif font-bold text-lg leading-none text-primary-dark">
+                      {selectedCountry}
+                    </span>
+                  </div>
+                </div>
+                <ChevronDown size={18} className={`text-gold-bright transition-transform duration-300 ${isCountryOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Country Dropdown Menu */}
+              {isCountryOpen && (
+                <>
+                  <div className="fixed inset-0 z-[-1]" onClick={() => setIsCountryOpen(false)}></div>
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl border border-stone-100 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                    <div className="p-1.5 space-y-0.5">
+                      {COUNTRIES.map((country) => (
+                        <button
+                          key={country.name}
+                          onClick={() => { onSelectCountry(country.name); setIsCountryOpen(false); }}
+                          className={`w-full text-left px-3 py-3 rounded-lg text-sm flex items-center justify-between transition-colors ${selectedCountry === country.name ? 'bg-cream text-primary-dark font-bold' : 'text-gray-600 hover:bg-stone-50'}`}
+                        >
+                          <span className="font-medium">{country.name}</span>
+                          {selectedCountry === country.name && <Check size={16} className="text-gold-bright" />}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
             {/* City Selector Dropdown */}
             <div className="relative w-full sm:w-56 z-50">
               <button
-                onClick={() => { setIsCityOpen(!isCityOpen); setIsAreaOpen(false); setIsZoneOpen(false); }}
+                onClick={() => { setIsCityOpen(!isCityOpen); setIsCountryOpen(false); setIsAreaOpen(false); setIsZoneOpen(false); }}
                 className="w-full flex items-center justify-between bg-white border border-stone-200 text-stone-700 py-2.5 px-4 rounded-xl shadow-sm hover:border-gold/50 hover:shadow-md transition-all group active:scale-[0.99]"
               >
                 <div className="flex items-center gap-3 overflow-hidden">
@@ -70,7 +120,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   <div className="fixed inset-0 z-[-1]" onClick={() => setIsCityOpen(false)}></div>
                   <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl border border-stone-100 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
                     <div className="p-1.5 space-y-0.5">
-                      {CITIES.map((city) => (
+                      {COUNTRIES.find(c => c.name === selectedCountry)?.cities.map((city) => (
                         <button
                           key={city}
                           onClick={() => { onSelectCity(city); setIsCityOpen(false); }}
@@ -89,7 +139,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             {/* Area Selector Dropdown */}
             <div className="relative w-full sm:w-72 z-40">
               <button
-                onClick={() => { setIsAreaOpen(!isAreaOpen); setIsCityOpen(false); setIsZoneOpen(false); }}
+                onClick={() => { setIsAreaOpen(!isAreaOpen); setIsCityOpen(false); setIsCountryOpen(false); setIsZoneOpen(false); }}
                 className="w-full flex items-center justify-between bg-white border border-stone-200 text-stone-700 py-2.5 px-4 rounded-xl shadow-sm hover:border-gold/50 hover:shadow-md transition-all group active:scale-[0.99]"
               >
                 <div className="flex items-center gap-3 overflow-hidden">
@@ -139,7 +189,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             {/* Zone Selector Dropdown */}
             <div className="relative w-full sm:w-48 z-30">
               <button
-                onClick={() => { setIsZoneOpen(!isZoneOpen); setIsCityOpen(false); setIsAreaOpen(false); }}
+                onClick={() => { setIsZoneOpen(!isZoneOpen); setIsCityOpen(false); setIsCountryOpen(false); setIsAreaOpen(false); }}
                 className="w-full flex items-center justify-between bg-white border border-stone-200 text-stone-700 py-2.5 px-4 rounded-xl shadow-sm hover:border-gold/50 hover:shadow-md transition-all group active:scale-[0.99]"
               >
                 <div className="flex items-center gap-3 overflow-hidden">
@@ -170,7 +220,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                         {!selectedZone && <Check size={16} className="text-gold-bright" />}
                       </button>
 
-                      {['North', 'South', 'East', 'West', 'Central'].map((zone) => (
+                      {zones.map((zone) => (
                         <button
                           key={zone}
                           onClick={() => { onSelectZone(zone); setIsZoneOpen(false); }}

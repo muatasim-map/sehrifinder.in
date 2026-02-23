@@ -1,10 +1,11 @@
 
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../utils/supabase';
-import { Check, X, MapPin, Clock, LogOut, Loader2, Edit, AlertCircle, RefreshCw, Search, Filter } from 'lucide-react';
+import { Check, X, MapPin, Clock, LogOut, Loader2, Edit, AlertCircle, RefreshCw, Search, Filter, Globe } from 'lucide-react';
 import { ApprovalModal } from './ApprovalModal';
 import { EditSpotModal } from './EditSpotModal';
 import { CreateSpotModal } from './CreateSpotModal';
+import { COUNTRIES } from '../../data/locations';
 
 interface AdminDashboardProps {
     onLogout: () => void;
@@ -13,6 +14,7 @@ interface AdminDashboardProps {
 interface PendingSpot {
     id: number;
     venue_name: string;
+    country?: string;
     city: string;
     primary_area: string;
     venue_type: string;
@@ -45,6 +47,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
     // Filters
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedCountry, setSelectedCountry] = useState<string>('All');
     const [selectedCity, setSelectedCity] = useState<string>('All');
 
     // Data States
@@ -82,6 +85,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
             .order('location_id', { ascending: false })
             .limit(100);
 
+        if (selectedCountry && selectedCountry !== 'All') {
+            query = query.eq('country', selectedCountry);
+        }
+
         if (selectedCity && selectedCity !== 'All') {
             query = query.eq('city', selectedCity);
         }
@@ -105,7 +112,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
             else fetchLiveSpots();
         }, 300);
         return () => clearTimeout(timer);
-    }, [activeTab, selectedCity, searchTerm]);
+    }, [activeTab, selectedCountry, selectedCity, searchTerm]);
 
     // Handle Toast
     const showToast = (msg: string, type: 'success' | 'error') => {
@@ -280,6 +287,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                             </div>
 
                             <div className="relative">
+                                <Globe className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                                <select
+                                    value={selectedCountry}
+                                    onChange={(e) => {
+                                        setSelectedCountry(e.target.value);
+                                        setSelectedCity('All');
+                                    }}
+                                    className="pl-9 pr-8 py-2 rounded-lg border border-gray-200 text-sm focus:ring-2 focus:ring-emerald-500/20 outline-none appearance-none bg-white cursor-pointer"
+                                >
+                                    <option value="All">All Countries</option>
+                                    {COUNTRIES.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
+                                </select>
+                            </div>
+
+                            <div className="relative">
                                 <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                                 <select
                                     value={selectedCity}
@@ -287,10 +309,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                                     className="pl-9 pr-8 py-2 rounded-lg border border-gray-200 text-sm focus:ring-2 focus:ring-emerald-500/20 outline-none appearance-none bg-white cursor-pointer"
                                 >
                                     <option value="All">All Cities</option>
-                                    <option value="Chennai">Chennai</option>
-                                    <option value="Bangalore">Bangalore</option>
-                                    <option value="Hyderabad">Hyderabad</option>
-                                    <option value="Mumbai">Mumbai</option>
+                                    {(selectedCountry === 'All'
+                                        ? COUNTRIES.flatMap(c => c.cities)
+                                        : COUNTRIES.find(c => c.name === selectedCountry)?.cities || []
+                                    ).map(city => (
+                                        <option key={city} value={city}>{city}</option>
+                                    ))}
                                 </select>
                             </div>
                         </div>
