@@ -36,6 +36,34 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         city: "Toronto",
         shortDescription: "Explore verified Sehri locations and Halal dining in the Greater Toronto Area."
     },
+    edmonton: {
+        city: "Edmonton",
+        shortDescription: "Find verified Sehri spots, Masjids, and Halal eateries in Edmonton."
+    },
+    montreal: {
+        city: "Montreal",
+        shortDescription: "Discover Sehri experiences and Halal food spots across Montreal."
+    },
+    brampton: {
+        city: "Brampton",
+        shortDescription: "Locate verified Sehri locations and Halal dining in Brampton."
+    },
+    calgary: {
+        city: "Calgary",
+        shortDescription: "Explore Sehri spots, Masjids, and Halal eateries in Calgary."
+    },
+    ottawa: {
+        city: "Ottawa",
+        shortDescription: "Find verified Sehri locations and Halal dining across Ottawa."
+    },
+    cambridge: {
+        city: "Cambridge",
+        shortDescription: "Discover Sehri spots and Halal eateries in Cambridge, Ontario."
+    },
+    kanata: {
+        city: "Kanata",
+        shortDescription: "Locate verified Sehri locations and Halal dining in Kanata."
+    },
     chicago: {
         city: "Chicago",
         shortDescription: "Find late-night Sehri spots and Ramadan community events in Chicago."

@@ -25,7 +25,7 @@ export const COUNTRIES: Country[] = [
     {
         name: 'Canada',
         code: 'CA',
-        cities: ['Toronto']
+        cities: ['Toronto', 'Edmonton', 'Montreal', 'Brampton', 'Calgary', 'Ottawa', 'Cambridge', 'Kanata']
     },
     {
         name: 'Malaysia',

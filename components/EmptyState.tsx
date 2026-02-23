@@ -1,5 +1,6 @@
 import React from 'react';
 import { Heart, Search } from 'lucide-react';
+import { COUNTRIES } from '../data/locations';
 
 interface EmptyStateProps {
     activeTab: 'home' | 'search' | 'saved';
@@ -38,7 +39,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
                 {activeTab === 'saved'
                     ? "Tap the heart icon on any spot to save it here for quick access."
                     : !isCitySupported
-                        ? `We are currently live in 12 cities across India, UK, USA, Canada, and Malaysia.`
+                        ? `We are live in ${COUNTRIES.flatMap(c => c.cities).length} cities across ${COUNTRIES.length} countries. More cities coming soon!`
                         : hasFilters
                             ? "No spots match your selected filters. Try unchecking some."
                             : "Try adjusting your filters or searching for a different area."}

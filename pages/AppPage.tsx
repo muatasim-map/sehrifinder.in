@@ -61,6 +61,17 @@ const AppPage: React.FC = () => {
         navigate(`/find/${newCity.toLowerCase()}`);
     };
 
+    const handleCountryChange = (countryName: string) => {
+        // Update country in context first
+        setSelectedCountry(countryName);
+        // Navigate to the first city of the new country so URL stays in sync.
+        // The URL->State effect above will then update the city state correctly.
+        const country = COUNTRIES.find(c => c.name === countryName);
+        if (country && country.cities.length > 0) {
+            navigate(`/find/${country.cities[0].toLowerCase()}`);
+        }
+    };
+
     // Handle Bottom Nav Tab Change
     const handleTabChange = (tab: 'home' | 'search' | 'saved') => {
         setActiveTab(tab);
@@ -90,7 +101,7 @@ const AppPage: React.FC = () => {
                     selectedCity={selectedCity}
                     onSelectCity={handleCityChange}
                     selectedCountry={selectedCountry}
-                    onSelectCountry={setSelectedCountry}
+                    onSelectCountry={handleCountryChange}
                     selectedArea={selectedArea}
                     onSelectArea={setSelectedArea}
                     selectedZone={selectedZone}
