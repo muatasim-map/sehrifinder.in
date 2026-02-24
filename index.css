@@ -287,4 +287,33 @@
     /* Fallback for better touch targets if clip-path fails or for borders */
     border-radius: 2rem 2rem 0 0;
   }
+
+  /* --- MOBILE PERFORMANCE OPTIMIZATIONS --- */
+  @media (max-width: 768px) {
+
+    /* Disable expensive will-change on mobile GPUs */
+    .will-change-transform {
+      will-change: auto;
+    }
+
+    /* Reduce backdrop-filter cost on mobile (major INP contributor) */
+    .backdrop-blur-md,
+    .backdrop-blur-sm,
+    .backdrop-blur {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+  }
+
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
