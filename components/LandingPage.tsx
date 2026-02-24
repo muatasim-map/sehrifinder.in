@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import {
   Moon, MapPin, ShieldCheck, Users,
@@ -34,20 +34,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY, scrollYProgress } = useScroll();
 
+  // Check if running on mobile to disable parallax (fixes INP)
+  const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
 
-  // Parallax Transforms based on ScrollY
-  const heroBgY = useTransform(scrollY, [0, 1000], [0, 150]);
-  const bismillahY = useTransform(scrollY, [0, 1000], [0, 200]);
-  const heroContentY = useTransform(scrollY, [0, 1000], [0, 250]);
-  const heroOpacity = useTransform(scrollY, [0, 500], [1, 0]);
+  // Parallax Transforms - disabled on mobile for performance
+  const heroBgY = useTransform(scrollY, [0, 1000], isMobile ? [0, 0] : [0, 150]);
+  const bismillahY = useTransform(scrollY, [0, 1000], isMobile ? [0, 0] : [0, 200]);
+  const heroContentY = useTransform(scrollY, [0, 1000], isMobile ? [0, 0] : [0, 250]);
+  const heroOpacity = useTransform(scrollY, [0, 500], isMobile ? [1, 1] : [1, 0]);
 
-  // Handle header background on scroll
+  // Handle header background on scroll - use passive listener to avoid blocking scrolling
   useEffect(() => {
-    const unsubscribe = scrollY.on("change", (latest) => {
-      setIsScrolled(latest > 50);
-    });
-    return () => unsubscribe();
-  }, [scrollY]);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -139,12 +142,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
 
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-emerald-midnight/50 to-emerald-midnight z-0 pointer-events-none"></div>
 
-        {/* ARABIC BACKGROUND */}
+        {/* ARABIC BACKGROUND - hidden on mobile for performance */}
         <motion.div
           style={{ y: bismillahY }}
-          className="absolute top-[25%] md:top-[20%] left-1/2 -translate-x-1/2 z-10 opacity-20 pointer-events-none select-none w-full text-center will-change-transform"
+          className="hidden md:block absolute top-[20%] left-1/2 -translate-x-1/2 z-10 opacity-20 pointer-events-none select-none w-full text-center will-change-transform"
         >
-          <span className="font-arabic-calligraphy text-[80px] md:text-[280px] text-gold-antique leading-none whitespace-nowrap blur-[0.5px] text-shadow-gold">
+          <span className="font-arabic-calligraphy text-[280px] text-gold-antique leading-none whitespace-nowrap blur-[0.5px] text-shadow-gold">
             رمضان كريم
           </span>
         </motion.div>
