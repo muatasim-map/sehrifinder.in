@@ -1,6 +1,15 @@
 {
   "trailingSlash": false,
+  "cleanUrls": true,
   "rewrites": [
+    {
+      "source": "/find/:city",
+      "destination": "/find/:city/index.html"
+    },
+    {
+      "source": "/submit",
+      "destination": "/submit/index.html"
+    },
     {
       "source": "/(.*)",
       "destination": "/index.html"
@@ -38,11 +47,24 @@
       ]
     },
     {
+      "source": "/(sitemap.xml|robots.txt)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        },
+        {
+          "key": "Content-Type",
+          "value": "text/xml; charset=utf-8"
+        }
+      ]
+    },
+    {
       "source": "/(index.html|find/.*|submit)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=0, s-maxage=31536000, must-revalidate"
+          "value": "public, max-age=0, s-maxage=86400, must-revalidate"
         }
       ]
     }

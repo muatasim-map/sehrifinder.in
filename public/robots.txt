@@ -2,5 +2,17 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /admin/login
+Disallow: /api/
+Crawl-delay: 1
 
+# Primary Sitemap
 Sitemap: https://www.sehrifinder.com/sitemap.xml
+
+# Individual Search Engine Crawlers
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
