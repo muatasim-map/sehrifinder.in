@@ -145,9 +145,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
         {/* ARABIC BACKGROUND - hidden on mobile for performance */}
         <motion.div
           style={{ y: bismillahY }}
-          className="hidden md:block absolute top-[20%] left-1/2 -translate-x-1/2 z-10 opacity-20 pointer-events-none select-none w-full text-center will-change-transform"
+          className="absolute top-[25%] md:top-[20%] left-1/2 -translate-x-1/2 z-10 opacity-20 pointer-events-none select-none w-full text-center"
         >
-          <span className="font-arabic-calligraphy text-[280px] text-gold-antique leading-none whitespace-nowrap blur-[0.5px] text-shadow-gold">
+          <span className="font-arabic-calligraphy text-[80px] md:text-[280px] text-gold-antique leading-none whitespace-nowrap blur-[0.5px] text-shadow-gold">
             رمضان كريم
           </span>
         </motion.div>
