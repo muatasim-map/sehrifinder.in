@@ -18,14 +18,21 @@ import AdminDashboardPage from './pages/AdminDashboardPage';
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(() => {
-    return !sessionStorage.getItem('hasShownSplash');
+    try {
+      if (typeof window === 'undefined' || !window.sessionStorage) return false;
+      return !window.sessionStorage.getItem('hasShownSplash');
+    } catch (e) {
+      return false;
+    }
   });
 
   const navigate = useNavigate();
 
   const handleSplashComplete = () => {
     setShowSplash(false);
-    sessionStorage.setItem('hasShownSplash', 'true');
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      window.sessionStorage.setItem('hasShownSplash', 'true');
+    }
   };
 
   // Keyboard Shortcut for Admin

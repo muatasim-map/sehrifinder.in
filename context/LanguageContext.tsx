@@ -15,15 +15,27 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     const [language, setLanguage] = useState<Language>('en');
 
     useEffect(() => {
-        const savedLang = localStorage.getItem('app-language') as Language;
-        if (savedLang && (savedLang === 'en' || savedLang === 'ta' || savedLang === 'ur')) {
-            setLanguage(savedLang);
+        try {
+            if (typeof window !== 'undefined' && window.localStorage) {
+                const savedLang = window.localStorage.getItem('app-language') as Language;
+                if (savedLang && (savedLang === 'en' || savedLang === 'ta' || savedLang === 'ur')) {
+                    setLanguage(savedLang);
+                }
+            }
+        } catch (e) {
+            console.warn('LocalStorage access failed:', e);
         }
     }, []);
 
     const handleSetLanguage = (lang: Language) => {
         setLanguage(lang);
-        localStorage.setItem('app-language', lang);
+        try {
+            if (typeof window !== 'undefined' && window.localStorage) {
+                window.localStorage.setItem('app-language', lang);
+            }
+        } catch (e) {
+            console.warn('LocalStorage set failed:', e);
+        }
 
         // Update document direction for Urdu
         document.documentElement.dir = lang === 'ur' ? 'rtl' : 'ltr';

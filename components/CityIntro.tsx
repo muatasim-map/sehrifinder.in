@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { HelpCircle, ChevronDown, ChevronUp, MapPin } from 'lucide-react';
 import { CitySEOData, FAQItem } from '../data/seoData';
 
 interface CityIntroProps {
@@ -69,6 +69,28 @@ export const CityIntro: React.FC<CityIntroProps> = ({ data }) => {
                 <p className="text-white/60 text-sm md:text-base leading-relaxed mb-8" itemProp="description">
                     {data.introText}
                 </p>
+
+                {data.featuredSpots && data.featuredSpots.length > 0 && (
+                    <section className="mb-8">
+                        <div className="flex items-center gap-2 mb-4">
+                            <MapPin className="w-4 h-4 text-gold-antique" />
+                            <span className="text-xs uppercase tracking-widest font-bold text-white/30">
+                                Famous Verified Spots
+                            </span>
+                        </div>
+                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            {data.featuredSpots.map((spot, idx) => (
+                                <li
+                                    key={idx}
+                                    className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/5 text-sm text-white/70 italic"
+                                >
+                                    <span className="w-1.5 h-1.5 rounded-full bg-gold-antique/40" />
+                                    {spot}
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                )}
 
                 {data.faqItems.length > 0 && (
                     <section className="mt-8 pt-8 border-t border-white/10">

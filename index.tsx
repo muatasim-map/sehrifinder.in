@@ -29,7 +29,7 @@ root.render(
 );
 
 // Signal to vite-plugin-prerender that we're done
-setTimeout(() => {
+const timer = setTimeout(() => {
   document.dispatchEvent(new Event('render-event'));
 }, 1000);
 

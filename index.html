@@ -11,6 +11,7 @@
   <link rel="mask-icon" href="/masked-icon.svg" color="#D4AF37" />
   <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="canonical" href="https://www.sehrifinder.com/" />
+  <base href="/" />
   <title>Sehri Finder | Community Verified Ramadan Directory</title>
 
   <!-- Open Graph / Facebook -->
@@ -41,6 +42,41 @@
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@400;700&family=Great+Vibes&family=Amiri:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="/index.css">
+  <script>
+    // Aggressive storage polyfill for pre-rendering environments
+    (function () {
+      var mockStore = {
+        getItem: function () { return null; },
+        setItem: function () { },
+        removeItem: function () { },
+        clear: function () { },
+        length: 0,
+        key: function () { return null; }
+      };
+      try {
+        if (typeof window !== 'undefined') {
+          if (!window.sessionStorage) {
+            Object.defineProperty(window, 'sessionStorage', { value: mockStore, writable: true, configurable: true });
+          }
+          if (!window.localStorage) {
+            Object.defineProperty(window, 'localStorage', { value: mockStore, writable: true, configurable: true });
+          }
+          // Also define as globally accessible variables for some module environments
+          if (typeof sessionStorage === 'undefined') { window.sessionStorage = mockStore; }
+          if (typeof localStorage === 'undefined') { window.localStorage = mockStore; }
+        }
+      } catch (e) {
+        console.error('Aggressive polyfill failed:', e);
+      }
+    })();
+
+    window.onerror = function (msg, url, line, col, error) {
+      console.error('[BROWSER_ERROR]', msg, 'at', url, ':', line, ':', col);
+    };
+    window.onunhandledrejection = function (event) {
+      console.error('[BROWSER_REJECTION]', event.reason);
+    };
+  </script>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",

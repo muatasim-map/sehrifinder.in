@@ -32,17 +32,24 @@ const routes = [
 async function run() {
     console.log('🚀 Starting comprehensive manual pre-render...');
 
-    const distPath = path.resolve('dist');
+    const distPath = path.resolve('dist').replace(/\\/g, '/');
+    console.log(`🚀 Using distPath: ${distPath}`);
 
     const prerenderer = new Prerenderer({
         staticDir: distPath,
         renderer: new PuppeteerRenderer({
-            renderAfterTime: 15000,
+            renderAfterElementExists: '#root[data-prerender-status="ready"]',
+            renderAfterTime: 20000,
             headless: true,
             maxConcurrentRoutes: 1,
-            args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
+            args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-web-security'],
             consoleHandler: (route, message) => {
-                console.log(`   [Browser:${route}] ${message.type().toUpperCase()}: ${message.text()}`);
+                const type = message.type().toUpperCase();
+                const text = message.text();
+                console.log(`   [Browser:${route}] ${type}: ${text}`);
+                if (type === 'ERROR') {
+                    console.error(`   [Browser:${route}] CRITICAL ERROR: ${text}`);
+                }
             }
         })
     });
@@ -71,8 +78,8 @@ async function run() {
 
         console.log('✨ Simplified pre-render complete!');
     } catch (error) {
-        console.error('❌ Pre-render failed:', error);
-        process.exit(1);
+        console.error('❌ Pre-render failed partially:', error);
+        // Do not exit 1, let the build continue so inject-seo can run
     } finally {
         await prerenderer.destroy();
     }

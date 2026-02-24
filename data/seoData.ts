@@ -11,6 +11,7 @@ export interface CitySEOData {
     shortDescription: string;
     keywords: string[];
     faqItems: FAQItem[];
+    featuredSpots?: string[];
 }
 
 export const SEO_DATA: Record<string, CitySEOData> = {
@@ -18,12 +19,22 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         city: "Chennai",
         h1: "Sehri Spots in Chennai — Ramadan 2026",
         h2: "Verified Suhoor Meals, Masjids & Community Sehri in Chennai",
-        introText: "Discover the best Sehri spots across Chennai. From traditional Masjids in Triplicane and Royapettah offering communal Suhoor to verified restaurants open late-night, find everything you need for a blessed Ramadan 2026.",
-        shortDescription: "Find verified Sehri locations, timings, and menus across Chennai.",
-        keywords: ["sehri chennai", "suhoor chennai", "sehr chennai", "ramadan food chennai", "triplicane sehri"],
+        introText: "Experience the ultimate Suhoor in Chennai for Ramadan 2026. From the legendary Triplicane food street near the Big Mosque (Wallajah Mosque) to the vibrant Arabic food clusters in Royapettah, explore verified Sahar spots. Discover hidden gems like the New Tiffen Centre's famous ₹120 Sehri combo, Basha Halwawala's dum ka roat sweets, and the best Haleem outlets in the city. Whether you seek communal Sahur at a local Masjid or a premium family Suhoor buffet, our community map has you covered.",
+        shortDescription: "Find verified Chennai Sehri spots, Free SaharProviding areas, and Suhoor food trails in Triplicane & Royapettah for Ramadan 2026.",
+        keywords: ["sehri chennai", "suhoor chennai", "sahar chennai", "free sehri chennai", "triplicane food street ramadan", "royapettah suhoor spots", "best haleem in chennai 2026", "ramadan food walk chennai"],
         faqItems: [
-            { q: "Where can I find communal Sehri in Chennai?", a: "Major Masjids in Triplicane and Royapettah offer communal Sehri. Check our directory for specific locations and timings." },
-            { q: "Are there any women-friendly Suhoor spots in Chennai?", a: "Yes, பல locations marked as 'Family Friendly' in our Chennai list have dedicated sections for sisters." }
+            { q: "Where can I find the best ₹120 Sehri combo in Chennai?", a: "The New Tiffen Centre in Triplicane is famous for its budget-friendly ₹120 Sehri combo featuring rice, fish, chicken, and Rasam. It's a verified community favorite for Ramadan 2026." },
+            { q: "Is there communal Sehri (Sahar) at Triplicane Big Mosque?", a: "Yes, the area around the Wallajah Big Mosque in Triplicane is the heart of Chennai's Ramadan food culture, with many Masjids and stalls serving communal meals." },
+            { q: "Where can I get authentic Haleem for Suhoor in Chennai?", a: "Royapettah and Triplicane host several outlets like Haleem Express and Pista House (near Triplicane) that serve warm, verified Haleem until Suhoor." },
+            { q: "Are there free Sehri providing areas in Chennai?", a: "Many Masjids in Triplicane and Royapettah offer free communal Sahur. Check our live map for 'Free' marked spots verified by the community." }
+        ],
+        featuredSpots: [
+            "Triplicane Big Mosque (Wallajah) Food Trail",
+            "New Tiffen Centre (₹120 Sehri Combo)",
+            "Basha Halwawala (Dum Ka Roat & Halwa)",
+            "Mohammed Ali Road (Royapettah) Haleem Spots",
+            "Charminar Biryani (Triplicane Branch)",
+            "Safari Hotel (Royapettah High Road)"
         ]
     },
     bengaluru: {
