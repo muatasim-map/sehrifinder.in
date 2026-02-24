@@ -5,42 +5,80 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#022c22" />
-  <meta name="description" content="Find verified Sehri spots, Masjids, and community meals during Ramadan." />
+  <meta name="description"
+    content="Find verified Sehri spots, Masjids, and community meals in your city during Ramadan 2026." />
   <link rel="apple-touch-icon" href="/pwa-192x192.png" />
   <link rel="mask-icon" href="/masked-icon.svg" color="#D4AF37" />
   <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="canonical" href="https://www.sehrifinder.com/" />
   <title>Sehri Finder | Community Verified Ramadan Directory</title>
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.sehrifinder.com/" />
-  <meta property="og:title" content="Sehri Finder | Ramadan 2026" />
+  <meta property="og:title" content="Sehri Finder | Community Verified Ramadan Directory" />
   <meta property="og:description"
-    content="Find accurate Sehri spots and Masjids in Chennai. Join the community map for a blessed Ramadan." />
-  <meta property="og:image" content="https://www.sehrifinder.com/pwa-512x512.png?v=2" />
+    content="Find verified Sehri spots, Masjids, and community meals near you. Join the community map for a blessed Ramadan 2026." />
+  <meta property="og:image" content="https://www.sehrifinder.com/og-image.png" />
   <meta property="og:image:type" content="image/png" />
-  <meta property="og:image:width" content="512" />
-  <meta property="og:image:height" content="512" />
-  <meta property="og:image:alt" content="Sehri Finder App Icon" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Sehri Finder Ramadan 2026" />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content="https://www.sehrifinder.com/" />
-  <meta property="twitter:title" content="Sehri Finder | Ramadan 2026" />
+  <meta property="twitter:title" content="Sehri Finder | Community Verified Ramadan Directory" />
   <meta property="twitter:description"
-    content="Find accurate Sehri spots and Masjids in Chennai. Join the community map for a blessed Ramadan." />
-  <meta property="twitter:image" content="https://www.sehrifinder.com/pwa-512x512.png?v=2" />
+    content="Find verified Sehri spots, Masjids, and community meals near you during Ramadan 2026." />
+  <meta property="twitter:image" content="https://www.sehrifinder.com/og-image.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" />
   <link
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@400;700&family=Great+Vibes&family=Amiri:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
+    rel="stylesheet" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="/index.css">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Sehri Finder",
+      "url": "https://www.sehrifinder.com",
+      "logo": "https://www.sehrifinder.com/pwa-512x512.png",
+      "sameAs": [],
+      "description": "Community-verified Ramadan food directory"
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Sehri Finder",
+      "url": "https://www.sehrifinder.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.sehrifinder.com/find/{search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
 </head>
 
 <body>
   <div id="root"></div>
+  <noscript>
+    <div
+      style="padding: 40px; text-align: center; font-family: sans-serif; background: #022c22; color: white; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <h1 style="font-size: 2rem; margin-bottom: 1rem;">Sehri Finder — Ramadan 2026</h1>
+      <p style="font-size: 1.2rem; opacity: 0.8; max-width: 600px;">Find verified Sehri, Suhoor, and Sehr spots near
+        you.</p>
+      <p style="margin-top: 2rem; font-size: 0.9rem; color: #d4af37;">Please enable JavaScript for the full experience.
+      </p>
+    </div>
+  </noscript>
   <script type="module" src="/index.tsx"></script>
 </body>
 

@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
 // Compression plugin for optimized assets
 import compression from 'vite-plugin-compression';
 import { VitePWA } from 'vite-plugin-pwa';

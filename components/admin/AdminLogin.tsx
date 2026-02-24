@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../../utils/supabase';
 import { Lock, AlertCircle, Loader2 } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 interface AdminLoginProps {
     onLoginSuccess: () => void;
@@ -44,6 +45,9 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBack }
 
     return (
         <div className="min-h-screen bg-emerald-midnight flex items-center justify-center p-4">
+            <Helmet>
+                <meta name="robots" content="noindex, nofollow" />
+            </Helmet>
             <div className="bg-white rounded-2xl p-8 w-full max-w-md shadow-2xl relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gold-lantern"></div>
 

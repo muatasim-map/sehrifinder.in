@@ -19,6 +19,8 @@ import { HelpCard } from './landing/HelpCard';
 import { DisclaimerSection } from './landing/DisclaimerSection';
 import { CityCard } from './landing/CityCard';
 import { COUNTRIES } from '../data/locations';
+import { toSlug } from '../utils/slug';
+import { useSEO } from '../hooks/useSEO';
 
 interface LandingPageProps {
   onEnterApp: () => void;
@@ -27,6 +29,7 @@ interface LandingPageProps {
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubmit, onSelectCity }) => {
+  useSEO(''); // Reset SEO for landing page
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY, scrollYProgress } = useScroll();
@@ -168,19 +171,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             <span>Ramadan {currentYear} Edition</span>
           </motion.div>
 
-          <motion.h2
+          <motion.h1
             variants={textReveal}
             initial="hidden"
             animate="visible"
             className="font-landing-heading text-4xl md:text-8xl text-neutral-pearl mb-6 drop-shadow-2xl leading-[1.2] md:leading-[1.1]"
           >
-            No One Should <br className="hidden md:block" />
-            Eat
+            Find Verified <br className="hidden md:block" />
             <span className="text-gold-lantern font-script italic px-2">
-              Sehri
+              Sehri & Suhoor
             </span>
-            Alone
-          </motion.h2>
+            Spots Near You
+          </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}

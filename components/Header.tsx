@@ -92,11 +92,10 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSubmit }) => {
               <X className="w-6 h-6" />
             </button>
 
-            <div className="mt-8 mb-8">
-              <h2 className={`font-brand text-2xl mb-1 ${language === 'ur' ? 'font-urdu' : ''}`}>
-                <span className="text-primary">{t('appTitle').split(' ')[0]}</span>
-                <span className="text-gold ml-1">{t('appTitle').split(' ').slice(1).join(' ')}</span>
-              </h2>
+            <div className={`flex flex-col ${language === 'ur' ? 'items-end' : 'items-start'}`}>
+              <div className={`font-brand text-2xl mb-1 ${language === 'ur' ? 'font-urdu' : ''}`}>
+                Sehri <span className="text-gold-lantern">Finder</span>
+              </div>
               <p className="text-sm text-muted-foreground italic font-serif">Connecting the community</p>
             </div>
 

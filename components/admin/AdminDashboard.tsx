@@ -1,7 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../utils/supabase';
-import { Check, X, MapPin, Clock, LogOut, Loader2, Edit, AlertCircle, RefreshCw, Search, Filter, Globe } from 'lucide-react';
+import { MoreVertical, Download, Plus, CheckCircle2, Clock, MapPin, ExternalLink, Globe, Phone, AlertCircle, Search, Trash2, Edit, ChevronLeft, ChevronRight, LayoutDashboard, Database, Settings, LogOut, Check, X, Shield, Lock, ShieldAlert, RefreshCw, Filter, Loader2 } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { ApprovalModal } from './ApprovalModal';
 import { EditSpotModal } from './EditSpotModal';
 import { CreateSpotModal } from './CreateSpotModal';
@@ -181,6 +182,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
     return (
         <div className="min-h-screen bg-gray-50 relative">
+            <Helmet>
+                <meta name="robots" content="noindex, nofollow" />
+            </Helmet>
             {/* Background Pattern */}
             <div className="fixed inset-0 bg-geometric-grid opacity-[0.03] pointer-events-none"></div>
 

@@ -28,6 +28,11 @@ root.render(
   </React.StrictMode>
 );
 
+// Signal to vite-plugin-prerender that we're done
+setTimeout(() => {
+  document.dispatchEvent(new Event('render-event'));
+}, 1000);
+
 // Register Service Worker for PWA
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

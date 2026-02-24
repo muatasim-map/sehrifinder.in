@@ -11,6 +11,11 @@ import { MapView } from '../components/MapView';
 import { EmptyState } from '../components/EmptyState';
 import { useSehri } from '../context/SehriContext';
 import { COUNTRIES } from '../data/locations';
+import { useSEO } from '../hooks/useSEO';
+import { SEOJsonLd, getCitySchema } from '../components/SEOJsonLd';
+import { SEO_DATA } from '../data/seoData';
+import { CityIntro } from '../components/CityIntro';
+import { toSlug, fromSlug } from '../utils/slug';
 
 const AppPage: React.FC = () => {
     const navigate = useNavigate();
@@ -42,11 +47,47 @@ const AppPage: React.FC = () => {
         setSearchTerm
     } = useSehri();
 
+    // SEO Sync
+    useSEO(selectedCity);
+
+    // City Schema Data
+    const citySEO = SEO_DATA[toSlug(selectedCity)];
+    const citySchema = citySEO ? getCitySchema(
+        citySEO.city,
+        citySEO.shortDescription,
+        window.location.href
+    ) : null;
+
+    const breadcrumbSchema = {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.sehrifinder.com/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Find Sehri",
+                "item": "https://www.sehrifinder.com/find"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": citySEO?.city || selectedCity,
+                "item": window.location.href
+            }
+        ]
+    };
+
     // Sync route param with context city (URL -> State)
     useEffect(() => {
-        if (city && city.toLowerCase() !== selectedCity.toLowerCase()) {
+        const cityNameFromUrl = city ? fromSlug(city) : null;
+        if (cityNameFromUrl && cityNameFromUrl.toLowerCase() !== selectedCity.toLowerCase()) {
             const supported = COUNTRIES.flatMap(c => c.cities);
-            const match = supported.find(c => c.toLowerCase() === city.toLowerCase());
+            const match = supported.find(c => c.toLowerCase() === cityNameFromUrl.toLowerCase());
             if (match) setSelectedCity(match);
         }
     }, [city, selectedCity, setSelectedCity]);
@@ -58,7 +99,7 @@ const AppPage: React.FC = () => {
     const handleCityChange = (newCity: string) => {
         // When user selects a city manually, we navigate.
         // This will trigger the URL -> State effect above.
-        navigate(`/find/${newCity.toLowerCase()}`);
+        navigate(`/find/${toSlug(newCity)}`);
     };
 
     const handleCountryChange = (countryName: string) => {
@@ -68,7 +109,7 @@ const AppPage: React.FC = () => {
         // The URL->State effect above will then update the city state correctly.
         const country = COUNTRIES.find(c => c.name === countryName);
         if (country && country.cities.length > 0) {
-            navigate(`/find/${country.cities[0].toLowerCase()}`);
+            navigate(`/find/${toSlug(country.cities[0])}`);
         }
     };
 
@@ -85,6 +126,8 @@ const AppPage: React.FC = () => {
 
     return (
         <div className="relative z-10 flex flex-col min-h-screen">
+            {citySchema && <SEOJsonLd type="LocalBusiness" data={citySchema} />}
+            {breadcrumbSchema && <SEOJsonLd type="BreadcrumbList" data={breadcrumbSchema} />}
             <Header onOpenSubmit={() => navigate('/submit')} />
 
             <Hero

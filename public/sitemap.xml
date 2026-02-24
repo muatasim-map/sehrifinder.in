@@ -3,78 +3,138 @@
   <!-- Core Pages -->
   <url>
     <loc>https://www.sehrifinder.com/</loc>
-    <lastmod>2026-02-20</lastmod>
+    <lastmod>2026-02-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.sehrifinder.com/find</loc>
-    <lastmod>2026-02-20</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://www.sehrifinder.com/submit</loc>
-    <lastmod>2026-02-20</lastmod>
+    <lastmod>2026-02-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
-  <!-- City specific endpoints (Major cities) -->
+  <!-- India (4 cities) -->
   <url>
     <loc>https://www.sehrifinder.com/find/chennai</loc>
-    <lastmod>2026-02-20</lastmod>
+    <lastmod>2026-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.sehrifinder.com/find/bangalore</loc>
-    <lastmod>2026-02-20</lastmod>
+    <loc>https://www.sehrifinder.com/find/bengaluru</loc>
+    <lastmod>2026-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.sehrifinder.com/find/hyderabad</loc>
-    <lastmod>2026-02-20</lastmod>
+    <lastmod>2026-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.sehrifinder.com/find/mumbai</loc>
-    <lastmod>2026-02-20</lastmod>
+    <lastmod>2026-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Popular Area endpoints -->
+  <!-- United Kingdom (1 city) -->
   <url>
-    <loc>https://www.sehrifinder.com/find/chennai/triplicane</loc>
-    <lastmod>2026-02-20</lastmod>
+    <loc>https://www.sehrifinder.com/find/london</loc>
+    <lastmod>2026-02-24</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- USA (5 cities) -->
+  <url>
+    <loc>https://www.sehrifinder.com/find/new-york</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.sehrifinder.com/find/chennai/royapettah</loc>
-    <lastmod>2026-02-20</lastmod>
+    <loc>https://www.sehrifinder.com/find/san-francisco</loc>
+    <lastmod>2026-02-24</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.sehrifinder.com/find/bangalore/shivajinagar</loc>
-    <lastmod>2026-02-20</lastmod>
+    <loc>https://www.sehrifinder.com/find/chicago</loc>
+    <lastmod>2026-02-24</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.sehrifinder.com/find/hyderabad/charminar</loc>
-    <lastmod>2026-02-20</lastmod>
+    <loc>https://www.sehrifinder.com/find/houston</loc>
+    <lastmod>2026-02-24</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.sehrifinder.com/find/mumbai/mohammed-ali-road</loc>
-    <lastmod>2026-02-20</lastmod>
+    <loc>https://www.sehrifinder.com/find/detroit</loc>
+    <lastmod>2026-02-24</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Canada (8 cities) -->
+  <url>
+    <loc>https://www.sehrifinder.com/find/toronto</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sehrifinder.com/find/edmonton</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sehrifinder.com/find/montreal</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sehrifinder.com/find/brampton</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sehrifinder.com/find/calgary</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sehrifinder.com/find/ottawa</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sehrifinder.com/find/cambridge</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sehrifinder.com/find/kanata</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Malaysia (1 city) -->
+  <url>
+    <loc>https://www.sehrifinder.com/find/kuala-lumpur</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>

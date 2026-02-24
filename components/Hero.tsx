@@ -88,7 +88,7 @@ export const Hero: React.FC<HeroProps> = ({
             <span className="h-[1px] w-12 md:w-20 bg-gold-lantern/40"></span>
           </div>
 
-          <h1 className={`text-3xl md:text-6xl text-white font-serif leading-tight drop-shadow-lg mt-1 md:mt-2 ${language === 'ur' ? 'font-urdu' : ''}`}>
+          <h2 className={`text-3xl md:text-6xl text-white font-serif leading-tight drop-shadow-lg mt-1 md:mt-2 ${language === 'ur' ? 'font-urdu' : ''}`}>
             {language === 'en' ? (
               <>
                 Find Your <span className="text-gold-lantern italic font-serif px-2 align-baseline relative">Sehri</span>
@@ -96,7 +96,7 @@ export const Hero: React.FC<HeroProps> = ({
             ) : t('findSehri')}
             <br />
             <span className="text-xl md:text-5xl block mt-2 md:mt-3 text-white/90 font-light tracking-wide">{t('distributionPoints')}</span>
-          </h1>
+          </h2>
         </motion.div>
 
         {/* Disclaimer Banner - Glassmorphic */}
