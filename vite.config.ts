@@ -14,17 +14,19 @@ export default defineConfig({
     }),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg', 'quranlingo-logo.png'],
       manifest: {
-        name: 'Sehri Finder',
+        name: 'Sehri Finder — Ramadan Food Directory',
         short_name: 'SehriFinder',
-        description: 'Find verified Sehri spots, Masjids, and community meals during Ramadan.',
-        theme_color: '#022c22', // emerald-midnight
+        description: 'Find verified Sehri spots, Masjids, and community meals during Ramadan. Community-sourced, map-based.',
+        theme_color: '#022c22',
         background_color: '#022c22',
         display: 'standalone',
         scope: '/',
-        start_url: '/',
+        start_url: '/?source=pwa',
         orientation: 'portrait',
+        categories: ['food', 'lifestyle', 'social'],
+        prefer_related_applications: false,
         icons: [
           {
             src: 'pwa-192x192.png',
@@ -42,22 +44,77 @@ export default defineConfig({
             type: 'image/png',
             purpose: 'any maskable'
           }
+        ],
+        shortcuts: [
+          {
+            name: 'Find Sehri Spots',
+            short_name: 'Find',
+            description: 'Browse verified sehri spots near you',
+            url: '/find/chennai?source=pwa_shortcut',
+            icons: [{ src: 'pwa-192x192.png', sizes: '192x192' }]
+          },
+          {
+            name: 'Add a Spot',
+            short_name: 'Submit',
+            description: 'Submit a new sehri location',
+            url: '/submit?source=pwa_shortcut',
+            icons: [{ src: 'pwa-192x192.png', sizes: '192x192' }]
+          }
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff2}'],
+        // Offline fallback for navigation requests
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [/^\/api/, /^\/admin/],
         runtimeCaching: [
+          // Cache API responses (network-first, 1 week)
           {
             urlPattern: ({ url }) => url.pathname.startsWith('/api'),
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',
               expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 7 // 1 week
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24 * 7
               },
-              cacheableResponse: {
-                statuses: [0, 200]
+              cacheableResponse: { statuses: [0, 200] }
+            }
+          },
+          // Cache Google Fonts (cache-first, 1 year)
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365
+              },
+              cacheableResponse: { statuses: [0, 200] }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'gstatic-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365
+              },
+              cacheableResponse: { statuses: [0, 200] }
+            }
+          },
+          // Cache images (cache-first, 30 days)
+          {
+            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'images-cache',
+              expiration: {
+                maxEntries: 60,
+                maxAgeSeconds: 60 * 60 * 24 * 30
               }
             }
           }
