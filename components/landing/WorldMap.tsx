@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Tooltip } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { COUNTRIES } from '../../data/locations';
 import { toSlug } from '../../utils/slug';
@@ -19,8 +20,11 @@ export const WorldMap: React.FC<WorldMapProps> = ({ onSelectCity }) => {
     );
 
     return (
-        <div className="w-full rounded-2xl overflow-hidden border border-gold-lantern/10 shadow-2xl"
-            style={{ height: '480px' }}>
+        <div className="w-full rounded-3xl overflow-hidden border-2 border-gold-lantern/30 shadow-[0_0_40px_rgba(212,175,55,0.1)] relative"
+            style={{ height: '500px' }}>
+            {/* Inner Glass Glow */}
+            <div className="absolute inset-0 z-[400] pointer-events-none shadow-[inset_0_0_50px_rgba(10,46,35,0.8)] rounded-3xl" />
+
             <MapContainer
                 center={[20, 10]}
                 zoom={2}
@@ -41,40 +45,46 @@ export const WorldMap: React.FC<WorldMapProps> = ({ onSelectCity }) => {
                     maxZoom={5}
                 />
 
-                {allCities.map((city) => (
-                    <CircleMarker
-                        key={city.name}
-                        center={[city.lat, city.lng]}
-                        radius={7}
-                        pathOptions={{
-                            color: '#022c22',
-                            weight: 1.5,
-                            fillColor: '#D4AF37',
-                            fillOpacity: 0.9,
-                        }}
-                        eventHandlers={{
-                            click: () => onSelectCity(city.name),
-                            mouseover: (e) => {
-                                e.target.setStyle({ fillColor: '#B8860B', radius: 10 });
-                            },
-                            mouseout: (e) => {
-                                e.target.setStyle({ fillColor: '#D4AF37', radius: 7 });
-                            },
-                        }}
-                    >
-                        <Tooltip
-                            direction="top"
-                            offset={[0, -8]}
-                            permanent={false}
-                            className="leaflet-city-tooltip"
+                {allCities.map((city) => {
+                    const isMajorCity = ['Chennai', 'Bengaluru', 'Mumbai', 'London', 'New York', 'Toronto', 'Kuala Lumpur'].includes(city.name);
+
+                    const iconHtml = `
+                        <div class="${isMajorCity ? 'major-city-marker' : ''}">
+                            <div class="marker-pulse"></div>
+                            <div class="marker-pin"></div>
+                        </div>
+                    `;
+
+                    const customIcon = L.divIcon({
+                        className: 'custom-div-icon',
+                        html: iconHtml,
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 15] // Center the icon
+                    });
+
+                    return (
+                        <Marker
+                            key={city.name}
+                            position={[city.lat, city.lng]}
+                            icon={customIcon}
+                            eventHandlers={{
+                                click: () => onSelectCity(city.name),
+                            }}
                         >
-                            <div className="flex flex-col items-center">
-                                <span className="font-bold text-xs text-emerald-midnight">{city.name}</span>
-                                <span className="text-[10px] text-emerald-midnight/60">{city.country}</span>
-                            </div>
-                        </Tooltip>
-                    </CircleMarker>
-                ))}
+                            <Tooltip
+                                direction="top"
+                                offset={[0, -8]}
+                                permanent={isMajorCity}
+                                className={`leaflet-city-tooltip ${isMajorCity ? 'major-city-label' : ''}`}
+                            >
+                                <div className="flex flex-col items-center">
+                                    <span className="font-bold text-xs text-emerald-midnight">{city.name}</span>
+                                    {isMajorCity && <span className="text-[10px] text-emerald-midnight/60">{city.country}</span>}
+                                </div>
+                            </Tooltip>
+                        </Marker>
+                    );
+                })}
             </MapContainer>
 
             {/* Caption */}

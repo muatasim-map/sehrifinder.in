@@ -13,6 +13,9 @@ module.exports = {
 
         // New Editorial Palette
         emerald: {
+          50: '#F0FDF4',       // Lightest for badges
+          100: '#DCFCE7',      // Light border
+          200: '#BBF7D0',      // Soft accent
           midnight: '#0A2E23', // Darkest backgrounds
           sacred: '#1B4D3E',   // Primary sections
           forest: '#2D5F4F',   // Mid-tones

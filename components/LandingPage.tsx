@@ -17,9 +17,9 @@ import { fadeInUp, staggerContainer, textReveal } from '../config/animations';
 import { FeatureCard } from './landing/FeatureCard';
 import { HelpCard } from './landing/HelpCard';
 import { DisclaimerSection } from './landing/DisclaimerSection';
-import { WorldMap } from './landing/WorldMap';
-import { CityCard } from './landing/CityCard';
-import { COUNTRIES } from '../data/locations';
+import { StatsBar } from './landing/StatsBar';
+import { Globe } from './landing/Globe';
+import { PWAInstallBanner } from './PWAInstallBanner';
 import { toSlug } from '../utils/slug';
 import { useSEO } from '../hooks/useSEO';
 
@@ -454,10 +454,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
         </div>
       </section>
 
-      {/* CITIES SECTION */}
-      <section id="cities" className="py-24 bg-cream relative">
-        <div className="absolute inset-0 opacity-[0.08] pointer-events-none">
-          <IslamicPattern variant="octagon-star-lattice" className="text-emerald-midnight" />
+      {/* CITIES SECTION (REDESIGNED 3D GLOBE) */}
+      <section id="cities" className="py-24 md:py-32 bg-gradient-to-b from-[#0a1f16] to-[#04120c] relative overflow-hidden">
+        {/* Subtle Background Pattern */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+          <IslamicPattern variant="octagon-star-lattice" className="text-gold-lantern" />
         </div>
 
         <div className="container mx-auto px-6 relative z-10">
@@ -470,28 +471,89 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
           >
             <div className="text-gold-antique text-sm font-bold uppercase tracking-widest mb-4 flex items-center justify-center gap-2">
               <IslamicStar className="w-3 h-3 text-gold-antique" />
-              Cities We Serve
+              Global Reach
               <IslamicStar className="w-3 h-3 text-gold-antique" />
             </div>
-            <h2 className="font-landing-heading text-4xl md:text-5xl text-emerald-midnight">
-              From One City, <span className="text-gold-antique italic">Growing Together</span>
+            <h2 className="font-landing-heading text-4xl md:text-6xl text-neutral-pearl max-w-4xl mx-auto leading-tight">
+              From One City, <span className="text-gold-lantern italic drop-shadow-[0_0_15px_rgba(212,175,55,0.3)] block md:inline">Growing Together</span>
             </h2>
           </motion.div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            className="max-w-6xl mx-auto"
-          >
-            <WorldMap onSelectCity={onSelectCity} />
-          </motion.div>
+          {/* Premium Layout: Text/Stats Left | Globe Right */}
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center relative">
+
+            {/* Left Column: Data & Stats */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+              className="order-2 lg:order-1 flex flex-col gap-10"
+            >
+              {/* Countries List */}
+              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-gold-lantern/5 blur-[100px] rounded-full pointer-events-none group-hover:bg-gold-lantern/10 transition-colors duration-700" />
+
+                <h3 className="text-2xl font-brand text-gold-lantern mb-6 flex items-center gap-3">
+                  <MapPin className="w-6 h-6" />
+                  Countries We Serve
+                </h3>
+
+                <div className="flex flex-wrap gap-3">
+                  {['India', 'United Kingdom', 'Canada', 'United States', 'Malaysia'].map((country) => (
+                    <span key={country} className="px-5 py-2.5 rounded-full border border-gold-lantern/20 text-neutral-pearl font-medium text-sm hover:bg-gold-lantern/10 transition-colors pointer-events-none">
+                      {country}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-8 pt-8 border-t border-white/10 grid grid-cols-2 gap-8">
+                  <div>
+                    <div className="text-4xl font-landing-heading text-neutral-pearl mb-1">20+</div>
+                    <div className="text-xs uppercase tracking-widest text-gold-lantern/60 font-bold">Cities Live</div>
+                  </div>
+                  <div>
+                    <div className="text-4xl font-landing-heading text-neutral-pearl mb-1">500+</div>
+                    <div className="text-xs uppercase tracking-widest text-gold-lantern/60 font-bold">Verified Spots</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Call to Action */}
+              <div className="flex justify-start">
+                <button
+                  onClick={() => onSelectCity('Chennai')}
+                  className="px-8 py-4 bg-transparent text-gold-lantern rounded-full font-bold text-lg border-2 border-gold-lantern/40 hover:bg-gold-lantern hover:text-emerald-midnight hover:scale-105 shadow-[0_4px_20px_rgba(212,175,55,0.2)] hover:shadow-[0_8px_30px_rgba(212,175,55,0.4)] transition-all flex items-center gap-3 group"
+                >
+                  <span>Explore Sehri Spots</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Right Column: 3D Globe */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="order-1 lg:order-2 relative aspect-square w-full max-w-[600px] mx-auto lg:mr-0 flex items-center justify-center -my-10 lg:my-0"
+            >
+              {/* Atmospheric Glow behind Globe */}
+              <div className="absolute inset-x-[10%] inset-y-[20%] bg-[#D4AF37]/5 blur-[80px] rounded-full pointer-events-none" />
+
+              <Globe className="z-10 mix-blend-lighten" />
+
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 opacity-50 z-20 pointer-events-none bg-black/50 px-4 py-1.5 rounded-full border border-white/10 backdrop-blur-sm">
+                <span className="text-[10px] uppercase tracking-widest text-neutral-pearl">Interactive</span>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* FOOTER CTA */}
-      <section className="py-24 bg-gradient-to-b from-emerald-midnight to-[#051a14] relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-b from-[#04120c] to-black relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 flex justify-center -mt-3 text-gold-lantern/20">
           <IslamicStar className="w-6 h-6 animate-pulse-slow" />
         </div>
