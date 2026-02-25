@@ -18,6 +18,7 @@ import { FeatureCard } from './landing/FeatureCard';
 import { HelpCard } from './landing/HelpCard';
 import { DisclaimerSection } from './landing/DisclaimerSection';
 import { CityCard } from './landing/CityCard';
+import { CreatorsBanner } from './landing/CreatorsBanner';
 import { COUNTRIES } from '../data/locations';
 import { toSlug } from '../utils/slug';
 import { useSEO } from '../hooks/useSEO';
@@ -610,6 +611,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
         </div>
       </section>
 
+      {/* FROM THE CREATORS */}
+      <CreatorsBanner />
+
       {/* DISCLAIMER SECTION */}
       <DisclaimerSection />
 
@@ -665,6 +669,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
                 <li><button onClick={() => scrollToSection('features')} className="hover:text-gold-lantern transition-colors">Features</button></li>
                 <li><button onClick={() => scrollToSection('cities')} className="hover:text-gold-lantern transition-colors">Cities</button></li>
                 <li><a href="https://www.lighthousementoring.org/" target="_blank" rel="noopener noreferrer" className="text-gold-lantern hover:text-white transition-colors font-bold">Have doubts about Islam?</a></li>
+                <li><a href="https://dev.quranlingo.in" target="_blank" rel="noopener noreferrer" className="hover:text-gold-lantern transition-colors">Learn Quranic Arabic</a></li>
               </ul>
             </div>
 
