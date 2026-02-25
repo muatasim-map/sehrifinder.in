@@ -234,6 +234,19 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                             </p>
                         </motion.div>
 
+                        {/* --- LAYER 4: FROM THE CREATORS --- */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 3.5, duration: 1.2, ease: "easeOut" }}
+                            className="mt-10 md:mt-14 flex items-center gap-3 md:gap-4"
+                        >
+                            <span className="text-[8px] md:text-[10px] text-[#FFD700]/25 uppercase tracking-[0.3em] font-sans whitespace-nowrap">From the creators of</span>
+                            <img src="/quranlingo-logo.png" alt="QurAnLingo" className="h-5 md:h-6 object-contain opacity-40" loading="lazy" />
+                            <span className="w-px h-3 bg-[#FFD700]/10"></span>
+                            <span className="font-serif text-xs md:text-sm text-[#FFD700]/20 tracking-wide">Deen<span className="text-[#B8860B]/30">Flix</span></span>
+                        </motion.div>
+
                     </div>
                 </motion.div>
             )}
