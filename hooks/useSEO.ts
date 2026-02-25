@@ -72,12 +72,24 @@ export const useSEO = (city: string) => {
         }
         canonical.setAttribute('href', canonicalUrl);
 
-        // 6. FAQ Schema (JSON-LD)
-        const existingFaq = document.getElementById('faq-schema');
-        if (existingFaq) existingFaq.remove();
+        // 6. JSON-LD Schema Management
+        const cleanupSchema = (id: string) => {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        };
 
+        const injectSchema = (id: string, schema: object) => {
+            cleanupSchema(id);
+            const script = document.createElement('script');
+            script.id = id;
+            script.type = 'application/ld+json';
+            script.innerHTML = JSON.stringify(schema);
+            document.head.appendChild(script);
+        };
+
+        // FAQ Schema
         if (data && data.faqItems && data.faqItems.length > 0) {
-            const faqSchema = {
+            injectSchema('faq-schema', {
                 "@context": "https://schema.org",
                 "@type": "FAQPage",
                 "mainEntity": data.faqItems.map(item => ({
@@ -88,12 +100,45 @@ export const useSEO = (city: string) => {
                         "text": item.a
                     }
                 }))
-            };
-            const script = document.createElement('script');
-            script.id = 'faq-schema';
-            script.type = 'application/ld+json';
-            script.innerHTML = JSON.stringify(faqSchema);
-            document.head.appendChild(script);
+            });
+        } else {
+            cleanupSchema('faq-schema');
+        }
+
+        // Breadcrumb Schema
+        const breadcrumbSchema = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl },
+                ...(data ? [
+                    { "@type": "ListItem", "position": 2, "name": "Find Sehri", "item": `${baseUrl}/find/chennai` }, // Proxy for list page
+                    { "@type": "ListItem", "position": 3, "name": data.city, "item": `${baseUrl}/find/${slugCity}` }
+                ] : [])
+            ]
+        };
+        injectSchema('breadcrumb-schema', breadcrumbSchema);
+
+        // LocalBusiness Schema (only for city pages)
+        if (data) {
+            injectSchema('local-business-schema', {
+                "@context": "https://schema.org",
+                "@type": "LocalBusiness",
+                "name": `Sehri Finder - ${data.city}`,
+                "description": data.shortDescription,
+                "url": `${baseUrl}/find/${slugCity}`,
+                "areaServed": {
+                    "@type": "City",
+                    "name": data.city
+                },
+                "provider": {
+                    "@type": "Organization",
+                    "name": "Sehri Finder",
+                    "url": baseUrl
+                }
+            });
+        } else {
+            cleanupSchema('local-business-schema');
         }
 
     }, [city]);

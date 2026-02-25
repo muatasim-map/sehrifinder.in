@@ -88,6 +88,19 @@ function buildLocalBusinessSchema(cityKey, data) {
     return `<script type="application/ld+json">${JSON.stringify(schema)}</script>`;
 }
 
+function buildBreadcrumbSchema(cityKey, data) {
+    const schema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": BASE_URL },
+            { "@type": "ListItem", "position": 2, "name": "Find Sehri", "item": `${BASE_URL}/find/chennai` },
+            { "@type": "ListItem", "position": 3, "name": data.city, "item": `${BASE_URL}/find/${cityKey}` }
+        ]
+    };
+    return `<script type="application/ld+json" id="breadcrumb-schema">${JSON.stringify(schema)}</script>`;
+}
+
 function inject(cityKey, data) {
     const isHome = cityKey === 'index';
     const cityDir = isHome ? '' : `find/${cityKey}`;
@@ -116,23 +129,28 @@ function inject(cityKey, data) {
 
     const canonicalUrl = `${BASE_URL}/find/${cityKey}`;
 
-    // 1. Update Title & Meta Description
-    html = html.replace(/<title>.*?<\/title>/, `<title>${data.h1} | Sehri Finder</title>`);
+    // 1. Update Title & Meta Description (Clean title without emojis for SERP)
+    const cleanTitle = `Find Sehri in ${data.city} 2026 | Sehri Finder`;
+    html = html.replace(/<title>.*?<\/title>/, `<title>${cleanTitle}</title>`);
     html = html.replace(/<meta name="description"[\s\S]*?\/>/, `<meta name="description" content="${data.shortDescription}" />`);
 
     // 2. Update Canonical and OG URL to be city-specific
+    const cityOgImage = `${BASE_URL}/og/${cityKey}.png`;
     html = html.replace(/<link rel="canonical".*?>/, `<link rel="canonical" href="${canonicalUrl}" />`);
     html = html.replace(/<meta property="og:url" content=".*?">/, `<meta property="og:url" content="${canonicalUrl}">`);
-    html = html.replace(/<meta property="og:title" content=".*?">/, `<meta property="og:title" content="${data.h1} | Sehri Finder">`);
+    html = html.replace(/<meta property="og:title" content=".*?">/, `<meta property="og:title" content="${cleanTitle}">`);
     html = html.replace(/<meta property="og:description"[\s\S]*?\/?>/, `<meta property="og:description" content="${data.shortDescription}">`);
+    html = html.replace(/<meta property="og:image" content=".*?">/, `<meta property="og:image" content="${cityOgImage}">`); // City-specific fallback logic
     html = html.replace(/<meta property="twitter:url" content=".*?">/, `<meta property="twitter:url" content="${canonicalUrl}">`);
-    html = html.replace(/<meta property="twitter:title" content=".*?">/, `<meta property="twitter:title" content="${data.h1} | Sehri Finder">`);
+    html = html.replace(/<meta property="twitter:title" content=".*?">/, `<meta property="twitter:title" content="${cleanTitle}">`);
     html = html.replace(/<meta property="twitter:description"[\s\S]*?\/?>/, `<meta property="twitter:description" content="${data.shortDescription}">`);
+    html = html.replace(/<meta property="twitter:image" content=".*?">/, `<meta property="twitter:image" content="${cityOgImage}">`);
 
     // 3. Inject FAQ & LocalBusiness structured data before </head>
     const faqSchema = buildFaqSchema(data.faqItems, data.city);
     const localBusinessSchema = buildLocalBusinessSchema(cityKey, data);
-    html = html.replace('</head>', `${faqSchema}\n${localBusinessSchema}\n</head>`);
+    const breadcrumbSchema = buildBreadcrumbSchema(cityKey, data);
+    html = html.replace('</head>', `${faqSchema}\n${localBusinessSchema}\n${breadcrumbSchema}\n</head>`);
 
     // 4. Inject visible static content into #root (for Googlebot)
     const staticContent = `
@@ -167,9 +185,37 @@ function inject(cityKey, data) {
         </div>
     `;
 
-    html = html.replace(/<div id="root"><\/div>/, `<div id="root">${staticContent}</div>`);
-    // Also handle if root already has content
-    html = html.replace(/<div id="root">(?!.*seo-static-content)([\s\S]*?)<\/div>/, `<div id="root">${staticContent}</div>`);
+    // Robust injection into #root
+    const rootStartTag = '<div id="root">';
+    const rootStartIndex = html.indexOf(rootStartTag);
+    if (rootStartIndex !== -1) {
+        // Find the matching closing </div> for #root
+        // Since we know the structure is generally flat or we can just look for the NEXT </div> that is followed by </body> or similar
+        // Or simpler: just replace everything between <div id="root"> and the NEXT </div> if we assume it was empty, 
+        // OR if it has content, we need to find the REAL closing tag.
+
+        // Given this is a build script, we can assume the #root div is the one we want to fill.
+        // We'll look for the last </div> before </body> as a proxy if it's the main container, 
+        // but let's just use a balanced tag approach or a unique marker if possible.
+
+        // Let's try to match the first <div id="root">...</div> completely.
+        const contentAfterRoot = html.substring(rootStartIndex + rootStartTag.length);
+
+        // Find the index of the </div> that closes #root. 
+        // If it was already injected, it ends with a </div> that is followed by </body> (usually).
+        // Let's look for </div> followed by any whitespace and then <noscript> or </body>.
+        const rootEndMatch = contentAfterRoot.match(/<\/div>\s*(?=<noscript|<\/body)/);
+
+        if (rootEndMatch) {
+            const rootEndIndex = rootEndMatch.index;
+            const beforeRoot = html.substring(0, rootStartIndex + rootStartTag.length);
+            const afterRoot = contentAfterRoot.substring(rootEndIndex);
+            html = beforeRoot + staticContent + afterRoot;
+        } else {
+            // Fallback to simple replace if structure is simple
+            html = html.replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${staticContent}</div>`);
+        }
+    }
 
     fs.writeFileSync(filePath, html);
     log(`Successfully injected SEO content into ${cityKey}`);
