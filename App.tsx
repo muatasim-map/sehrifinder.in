@@ -8,6 +8,7 @@ import { Toaster, toast } from 'sonner';
 import { ReloadPrompt } from './components/ReloadPrompt';
 import { SplashScreen } from './components/SplashScreen';
 import { IslamicPattern } from './components/Pattern';
+import { PWAInstallBanner } from './components/PWAInstallBanner';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -53,6 +54,7 @@ export default function App() {
     <ErrorBoundary>
       <Analytics />
       <SpeedInsights />
+      <PWAInstallBanner />
       <div className="min-h-screen bg-zillij font-sans relative overflow-x-hidden">
         {/* Global Background Pattern */}
         <div className="fixed inset-0 z-0 pointer-events-none">

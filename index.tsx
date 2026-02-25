@@ -33,11 +33,5 @@ const timer = setTimeout(() => {
   document.dispatchEvent(new Event('render-event'));
 }, 1000);
 
-// Register Service Worker for PWA
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then((reg) => console.log('Service worker registered.', reg))
-      .catch((err) => console.log('Service worker registration failed.', err));
-  });
-}
+// Service Worker is registered automatically by vite-plugin-pwa (Workbox).
+// Do NOT manually register /sw.js here — it conflicts with the generated SW.
