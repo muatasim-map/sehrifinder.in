@@ -88,9 +88,15 @@ export const Globe2D: React.FC<Globe2DProps> = ({ className }) => {
                     {/* Markers */}
                     {markers.map(({ name, coordinates }) => (
                         <Marker key={name} coordinates={coordinates}>
+                            {/* Layered Glow for Marker */}
+                            <circle
+                                r={12}
+                                fill="rgba(212, 175, 55, 0.2)"
+                                style={{ filter: 'blur(8px)' }}
+                            />
                             <motion.circle
                                 r={6}
-                                fill="#D4AF37"
+                                fill="#FFD700"
                                 stroke="#0A2E23"
                                 strokeWidth={2}
                                 initial={{ scale: 0 }}
@@ -101,19 +107,20 @@ export const Globe2D: React.FC<Globe2DProps> = ({ className }) => {
                                     damping: 20,
                                     delay: Math.random() * 0.5 + 0.5
                                 }}
+                                style={{ filter: 'drop-shadow(0 0 8px rgba(212, 175, 55, 0.8))' }}
                             />
                             <motion.circle
                                 r={15}
                                 fill="none"
                                 stroke="#D4AF37"
-                                strokeWidth={2}
+                                strokeWidth={1.5}
                                 initial={{ opacity: 0, scale: 0 }}
-                                animate={{ opacity: [0.6, 0], scale: [0, 2.5] }}
+                                animate={{ opacity: [0.4, 0], scale: [0, 3] }}
                                 transition={{
-                                    duration: 2,
+                                    duration: 2.5,
                                     repeat: Infinity,
                                     ease: "easeOut",
-                                    delay: Math.random() // staggered pulses
+                                    delay: Math.random()
                                 }}
                             />
                         </Marker>
