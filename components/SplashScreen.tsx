@@ -236,15 +236,15 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
 
                         {/* --- LAYER 4: FROM THE CREATORS --- */}
                         <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 3.5, duration: 1.2, ease: "easeOut" }}
-                            className="mt-10 md:mt-14 flex items-center gap-3 md:gap-4"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 2.5, duration: 1.0, ease: "easeOut" }}
+                            className="mt-10 md:mt-14 flex items-center gap-3 md:gap-5"
                         >
-                            <span className="text-[8px] md:text-[10px] text-[#FFD700]/25 uppercase tracking-[0.3em] font-sans whitespace-nowrap">From the creators of</span>
-                            <img src="/quranlingo-logo.png" alt="QurAnLingo" className="h-5 md:h-6 object-contain opacity-40" loading="lazy" />
-                            <span className="w-px h-3 bg-[#FFD700]/10"></span>
-                            <span className="font-serif text-xs md:text-sm text-[#FFD700]/20 tracking-wide">Deen<span className="text-[#B8860B]/30">Flix</span></span>
+                            <span className="text-[9px] md:text-[11px] text-[#FFD700]/50 uppercase tracking-[0.3em] font-sans whitespace-nowrap">From the creators of</span>
+                            <img src="/quranlingo-logo.png" alt="QurAnLingo" className="h-6 md:h-7 object-contain opacity-60" loading="lazy" />
+                            <span className="w-px h-4 bg-[#FFD700]/15"></span>
+                            <span className="font-serif text-sm md:text-base text-[#FFD700]/35 tracking-wide">Deen<span className="text-[#B8860B]/40">Flix</span></span>
                         </motion.div>
 
                     </div>
