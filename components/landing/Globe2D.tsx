@@ -10,6 +10,14 @@ import { motion } from 'framer-motion';
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
+const ACTIVE_COUNTRIES = [
+    "India",
+    "United Kingdom",
+    "Canada",
+    "United States of America", // In world-atlas 110m USA is named "United States of America"
+    "Malaysia"
+];
+
 interface Globe2DProps {
     className?: string;
 }
@@ -35,8 +43,11 @@ export const Globe2D: React.FC<Globe2DProps> = ({ className }) => {
             {/* SVG Pattern Definitions for Dot Matrix Effect */}
             <svg width="0" height="0">
                 <defs>
-                    <pattern id="dots" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
-                        <circle fill="rgba(212, 175, 55, 0.4)" cx="2" cy="2" r="1.2"></circle>
+                    <pattern id="dots-base" x="0" y="0" width="3.5" height="3.5" patternUnits="userSpaceOnUse">
+                        <circle fill="rgba(102, 170, 120, 0.15)" cx="1.5" cy="1.5" r="1"></circle>
+                    </pattern>
+                    <pattern id="dots-active" x="0" y="0" width="3.5" height="3.5" patternUnits="userSpaceOnUse">
+                        <circle fill="rgba(212, 175, 55, 0.8)" cx="1.5" cy="1.5" r="1.2"></circle>
                     </pattern>
                 </defs>
             </svg>
@@ -54,20 +65,23 @@ export const Globe2D: React.FC<Globe2DProps> = ({ className }) => {
                 <ZoomableGroup center={[15, 30]} zoom={1} minZoom={1} maxZoom={1}>
                     <Geographies geography={geoUrl}>
                         {({ geographies }) =>
-                            geographies.map((geo) => (
-                                <Geography
-                                    key={geo.rsmKey}
-                                    geography={geo}
-                                    fill="url(#dots)"
-                                    stroke="rgba(10, 46, 35, 1)"
-                                    strokeWidth={0.5}
-                                    style={{
-                                        default: { outline: "none" },
-                                        hover: { fill: "rgba(212, 175, 55, 0.8)", outline: "none", cursor: "pointer", transition: "all 0.3s ease" },
-                                        pressed: { outline: "none" },
-                                    }}
-                                />
-                            ))
+                            geographies.map((geo) => {
+                                const isActive = ACTIVE_COUNTRIES.includes(geo.properties.name);
+                                return (
+                                    <Geography
+                                        key={geo.rsmKey}
+                                        geography={geo}
+                                        fill={isActive ? "url(#dots-active)" : "url(#dots-base)"}
+                                        stroke="transparent"
+                                        strokeWidth={0}
+                                        style={{
+                                            default: { outline: "none" },
+                                            hover: { fill: isActive ? "url(#dots-active)" : "rgba(212, 175, 55, 0.3)", outline: "none", cursor: isActive ? "pointer" : "default", transition: "all 0.3s ease" },
+                                            pressed: { outline: "none" },
+                                        }}
+                                    />
+                                );
+                            })
                         }
                     </Geographies>
 
