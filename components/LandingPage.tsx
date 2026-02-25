@@ -18,7 +18,7 @@ import { FeatureCard } from './landing/FeatureCard';
 import { HelpCard } from './landing/HelpCard';
 import { DisclaimerSection } from './landing/DisclaimerSection';
 import { StatsBar } from './landing/StatsBar';
-import { Globe } from './landing/Globe';
+import { Globe2D as Globe } from './landing/Globe2D';
 import { PWAInstallBanner } from './PWAInstallBanner';
 import { toSlug } from '../utils/slug';
 import { useSEO } from '../hooks/useSEO';
