@@ -64,6 +64,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
           lastVerified={data.lastVerified}
           isFree={isFree}
           isSaved={isSaved}
+          timing={data.timing}
           onToggleSave={() => onToggleSave && onToggleSave(data.id)}
         />
 

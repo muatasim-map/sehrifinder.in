@@ -3,6 +3,7 @@ import React from 'react';
 import { CheckCircle2, AlertTriangle, CalendarDays, Heart } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { motion } from 'framer-motion';
+import { isSpotOpenNow } from '../hooks/useSehriCountdown';
 
 interface ListingCardHeaderProps {
   name: string;
@@ -11,6 +12,7 @@ interface ListingCardHeaderProps {
   lastVerified: string;
   isFree: boolean;
   isSaved: boolean;
+  timing: string;
   onToggleSave: () => void;
 }
 
@@ -18,9 +20,10 @@ interface ListingCardHeaderProps {
  * Displays the top section of the card: Name, Verified Badge, Food Type, and Save Button.
  */
 export const ListingCardHeader: React.FC<ListingCardHeaderProps> = ({
-  name, verified, foodType, lastVerified, isFree, isSaved, onToggleSave
+  name, verified, foodType, lastVerified, isFree, isSaved, timing, onToggleSave
 }) => {
   const { t } = useLanguage();
+  const openNow = isSpotOpenNow(timing);
 
   return (
     <div className="flex justify-between items-start mb-2 mt-1 gap-2">
@@ -51,6 +54,21 @@ export const ListingCardHeader: React.FC<ListingCardHeaderProps> = ({
           >
             <Heart size={16} className={isSaved ? "fill-current" : ""} />
           </motion.button>
+
+          {/* Open Now Badge */}
+          {openNow && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider shadow-sm border border-emerald-100"
+            >
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+              </span>
+              Open Now
+            </motion.div>
+          )}
 
           {/* Verification Badge */}
           {verified ? (

@@ -16,6 +16,7 @@ import { SEOJsonLd, getCitySchema } from '../components/SEOJsonLd';
 import { SEO_DATA } from '../data/seoData';
 import { CityIntro } from '../components/CityIntro';
 import { toSlug, fromSlug } from '../utils/slug';
+import { SehriCountdown } from '../components/SehriCountdown';
 
 const AppPage: React.FC = () => {
     const navigate = useNavigate();
@@ -24,6 +25,7 @@ const AppPage: React.FC = () => {
 
     const {
         isLoadingData,
+        allSpots,
         filteredData,
         savedSpotIds,
         selectedCountry,
@@ -138,6 +140,13 @@ const AppPage: React.FC = () => {
                 onViewChange={setViewType}
                 onNearMe={handleNearMe}
             />
+
+            {/* Live Sehri Countdown — highest ROI widget */}
+            {allSpots.length > 0 && allSpots[0].timing && (
+                <div className="container mx-auto px-4 max-w-[1440px] -mt-4 mb-2 relative z-20">
+                    <SehriCountdown timing={allSpots[0].timing} city={selectedCity} />
+                </div>
+            )}
 
             <main className="flex-1 container mx-auto px-4 py-8 max-w-[1440px] relative z-10 -mt-2 md:-mt-8">
                 <FilterBar
