@@ -18,7 +18,7 @@ import { FeatureCard } from './landing/FeatureCard';
 import { HelpCard } from './landing/HelpCard';
 import { DisclaimerSection } from './landing/DisclaimerSection';
 import { CityCard } from './landing/CityCard';
-import { CreatorsBanner } from './landing/CreatorsBanner';
+import { CreatorsStrip } from './landing/CreatorsBanner';
 import { COUNTRIES } from '../data/locations';
 import { toSlug } from '../utils/slug';
 import { useSEO } from '../hooks/useSEO';
@@ -611,9 +611,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
         </div>
       </section>
 
-      {/* FROM THE CREATORS */}
-      <CreatorsBanner />
-
       {/* DISCLAIMER SECTION */}
       <DisclaimerSection />
 
@@ -704,6 +701,56 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
                   className="btn-gold text-emerald-midnight px-4 py-3 rounded-lg font-bold text-sm transition-transform hover:scale-105 active:scale-95 w-full">
                   Subscribe for Updates
                 </button>
+              </div>
+            </div>
+          </div>
+
+          {/* ── FROM THE CREATORS — full-width centered row ── */}
+          <div className="mb-10 py-8 px-6 md:px-10 rounded-2xl bg-white/[0.015] border border-white/[0.06] relative overflow-hidden">
+            {/* Subtle gold shimmer on left edge */}
+            <div className="absolute left-0 top-0 w-[2px] h-full bg-gradient-to-b from-transparent via-gold-lantern/40 to-transparent"></div>
+            <div className="absolute right-0 top-0 w-[2px] h-full bg-gradient-to-b from-transparent via-gold-lantern/40 to-transparent"></div>
+
+            <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10">
+              {/* Label */}
+              <p className="text-[11px] text-neutral-500 uppercase tracking-[0.3em] font-landing-accent font-semibold whitespace-nowrap">
+                From the Creators of
+              </p>
+
+              {/* Logos Row */}
+              <div className="flex items-center gap-8 md:gap-12">
+                {/* QurAnLingo — big, clean, no container */}
+                <a
+                  href="https://dev.quranlingo.in"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/ql transition-all duration-300 hover:scale-105"
+                  title="Learn 85% of Quranic Arabic"
+                >
+                  <img
+                    src="/quranlingo-logo.png"
+                    alt="QurAnLingo — Learn Quranic Arabic"
+                    className="h-12 md:h-14 object-contain drop-shadow-[0_0_12px_rgba(212,175,55,0.15)] group-hover/ql:drop-shadow-[0_0_20px_rgba(212,175,55,0.3)] transition-all duration-300"
+                    loading="lazy"
+                  />
+                </a>
+
+                {/* Separator */}
+                <div className="flex flex-col items-center gap-1">
+                  <span className="w-px h-4 bg-gold-lantern/15"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold-lantern/25"></span>
+                  <span className="w-px h-4 bg-gold-lantern/15"></span>
+                </div>
+
+                {/* DeenFlix — clean text, no container */}
+                <div className="flex flex-col">
+                  <span className="font-brand text-2xl md:text-3xl text-neutral-pearl/60 tracking-wide leading-none">
+                    Deen<span className="text-gold-antique">Flix</span>
+                  </span>
+                  <span className="text-[8px] uppercase tracking-[0.3em] text-gold-antique/50 font-landing-accent mt-1.5">
+                    Coming Soon
+                  </span>
+                </div>
               </div>
             </div>
           </div>
