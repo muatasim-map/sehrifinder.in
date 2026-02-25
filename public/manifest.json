@@ -1,12 +1,23 @@
 {
-    "name": "Sehri Finder - Ramadan 2026",
-    "short_name": "Sehri Finder",
-    "description": "Find accurate Sehri spots and Masjids in Chennai and beyond for Ramadan 2026.",
-    "start_url": "/",
+    "id": "/?source=pwa",
+    "name": "Sehri Finder — Ramadan Food Directory",
+    "short_name": "SehriFinder",
+    "description": "Find verified Sehri spots, Masjids, and community meals during Ramadan. Community-sourced, map-based.",
+    "start_url": "/?source=pwa",
     "display": "standalone",
-    "background_color": "#0A2E23",
-    "theme_color": "#1B4D3E",
+    "display_override": [
+        "window-controls-overlay",
+        "standalone",
+        "minimal-ui"
+    ],
+    "background_color": "#022c22",
+    "theme_color": "#022c22",
     "orientation": "portrait",
+    "categories": [
+        "food",
+        "lifestyle",
+        "social"
+    ],
     "icons": [
         {
             "src": "/pwa-192x192.png",
@@ -17,6 +28,56 @@
             "src": "/pwa-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
+        },
+        {
+            "src": "/pwa-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
         }
-    ]
+    ],
+    "shortcuts": [
+        {
+            "name": "Find Sehri Spots",
+            "short_name": "Find",
+            "description": "Browse verified sehri spots near you",
+            "url": "/find/chennai?source=pwa_shortcut",
+            "icons": [
+                {
+                    "src": "/pwa-192x192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Add a Spot",
+            "short_name": "Submit",
+            "description": "Submit a new sehri location",
+            "url": "/submit?source=pwa_shortcut",
+            "icons": [
+                {
+                    "src": "/pwa-192x192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/pwa-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Sehri Finder — Community Ramadan Map"
+        }
+    ],
+    "share_target": {
+        "action": "/submit",
+        "method": "GET",
+        "params": {
+            "title": "name",
+            "text": "description",
+            "url": "url"
+        }
+    }
 }

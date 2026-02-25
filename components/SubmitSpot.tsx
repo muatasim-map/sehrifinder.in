@@ -23,16 +23,23 @@ const FOOD_TYPES = [
 ];
 
 export const SubmitSpot: React.FC<SubmitSpotProps> = ({ onBack }) => {
-    const [formData, setFormData] = useState({
-        name: '',
-        country: 'India',
-        city: 'Chennai',
-        area: '',
-        type: 'Masjid',
-        foodType: 'Free',
-        timing: '',
-        googleMapsLink: '',
-        notes: ''
+    const [formData, setFormData] = useState(() => {
+        // Pre-fill from Web Share Target params if present
+        // These come in when users share a link/text into Sehri Finder from the Android share sheet
+        const params = typeof window !== 'undefined'
+            ? new URLSearchParams(window.location.search)
+            : new URLSearchParams();
+        return {
+            name: params.get('name') || '',
+            country: 'India',
+            city: 'Chennai',
+            area: '',
+            type: 'Masjid',
+            foodType: 'Free',
+            timing: '',
+            googleMapsLink: params.get('url') || '',
+            notes: params.get('description') || ''
+        };
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);

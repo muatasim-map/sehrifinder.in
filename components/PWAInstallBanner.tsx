@@ -14,21 +14,30 @@ const isIOS = () =>
     /iphone|ipad|ipod/i.test(navigator.userAgent) &&
     !(navigator as Navigator & { standalone?: boolean }).standalone;
 
+const DISMISS_KEY = 'pwa-banner-dismissed-until';
+
+const isBannerDismissed = () => {
+    try {
+        const until = localStorage.getItem(DISMISS_KEY);
+        if (!until) return false;
+        return Date.now() < Number(until);
+    } catch {
+        return false;
+    }
+};
+
 export const PWAInstallBanner: React.FC = () => {
     const { canInstall, isInstalled, install } = usePWAInstall();
-    const [dismissed, setDismissed] = useState(() => {
-        try {
-            return !!sessionStorage.getItem('pwa-banner-dismissed');
-        } catch {
-            return false;
-        }
-    });
+    const [dismissed, setDismissed] = useState(() => isBannerDismissed());
     const [showIOSGuide, setShowIOSGuide] = useState(() => isIOS() && !isInstalled);
 
     const dismiss = () => {
         setDismissed(true);
         setShowIOSGuide(false);
-        try { sessionStorage.setItem('pwa-banner-dismissed', '1'); } catch { /* noop */ }
+        // Suppress for 30 days
+        try {
+            localStorage.setItem(DISMISS_KEY, String(Date.now() + 30 * 24 * 60 * 60 * 1000));
+        } catch { /* noop */ }
     };
 
     const handleInstall = async () => {

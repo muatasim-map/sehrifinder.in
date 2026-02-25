@@ -43,11 +43,11 @@ export const Globe2D: React.FC<Globe2DProps> = ({ className }) => {
             {/* SVG Pattern Definitions for Dot Matrix Effect */}
             <svg width="0" height="0">
                 <defs>
-                    <pattern id="dots-base" x="0" y="0" width="3.5" height="3.5" patternUnits="userSpaceOnUse">
-                        <circle fill="rgba(102, 170, 120, 0.15)" cx="1.5" cy="1.5" r="1"></circle>
+                    <pattern id="dots-base" x="0" y="0" width="2.5" height="2.5" patternUnits="userSpaceOnUse">
+                        <circle fill="rgba(102, 170, 120, 0.12)" cx="0.8" cy="0.8" r="0.6"></circle>
                     </pattern>
-                    <pattern id="dots-active" x="0" y="0" width="3.5" height="3.5" patternUnits="userSpaceOnUse">
-                        <circle fill="rgba(212, 175, 55, 0.8)" cx="1.5" cy="1.5" r="1.2"></circle>
+                    <pattern id="dots-active" x="0" y="0" width="2.5" height="2.5" patternUnits="userSpaceOnUse">
+                        <circle fill="rgba(212, 175, 55, 0.9)" cx="1" cy="1" r="0.8"></circle>
                     </pattern>
                 </defs>
             </svg>
@@ -88,14 +88,21 @@ export const Globe2D: React.FC<Globe2DProps> = ({ className }) => {
                     {/* Markers */}
                     {markers.map(({ name, coordinates }) => (
                         <Marker key={name} coordinates={coordinates}>
-                            {/* Layered Glow for Marker */}
+                            {/* Outer Atmospheric Glow */}
+                            <circle
+                                r={20}
+                                fill="rgba(212, 175, 55, 0.15)"
+                                style={{ filter: 'blur(12px)' }}
+                            />
+                            {/* Middle Glow */}
                             <circle
                                 r={12}
-                                fill="rgba(212, 175, 55, 0.2)"
-                                style={{ filter: 'blur(8px)' }}
+                                fill="rgba(212, 175, 55, 0.3)"
+                                style={{ filter: 'blur(6px)' }}
                             />
+                            {/* Core Marker */}
                             <motion.circle
-                                r={6}
+                                r={5.5}
                                 fill="#FFD700"
                                 stroke="#0A2E23"
                                 strokeWidth={2}
@@ -107,20 +114,21 @@ export const Globe2D: React.FC<Globe2DProps> = ({ className }) => {
                                     damping: 20,
                                     delay: Math.random() * 0.5 + 0.5
                                 }}
-                                style={{ filter: 'drop-shadow(0 0 8px rgba(212, 175, 55, 0.8))' }}
+                                style={{ filter: 'drop-shadow(0 0 10px rgba(255, 215, 0, 0.9))' }}
                             />
+                            {/* Pulse Effect */}
                             <motion.circle
-                                r={15}
+                                r={18}
                                 fill="none"
-                                stroke="#D4AF37"
-                                strokeWidth={1.5}
-                                initial={{ opacity: 0, scale: 0 }}
-                                animate={{ opacity: [0.4, 0], scale: [0, 3] }}
+                                stroke="#FFD700"
+                                strokeWidth={1}
+                                initial={{ opacity: 0, scale: 0.5 }}
+                                animate={{ opacity: [0, 0.4, 0], scale: [0.5, 2.5] }}
                                 transition={{
-                                    duration: 2.5,
+                                    duration: 3,
                                     repeat: Infinity,
                                     ease: "easeOut",
-                                    delay: Math.random()
+                                    delay: Math.random() * 2
                                 }}
                             />
                         </Marker>

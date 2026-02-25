@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, X, Share2, Info, Flag, PlusCircle, Globe } from 'lucide-react';
+import { Menu, X, Share2, Info, Flag, PlusCircle, Globe, BookOpen } from 'lucide-react';
 import { Logo } from './Logo';
 import { IslamicPattern } from './Pattern';
 import { useLanguage } from '../context/LanguageContext';
@@ -31,8 +31,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSubmit }) => {
 
   return (
     <>
-      <header className="absolute top-0 w-full z-50 bg-transparent h-20" dir="ltr">
-        <div className={`container mx-auto px-4 h-full flex items-center justify-between relative z-10 ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
+      <header
+        className="fixed top-0 w-full z-50 transition-all duration-300"
+        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+        dir="ltr"
+      >
+        {/* Frosted glass background — always present, opacity tied to a class */}
+        <div className="absolute inset-0 bg-emerald-midnight/80 backdrop-blur-xl border-b border-gold-lantern/10 shadow-[0_2px_20px_rgba(0,0,0,0.4)]" />
+        <div className={`container mx-auto px-4 h-16 flex items-center justify-between relative z-10 ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
           {/* Logo */}
           <div
             className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
@@ -41,7 +47,18 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSubmit }) => {
             <Logo variant="light" />
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
+            {/* Learn Quranic Arabic Link */}
+            <a
+              href="https://dev.quranlingo.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 text-emerald-300 hover:bg-emerald-400/20 transition-all text-xs font-bold whitespace-nowrap"
+            >
+              <BookOpen size={13} />
+              <span>Learn Quranic Arabic</span>
+            </a>
+
             {/* Doubts Link */}
             <a
               href="https://www.lighthousementoring.org/"
@@ -56,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSubmit }) => {
             <button
               onClick={toggleLanguage}
               aria-label="Toggle Language"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition-all text-xs font-bold"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/15 bg-white/8 text-white hover:bg-white/15 transition-all text-xs font-bold"
             >
               <Globe size={14} className="text-gold-bright" />
               <span>{getLangLabel()}</span>
@@ -116,6 +133,16 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSubmit }) => {
               >
                 <Globe size={20} />
                 <span>Have doubts about Islam?</span>
+              </a>
+
+              <a
+                href="https://dev.quranlingo.in/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex md:hidden items-center gap-4 w-full p-3 rounded-lg text-emerald-600 hover:bg-gray-100 transition-colors font-bold ${dir === 'rtl' ? 'flex-row-reverse text-right' : 'text-left'}`}
+              >
+                <BookOpen size={20} />
+                <span>Learn Quranic Arabic</span>
               </a>
 
               <MenuItem icon={<Info size={20} />} label="About This Service" dir={dir} />

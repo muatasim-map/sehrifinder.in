@@ -97,7 +97,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             className="flex items-center gap-2 text-neutral-pearl animate-fade-in cursor-pointer hover:opacity-80 transition-opacity"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-            <Logo variant={isScrolled ? 'dark' : 'gold'} />
+            <Logo variant="gold" />
           </div>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-landing-accent font-medium text-neutral-pearl/90 animate-fade-in" style={{ animationDelay: '0.1s' }}>
@@ -105,6 +105,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             <button onClick={() => scrollToSection('features')} className="hover:text-gold-lantern transition-colors">Features</button>
             <button onClick={handleVolunteer} className="hover:text-gold-lantern transition-colors">Volunteer</button>
             <a href="https://www.lighthousementoring.org/" target="_blank" rel="noopener noreferrer" className="text-gold-lantern hover:text-gold-bright transition-colors font-bold whitespace-nowrap">Have doubts about Islam?</a>
+            <a href="https://dev.quranlingo.in/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-emerald-300 hover:text-emerald-100 transition-colors font-bold whitespace-nowrap">
+              <BookOpen className="w-3.5 h-3.5" />
+              Learn Quranic Arabic
+            </a>
             <button
               onClick={onEnterApp}
               className="px-6 py-2 bg-white/10 border border-white/20 rounded-full text-neutral-pearl font-bold text-sm hover:bg-white/20 hover:border-white/30 transition-all backdrop-blur-sm shadow-sm"
@@ -126,6 +130,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               <button onClick={() => scrollToSection('features')} className="text-left text-neutral-pearl py-2 border-b border-white/5">Features</button>
               <button onClick={handleVolunteer} className="text-left text-neutral-pearl py-2 border-b border-white/5">Volunteer</button>
               <a href="https://www.lighthousementoring.org/" target="_blank" rel="noopener noreferrer" className="text-left text-gold-lantern py-2 border-b border-white/5 font-bold">Have doubts about Islam?</a>
+              <a href="https://dev.quranlingo.in/" target="_blank" rel="noopener noreferrer" className="text-left text-emerald-300 py-2 border-b border-white/5 font-bold flex items-center gap-2">
+                <BookOpen className="w-4 h-4" />
+                Learn Quranic Arabic
+              </a>
               <button onClick={onEnterApp} className="bg-gold-lantern text-emerald-midnight w-full py-3 rounded-lg font-bold mt-2">Launch App</button>
             </div>
           </>
@@ -491,12 +499,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               className="order-2 lg:order-1 flex flex-col gap-10"
             >
               {/* Countries List */}
-              <div className="bg-[#0A2E23]/80 backdrop-blur-xl border border-gold-lantern/20 rounded-[32px] p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group w-full max-w-xl transition-all hover:border-gold-lantern/40">
+              <div className="bg-[#0A2E23]/90 backdrop-blur-2xl border border-gold-lantern/25 rounded-[32px] p-8 md:p-12 shadow-[0_30px_60px_rgba(0,0,0,0.6)] relative overflow-hidden group w-full max-w-xl">
                 <div className="absolute top-0 right-0 w-80 h-80 bg-gold-lantern/10 blur-[120px] rounded-full pointer-events-none group-hover:bg-gold-lantern/15 transition-colors duration-1000" />
                 <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-emerald-sacred/20 blur-[100px] rounded-full pointer-events-none" />
 
-                <h3 className="text-[22px] font-landing-heading tracking-[0.2em] uppercase text-gold-lantern mb-10 flex items-center gap-4">
-                  <div className="p-2.5 bg-gold-lantern/10 rounded-xl border border-gold-lantern/20">
+                <h3 className="text-[20px] font-landing-heading tracking-[0.4em] uppercase text-gold-lantern mb-10 flex items-center gap-5">
+                  <div className="p-2.5 bg-gold-lantern/10 rounded-xl border border-gold-lantern/30 shadow-[0_0_15px_rgba(212,175,55,0.1)]">
                     <MapPin className="w-5 h-5 flex-shrink-0" />
                   </div>
                   Countries We Serve
@@ -504,20 +512,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
 
                 <div className="flex flex-wrap gap-4 mb-12">
                   {['India', 'United Kingdom', 'Canada', 'United States', 'Malaysia'].map((country) => (
-                    <span key={country} className="px-6 py-3 rounded-full border border-white/5 text-neutral-pearl/90 font-medium text-sm hover:border-gold-lantern/40 transition-all cursor-default bg-emerald-midnight/40 backdrop-blur-sm shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] hover:bg-gold-lantern/5 group/pill hover:text-gold-lantern">
+                    <span key={country} className="px-7 py-3 rounded-full border border-white/10 text-neutral-pearl/80 font-medium text-sm hover:border-gold-lantern/40 transition-all cursor-default bg-[#0d211a]/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.03)] hover:text-gold-lantern hover:bg-gold-lantern/5">
                       {country}
                     </span>
                   ))}
                 </div>
 
-                <div className="pt-10 border-t border-white/10 grid grid-cols-2 gap-12">
+                <div className="pt-12 border-t border-white/5 grid grid-cols-2 gap-12">
                   <div>
-                    <div className="text-[42px] font-landing-heading text-neutral-pearl leading-none mb-3 drop-shadow-[0_0_15px_rgba(212,175,55,0.2)]">20+</div>
-                    <div className="text-[11px] uppercase tracking-[0.25em] text-gold-lantern/70 font-bold">Cities Live</div>
+                    <div className="text-[48px] font-landing-heading text-neutral-pearl leading-none mb-3 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">20+</div>
+                    <div className="text-[10px] uppercase tracking-[0.3em] text-gold-lantern font-bold opacity-80">Cities Live</div>
                   </div>
                   <div>
-                    <div className="text-[42px] font-landing-heading text-neutral-pearl leading-none mb-3 drop-shadow-[0_0_15px_rgba(212,175,55,0.2)]">500+</div>
-                    <div className="text-[11px] uppercase tracking-[0.25em] text-gold-lantern/70 font-bold">Verified Spots</div>
+                    <div className="text-[48px] font-landing-heading text-neutral-pearl leading-none mb-3 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">500+</div>
+                    <div className="text-[10px] uppercase tracking-[0.3em] text-gold-lantern font-bold opacity-80">Verified Spots</div>
                   </div>
                 </div>
               </div>
@@ -526,10 +534,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               <div className="flex justify-start">
                 <button
                   onClick={() => onSelectCity('Chennai')}
-                  className="px-10 py-4 bg-[#0A2E23] text-gold-lantern rounded-full font-bold text-sm border border-gold-lantern shadow-[0_0_20px_rgba(212,175,55,0.2)] hover:shadow-[0_0_35px_rgba(212,175,55,0.4)] hover:bg-gold-lantern hover:text-emerald-midnight transition-all duration-300 flex items-center gap-4 group"
+                  className="px-10 py-4.5 bg-[#092218] text-gold-lantern rounded-full font-bold text-sm border-2 border-gold-lantern/80 shadow-[0_0_25px_rgba(212,175,55,0.25)] hover:shadow-[0_0_45px_rgba(212,175,55,0.5)] hover:bg-gold-lantern hover:text-emerald-midnight transition-all duration-500 flex items-center gap-5 group"
                 >
-                  <span className="tracking-widest uppercase text-[12px]">Explore Sehri Spots</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
+                  <span className="tracking-[0.2em] uppercase text-[13px]">Explore Sehri Spots</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-3 transition-transform duration-500" />
                 </button>
               </div>
             </motion.div>

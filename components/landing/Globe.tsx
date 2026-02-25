@@ -20,12 +20,12 @@ export const Globe: React.FC<GlobeProps> = ({ className }) => {
             phi: 0,
             theta: 0.15, // Tilt slightly
             dark: 1, // Dark theme
-            diffuse: 1.2,
-            mapSamples: 16000, // Dot density
-            mapBrightness: 6,
+            diffuse: 2, // Softer more glowing light
+            mapSamples: 20000, // Higher dot density for premium feel
+            mapBrightness: 8, // Brighter dots
             baseColor: [0.039, 0.18, 0.137], // #0A2E23 (emerald-midnight)
-            markerColor: [0.831, 0.686, 0.216], // #D4AF37 (gold-lantern)
-            glowColor: [0.039, 0.18, 0.137], // Match base background for seamless glow
+            markerColor: [1.0, 0.843, 0.0], // #FFD700 (bright gold)
+            glowColor: [0.039, 0.25, 0.15], // Stronger emerald atmospheric glow
             markers: [
                 // India (Chennai / Mumbai)
                 { location: [13.0827, 80.2707], size: 0.1 },
@@ -40,9 +40,9 @@ export const Globe: React.FC<GlobeProps> = ({ className }) => {
                 { location: [3.1390, 101.6869], size: 0.08 },
             ],
             onRender: (state) => {
-                // Oscillating rotation to avoid dead ocean space
-                const time = Date.now() / 4000;
-                state.phi = 0.5 + Math.sin(time) * 0.7;
+                // Smooth continuous slow rotation
+                state.phi = phi;
+                phi += 0.002;
             },
         });
 

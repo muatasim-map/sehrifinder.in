@@ -1,27 +1,37 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-// Compression plugin for optimized assets
+// Compression plugins for optimized assets (gzip + brotli)
 import compression from 'vite-plugin-compression';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   plugins: [
     react(),
+    // Gzip for broad compatibility
     compression({
       algorithm: 'gzip',
       ext: '.gz',
+    }),
+    // Brotli for modern browsers (~20% smaller than gzip)
+    compression({
+      algorithm: 'brotliCompress',
+      ext: '.br',
     }),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg', 'quranlingo-logo.png'],
       manifest: {
+        // Stable ID prevents duplicate installs when start_url changes
+        id: '/?source=pwa',
         name: 'Sehri Finder — Ramadan Food Directory',
         short_name: 'SehriFinder',
         description: 'Find verified Sehri spots, Masjids, and community meals during Ramadan. Community-sourced, map-based.',
         theme_color: '#022c22',
         background_color: '#022c22',
+        // display_override gives desktop WCO then falls back to standalone
         display: 'standalone',
+        display_override: ['window-controls-overlay', 'standalone', 'minimal-ui'],
         scope: '/',
         start_url: '/?source=pwa',
         orientation: 'portrait',
@@ -60,7 +70,27 @@ export default defineConfig({
             url: '/submit?source=pwa_shortcut',
             icons: [{ src: 'pwa-192x192.png', sizes: '192x192' }]
           }
-        ]
+        ],
+        // Rich install carousel shown in Chrome/Edge install dialog
+        screenshots: [
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            form_factor: 'narrow',
+            label: 'Sehri Finder — Community Ramadan Map'
+          }
+        ],
+        // Web Share Target: lets other apps share URLs/text into Sehri Finder
+        share_target: {
+          action: '/submit',
+          method: 'GET',
+          params: {
+            title: 'name',
+            text: 'description',
+            url: 'url'
+          }
+        }
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff2}'],
