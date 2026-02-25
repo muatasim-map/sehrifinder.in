@@ -59,7 +59,7 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({ spot, onClose, onS
             const newData = { ...prev, [name]: value };
             if (name === 'country') {
                 const country = COUNTRIES.find(c => c.name === value);
-                if (country) newData.city = country.cities[0];
+                if (country) newData.city = country.cities[0].name;
             }
             return newData;
         });
@@ -194,7 +194,7 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({ spot, onClose, onS
                                         className="w-full p-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white focus:border-emerald-500 outline-none"
                                     >
                                         {COUNTRIES.find(c => c.name === formData.country)?.cities.map(city => (
-                                            <option key={city} value={city}>{city}</option>
+                                            <option key={city.name} value={city.name}>{city.name}</option>
                                         ))}
                                     </select>
                                 </div>

@@ -122,12 +122,12 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                     <div className="p-1.5 space-y-0.5">
                       {COUNTRIES.find(c => c.name === selectedCountry)?.cities.map((city) => (
                         <button
-                          key={city}
-                          onClick={() => { onSelectCity(city); setIsCityOpen(false); }}
-                          className={`w-full text-left px-3 py-3 rounded-lg text-sm flex items-center justify-between transition-colors ${selectedCity === city ? 'bg-cream text-primary-dark font-bold' : 'text-gray-600 hover:bg-stone-50'}`}
+                          key={city.name}
+                          onClick={() => { onSelectCity(city.name); setIsCityOpen(false); }}
+                          className={`w-full text-left px-3 py-3 rounded-lg text-sm flex items-center justify-between transition-colors ${selectedCity === city.name ? 'bg-cream text-primary-dark font-bold' : 'text-gray-600 hover:bg-stone-50'}`}
                         >
-                          <span className="font-medium">{city}</span>
-                          {selectedCity === city && <Check size={16} className="text-gold-bright" />}
+                          <span className="font-medium">{city.name}</span>
+                          {selectedCity === city.name && <Check size={16} className="text-gold-bright" />}
                         </button>
                       ))}
                     </div>

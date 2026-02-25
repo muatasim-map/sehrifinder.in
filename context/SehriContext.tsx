@@ -38,7 +38,7 @@ interface SehriContextType {
 const SehriContext = createContext<SehriContextType | undefined>(undefined);
 
 // Derived from COUNTRIES - the single source of truth. Prevents isCitySupported from going stale.
-const SUPPORTED_CITIES = COUNTRIES.flatMap(c => c.cities);
+const SUPPORTED_CITIES = COUNTRIES.flatMap(c => c.cities.map(city => city.name));
 
 
 export const SehriProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -85,9 +85,9 @@ export const SehriProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const handleCountryChange = (countryName: string) => {
         setSelectedCountry(countryName);
         const country = COUNTRIES.find(c => c.name === countryName);
-        if (country && !country.cities.includes(selectedCity)) {
+        if (country && !country.cities.some(c => c.name === selectedCity)) {
             // Pick first city if current city not in new country
-            handleCityChange(country.cities[0]);
+            handleCityChange(country.cities[0].name);
         }
     };
 

@@ -47,12 +47,12 @@ export const FooterSEO: React.FC = () => {
                             </h3>
                             <ul className="flex flex-col gap-2">
                                 {country.cities.map((city) => (
-                                    <li key={city}>
+                                    <li key={city.name}>
                                         <a
-                                            href={`/find/${toSlug(city)}`}
+                                            href={`/find/${toSlug(city.name)}`}
                                             className="text-white/50 hover:text-gold-antique text-sm transition-colors"
                                         >
-                                            Sehri in {city}
+                                            Sehri in {city.name}
                                         </a>
                                     </li>
                                 ))}

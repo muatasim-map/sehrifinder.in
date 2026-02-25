@@ -86,7 +86,7 @@ const AppPage: React.FC = () => {
     useEffect(() => {
         const cityNameFromUrl = city ? fromSlug(city) : null;
         if (cityNameFromUrl && cityNameFromUrl.toLowerCase() !== selectedCity.toLowerCase()) {
-            const supported = COUNTRIES.flatMap(c => c.cities);
+            const supported = COUNTRIES.flatMap(c => c.cities.map(loc => loc.name));
             const match = supported.find(c => c.toLowerCase() === cityNameFromUrl.toLowerCase());
             if (match) setSelectedCity(match);
         }
@@ -109,7 +109,7 @@ const AppPage: React.FC = () => {
         // The URL->State effect above will then update the city state correctly.
         const country = COUNTRIES.find(c => c.name === countryName);
         if (country && country.cities.length > 0) {
-            navigate(`/find/${toSlug(country.cities[0])}`);
+            navigate(`/find/${toSlug(country.cities[0].name)}`);
         }
     };
 

@@ -314,8 +314,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                                 >
                                     <option value="All">All Cities</option>
                                     {(selectedCountry === 'All'
-                                        ? COUNTRIES.flatMap(c => c.cities)
-                                        : COUNTRIES.find(c => c.name === selectedCountry)?.cities || []
+                                        ? COUNTRIES.flatMap(c => c.cities.map(loc => loc.name))
+                                        : COUNTRIES.find(c => c.name === selectedCountry)?.cities.map(loc => loc.name) || []
                                     ).map(city => (
                                         <option key={city} value={city}>{city}</option>
                                     ))}

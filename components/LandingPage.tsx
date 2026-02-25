@@ -17,6 +17,7 @@ import { fadeInUp, staggerContainer, textReveal } from '../config/animations';
 import { FeatureCard } from './landing/FeatureCard';
 import { HelpCard } from './landing/HelpCard';
 import { DisclaimerSection } from './landing/DisclaimerSection';
+import { WorldMap } from './landing/WorldMap';
 import { CityCard } from './landing/CityCard';
 import { COUNTRIES } from '../data/locations';
 import { toSlug } from '../utils/slug';
@@ -481,33 +482,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            variants={staggerContainer}
-            className="max-w-6xl mx-auto space-y-16"
+            variants={fadeInUp}
+            className="max-w-6xl mx-auto"
           >
-            {COUNTRIES.map((country, countryIndex) => (
-              <div key={country.code} className="space-y-6 text-center md:text-left">
-                <div className="flex items-center gap-4">
-                  <h3 className="font-serif font-bold text-2xl text-emerald-midnight opacity-40 uppercase tracking-[0.2em]">{country.name}</h3>
-                  <div className="h-px flex-1 bg-emerald-midnight/10"></div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {country.cities.map((city, cityIndex) => {
-                    const isChennai = city === 'Chennai';
-                    return (
-                      <CityCard
-                        key={city}
-                        name={city}
-                        status="Live"
-                        desc={isChennai ? "50+ Verified Spots" : "Verified Spots"}
-                        delay={(countryIndex * 100) + (cityIndex * 50)}
-                        onClick={() => onSelectCity(city)}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
+            <WorldMap onSelectCity={onSelectCity} />
           </motion.div>
         </div>
       </section>

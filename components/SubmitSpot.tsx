@@ -93,7 +93,7 @@ export const SubmitSpot: React.FC<SubmitSpotProps> = ({ onBack }) => {
             // If country changes, reset city to the first city of that country
             if (name === 'country') {
                 const country = COUNTRIES.find(c => c.name === value);
-                if (country) newData.city = country.cities[0];
+                if (country) newData.city = country.cities[0].name;
             }
             return newData;
         });
@@ -169,7 +169,7 @@ export const SubmitSpot: React.FC<SubmitSpotProps> = ({ onBack }) => {
                                         className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white appearance-none"
                                     >
                                         {COUNTRIES.find(c => c.name === formData.country)?.cities.map(city => (
-                                            <option key={city} value={city}>{city}</option>
+                                            <option key={city.name} value={city.name}>{city.name}</option>
                                         ))}
                                     </select>
                                 </div>
