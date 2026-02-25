@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { toast } from 'sonner';
 import {
   Moon, MapPin, ShieldCheck, Users,
@@ -28,6 +28,50 @@ interface LandingPageProps {
   onOpenSubmit: () => void;
   onSelectCity: (city: string) => void;
 }
+
+// Animated count-up stat component
+const CountUpStat: React.FC<{ target: number; suffix?: string; label: string }> = ({ target, suffix = '', label }) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const duration = 1200;
+          const steps = 40;
+          const increment = target / steps;
+          let current = 0;
+          const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+              setCount(target);
+              clearInterval(timer);
+            } else {
+              setCount(Math.floor(current));
+            }
+          }, duration / steps);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target]);
+
+  return (
+    <div ref={ref}>
+      <div className="text-[48px] font-landing-heading text-neutral-pearl leading-none mb-3 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)] tabular-nums">
+        {count}{suffix}
+      </div>
+      <div className="text-[10px] uppercase tracking-[0.3em] text-gold-lantern font-bold opacity-80">{label}</div>
+    </div>
+  );
+};
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubmit, onSelectCity }) => {
   useSEO(''); // Reset SEO for landing page
@@ -84,9 +128,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
         @keyframes shadow-pulse { 0%, 100% { box-shadow: 0 0 30px rgba(212,175,55,0.3); transform: scale(1); } 50% { box-shadow: 0 0 50px rgba(212,175,55,0.6); transform: scale(1.02); } }
         @keyframes flicker-candle { 0%, 100% { opacity: 0.8; transform: scale(1); filter: blur(4px); } 50% { opacity: 0.6; transform: scale(0.95); filter: blur(3px); } 25% { opacity: 0.9; transform: scale(1.05); filter: blur(5px); } 75% { opacity: 0.7; transform: scale(0.9); filter: blur(3.5px); } }
         @keyframes ripple { 0% { transform: scale(0.95); opacity: 0.8; } 100% { transform: scale(2.5); opacity: 0; } }
+        @keyframes glow-pulse { 0%, 100% { box-shadow: 0 4px_20px rgba(212,175,55,0.3), 0 0 0 0 rgba(212,175,55,0); } 50% { box-shadow: 0 8px 40px rgba(212,175,55,0.55), 0 0 0 8px rgba(212,175,55,0.08); } }
+        @keyframes card-shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+        @keyframes heart-beat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.3); } 28% { transform: scale(1); } 42% { transform: scale(1.15); } 70% { transform: scale(1); } }
         .animate-ripple { animation: ripple 1.5s infinite linear; }
+        .animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+        .animate-heartbeat { animation: heart-beat 2.5s ease-in-out infinite; }
         .text-shadow-gold { text-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
         .lantern-glow-core { mix-blend-mode: screen; }
+        .shimmer-border {
+          background: linear-gradient(90deg, rgba(212,175,55,0.15) 0%, rgba(212,175,55,0.35) 40%, rgba(212,175,55,0.15) 100%);
+          background-size: 200% auto;
+          animation: card-shimmer 4s linear infinite;
+        }
       `}</style>
 
       {/* NAVBAR */}
@@ -462,9 +516,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
         </div>
       </section>
 
-      {/* CITIES SECTION (REDESIGNED 3D GLOBE) */}
+      {/* CITIES SECTION — GLOBAL REACH */}
       <section id="cities" className="py-24 md:py-32 bg-gradient-to-b from-[#0a1f16] to-[#04120c] relative overflow-hidden">
-        {/* Subtle Background Pattern */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
           <IslamicPattern variant="octagon-star-lattice" className="text-gold-lantern" />
         </div>
@@ -498,43 +551,57 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               variants={fadeInUp}
               className="order-2 lg:order-1 flex flex-col gap-10"
             >
-              {/* Countries List */}
+              {/* Countries Card */}
               <div className="bg-[#0A2E23]/90 backdrop-blur-2xl border border-gold-lantern/25 rounded-[32px] p-8 md:p-12 shadow-[0_30px_60px_rgba(0,0,0,0.6)] relative overflow-hidden group w-full max-w-xl">
+                {/* Shimmer sweep on top border */}
+                <div className="absolute top-0 left-0 right-0 h-px shimmer-border" />
                 <div className="absolute top-0 right-0 w-80 h-80 bg-gold-lantern/10 blur-[120px] rounded-full pointer-events-none group-hover:bg-gold-lantern/15 transition-colors duration-1000" />
                 <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-emerald-sacred/20 blur-[100px] rounded-full pointer-events-none" />
 
-                <h3 className="text-[20px] font-landing-heading tracking-[0.4em] uppercase text-gold-lantern mb-10 flex items-center gap-5">
+                {/* Title with live pulse dot */}
+                <h3 className="text-[20px] font-landing-heading tracking-[0.4em] uppercase text-gold-lantern mb-10 flex items-center gap-4">
                   <div className="p-2.5 bg-gold-lantern/10 rounded-xl border border-gold-lantern/30 shadow-[0_0_15px_rgba(212,175,55,0.1)]">
                     <MapPin className="w-5 h-5 flex-shrink-0" />
                   </div>
                   Countries We Serve
+                  {/* Live indicator */}
+                  <span className="relative flex h-2.5 w-2.5 ml-auto">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                  </span>
                 </h3>
 
-                <div className="flex flex-wrap gap-4 mb-12">
-                  {['India', 'United Kingdom', 'Canada', 'United States', 'Malaysia'].map((country) => (
-                    <span key={country} className="px-7 py-3 rounded-full border border-white/10 text-neutral-pearl/80 font-medium text-sm hover:border-gold-lantern/40 transition-all cursor-default bg-[#0d211a]/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.03)] hover:text-gold-lantern hover:bg-gold-lantern/5">
-                      {country}
+                {/* Country chips with flags */}
+                <div className="flex flex-wrap gap-3 mb-12">
+                  {[
+                    { name: 'India', flag: '🇮🇳' },
+                    { name: 'United Kingdom', flag: '🇬🇧' },
+                    { name: 'Canada', flag: '🇨🇦' },
+                    { name: 'United States', flag: '🇺🇸' },
+                    { name: 'Malaysia', flag: '🇲🇾' },
+                  ].map(({ name, flag }) => (
+                    <span
+                      key={name}
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 text-neutral-pearl/80 font-medium text-sm hover:border-gold-lantern/40 hover:text-gold-lantern hover:bg-gold-lantern/5 transition-all cursor-default bg-[#0d211a]/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.03)]"
+                    >
+                      <span className="text-base leading-none">{flag}</span>
+                      {name}
                     </span>
                   ))}
                 </div>
 
-                <div className="pt-12 border-t border-white/5 grid grid-cols-2 gap-12">
-                  <div>
-                    <div className="text-[48px] font-landing-heading text-neutral-pearl leading-none mb-3 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">20+</div>
-                    <div className="text-[10px] uppercase tracking-[0.3em] text-gold-lantern font-bold opacity-80">Cities Live</div>
-                  </div>
-                  <div>
-                    <div className="text-[48px] font-landing-heading text-neutral-pearl leading-none mb-3 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">500+</div>
-                    <div className="text-[10px] uppercase tracking-[0.3em] text-gold-lantern font-bold opacity-80">Verified Spots</div>
-                  </div>
+                {/* Animated Stats */}
+                <div className="pt-8 border-t border-white/5 grid grid-cols-2 gap-8">
+                  <CountUpStat target={20} suffix="+" label="Cities Live" />
+                  <CountUpStat target={500} suffix="+" label="Verified Spots" />
                 </div>
               </div>
 
-              {/* Call to Action */}
+              {/* CTA */}
               <div className="flex justify-start">
                 <button
                   onClick={() => onSelectCity('Chennai')}
-                  className="px-10 py-4.5 bg-[#092218] text-gold-lantern rounded-full font-bold text-sm border-2 border-gold-lantern/80 shadow-[0_0_25px_rgba(212,175,55,0.25)] hover:shadow-[0_0_45px_rgba(212,175,55,0.5)] hover:bg-gold-lantern hover:text-emerald-midnight transition-all duration-500 flex items-center gap-5 group"
+                  className="px-10 py-4 bg-[#092218] text-gold-lantern rounded-full font-bold text-sm border-2 border-gold-lantern/80 shadow-[0_0_25px_rgba(212,175,55,0.25)] hover:shadow-[0_0_45px_rgba(212,175,55,0.5)] hover:bg-gold-lantern hover:text-emerald-midnight transition-all duration-500 flex items-center gap-5 group"
                 >
                   <span className="tracking-[0.2em] uppercase text-[13px]">Explore Sehri Spots</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-3 transition-transform duration-500" />
@@ -542,7 +609,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               </div>
             </motion.div>
 
-            {/* Right Column: 3D Globe */}
+            {/* Right Column: Globe */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -550,12 +617,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               transition={{ duration: 1, ease: "easeOut" }}
               className="order-1 lg:order-2 relative aspect-square w-full max-w-[600px] mx-auto lg:mr-0 flex items-center justify-center -my-10 lg:my-0"
             >
-              {/* Atmospheric Glow behind Globe */}
               <div className="absolute inset-x-[10%] inset-y-[20%] bg-[#D4AF37]/5 blur-[80px] rounded-full pointer-events-none" />
-
               <Globe className="z-10 mix-blend-lighten" />
-
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 opacity-50 z-20 pointer-events-none bg-black/50 px-4 py-1.5 rounded-full border border-white/10 backdrop-blur-sm">
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 opacity-60 z-20 pointer-events-none bg-black/50 px-4 py-1.5 rounded-full border border-white/10 backdrop-blur-sm">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-lantern opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-gold-lantern"></span>
+                </span>
                 <span className="text-[10px] uppercase tracking-widest text-neutral-pearl">Interactive</span>
               </div>
             </motion.div>
@@ -563,7 +631,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
         </div>
       </section>
 
-      {/* FOOTER CTA */}
+      {/* FOOTER CTA — LET NO ONE GO HUNGRY */}
       <section className="py-24 bg-gradient-to-b from-[#04120c] to-black relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 flex justify-center -mt-3 text-gold-lantern/20">
           <IslamicStar className="w-6 h-6 animate-pulse-slow" />
@@ -577,11 +645,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
         </div>
 
         <div className="container mx-auto px-6 relative z-10 text-center max-w-3xl">
-          <div className="flex justify-center mb-6 text-gold-lantern/50 animate-float reveal">
-            <Heart size={24} />
+
+          {/* Animated heart */}
+          <div className="flex justify-center mb-6 reveal">
+            <Heart size={28} className="text-gold-lantern animate-heartbeat" fill="rgba(212,175,55,0.2)" />
           </div>
 
-          <h2 className="reveal font-landing-heading text-5xl md:text-6xl text-neutral-pearl mb-6" style={{ transitionDelay: '100ms' }}>
+          {/* Social Proof Strip */}
+          <div className="reveal flex items-center justify-center gap-3 mb-8" style={{ transitionDelay: '50ms' }}>
+            <span className="h-px w-8 bg-gold-lantern/30" />
+            <span className="text-xs font-bold uppercase tracking-widest text-gold-lantern/70">
+              10,000+ meals found · Ramadan 2025
+            </span>
+            <span className="h-px w-8 bg-gold-lantern/30" />
+          </div>
+
+          {/* Main Heading — bigger, tighter */}
+          <h2 className="reveal font-landing-heading text-5xl md:text-7xl text-neutral-pearl mb-6 leading-[1.05]" style={{ transitionDelay: '100ms' }}>
             This Ramadan, <br />
             <span className="italic text-gold-lantern">Let No One Go Hungry</span>
           </h2>
@@ -590,10 +670,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             Whether you're looking for a place to eat, or you know a place others should find — Sehri Finder is for you. Join the movement.
           </p>
 
+          {/* Action Buttons */}
           <div className="reveal flex flex-col sm:flex-row justify-center gap-4 mb-16" style={{ transitionDelay: '300ms' }}>
             <button
               onClick={onEnterApp}
-              className="btn-gold text-emerald-midnight px-10 py-4 rounded-full font-landing-accent font-bold text-lg shadow-[0_4px_20px_rgba(212,175,55,0.3)] transition-transform hover:-translate-y-1 hover:scale-105 active:scale-95"
+              className="btn-gold text-emerald-midnight px-10 py-4 rounded-full font-landing-accent font-bold text-lg transition-transform hover:-translate-y-1 hover:scale-105 active:scale-95 animate-glow-pulse"
             >
               Open Sehri Finder
             </button>
@@ -605,14 +686,25 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             </button>
           </div>
 
-          <div className="reveal max-w-2xl mx-auto border-t border-white/5 pt-12" style={{ transitionDelay: '400ms' }}>
-            <p className="font-arabic-text text-2xl mb-4 text-neutral-ivory/80 dir-rtl" lang="ar">
-              إِنَّمَا نُطْعِمُكُمْ لِوَجْهِ اللَّهِ لَا نُرِيدُ مِنكُمْ جَزَاءً وَلَا شُكُورًا
-            </p>
-            <p className="font-landing-heading italic text-lg text-neutral-ivory/50 mb-2">
-              "We feed you only for the countenance of Allah. We wish not from you reward or gratitude."
-            </p>
-            <p className="text-xs uppercase tracking-widest text-gold-antique/60">— Qur'an (76:9)</p>
+          {/* Quranic Verse — Premium framed card */}
+          <div className="reveal" style={{ transitionDelay: '400ms' }}>
+            <div className="relative max-w-2xl mx-auto bg-white/[0.02] border border-gold-lantern/15 rounded-2xl px-8 py-10 backdrop-blur-sm">
+              {/* Top shimmer line */}
+              <div className="absolute top-0 left-1/4 right-1/4 h-px shimmer-border rounded-full" />
+              <p className="font-arabic-text text-2xl mb-4 text-neutral-ivory/85 dir-rtl" lang="ar">
+                إِنَّمَا نُطْعِمُكُمْ لِوَجْهِ اللَّهِ لَا نُرِيدُ مِنكُمْ جَزَاءً وَلَا شُكُورًا
+              </p>
+              {/* Dot separator */}
+              <div className="flex items-center justify-center gap-3 my-4">
+                <span className="h-px w-12 bg-gold-antique/20" />
+                <span className="w-1.5 h-1.5 rounded-full bg-gold-antique/40" />
+                <span className="h-px w-12 bg-gold-antique/20" />
+              </div>
+              <p className="font-landing-heading italic text-lg text-neutral-ivory/50 mb-2">
+                "We feed you only for the countenance of Allah. We wish not from you reward or gratitude."
+              </p>
+              <p className="text-xs uppercase tracking-widest text-gold-antique/60 mt-2">— Qur'an (76:9)</p>
+            </div>
           </div>
         </div>
       </section>
