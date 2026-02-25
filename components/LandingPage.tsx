@@ -42,19 +42,17 @@ const CountUpStat: React.FC<{ target: number; suffix?: string; label: string }> 
       ([entry]) => {
         if (entry.isIntersecting && !started.current) {
           started.current = true;
-          const duration = 1200;
-          const steps = 40;
-          const increment = target / steps;
-          let current = 0;
-          const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-              setCount(target);
-              clearInterval(timer);
-            } else {
-              setCount(Math.floor(current));
-            }
-          }, duration / steps);
+          const start = performance.now();
+          const duration = 1500;
+          const raf = (now: number) => {
+            const elapsed = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - elapsed, 3); // ease-out cubic
+            const next = Math.floor(eased * target);
+            setCount(prev => (prev !== next ? next : prev)); // skip re-render if same
+            if (elapsed < 1) requestAnimationFrame(raf);
+            else setCount(target);
+          };
+          requestAnimationFrame(raf);
         }
       },
       { threshold: 0.5 }
@@ -125,10 +123,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
         @keyframes sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
         @keyframes sway-slow { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
         @keyframes sway-fast { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
-        @keyframes shadow-pulse { 0%, 100% { box-shadow: 0 0 30px rgba(212,175,55,0.3); transform: scale(1); } 50% { box-shadow: 0 0 50px rgba(212,175,55,0.6); transform: scale(1.02); } }
-        @keyframes flicker-candle { 0%, 100% { opacity: 0.8; transform: scale(1); filter: blur(4px); } 50% { opacity: 0.6; transform: scale(0.95); filter: blur(3px); } 25% { opacity: 0.9; transform: scale(1.05); filter: blur(5px); } 75% { opacity: 0.7; transform: scale(0.9); filter: blur(3.5px); } }
+        @keyframes shadow-pulse { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.02); } }
+        @keyframes flicker-candle { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.97); } 25% { opacity: 0.9; transform: scale(1.02); } 75% { opacity: 0.7; transform: scale(0.93); } }
         @keyframes ripple { 0% { transform: scale(0.95); opacity: 0.8; } 100% { transform: scale(2.5); opacity: 0; } }
-        @keyframes glow-pulse { 0%, 100% { box-shadow: 0 4px_20px rgba(212,175,55,0.3), 0 0 0 0 rgba(212,175,55,0); } 50% { box-shadow: 0 8px 40px rgba(212,175,55,0.55), 0 0 0 8px rgba(212,175,55,0.08); } }
+        @keyframes glow-pulse { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.03); } }
         @keyframes card-shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
         @keyframes heart-beat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.3); } 28% { transform: scale(1); } 42% { transform: scale(1.15); } 70% { transform: scale(1); } }
         .animate-ripple { animation: ripple 1.5s infinite linear; }
@@ -210,7 +208,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
           style={{ y: bismillahY }}
           className="absolute top-[25%] md:top-[20%] left-1/2 -translate-x-1/2 z-10 opacity-35 md:opacity-20 pointer-events-none select-none w-full text-center"
         >
-          <span className="font-arabic-calligraphy text-[120px] md:text-[280px] text-gold-antique leading-none whitespace-nowrap blur-[0.5px] text-shadow-gold">
+          <span className="font-arabic-calligraphy text-[120px] md:text-[280px] text-gold-antique leading-none whitespace-nowrap text-shadow-gold">
             رمضان كريم
           </span>
         </motion.div>
@@ -647,31 +645,61 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
         <div className="container mx-auto px-6 relative z-10 text-center max-w-3xl">
 
           {/* Animated heart */}
-          <div className="flex justify-center mb-6 reveal">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, type: "spring", stiffness: 200 }}
+            className="flex justify-center mb-6"
+          >
             <Heart size={28} className="text-gold-lantern animate-heartbeat" fill="rgba(212,175,55,0.2)" />
-          </div>
+          </motion.div>
 
           {/* Social Proof Strip */}
-          <div className="reveal flex items-center justify-center gap-3 mb-8" style={{ transitionDelay: '50ms' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="flex items-center justify-center gap-3 mb-8"
+          >
             <span className="h-px w-8 bg-gold-lantern/30" />
             <span className="text-xs font-bold uppercase tracking-widest text-gold-lantern/70">
               10,000+ meals found · Ramadan 2025
             </span>
             <span className="h-px w-8 bg-gold-lantern/30" />
-          </div>
+          </motion.div>
 
-          {/* Main Heading — bigger, tighter */}
-          <h2 className="reveal font-landing-heading text-5xl md:text-7xl text-neutral-pearl mb-6 leading-[1.05]" style={{ transitionDelay: '100ms' }}>
+          {/* Main Heading */}
+          <motion.h2
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="font-landing-heading text-5xl md:text-7xl text-neutral-pearl mb-6 leading-[1.05]"
+          >
             This Ramadan, <br />
             <span className="italic text-gold-lantern">Let No One Go Hungry</span>
-          </h2>
+          </motion.h2>
 
-          <p className="reveal text-xl text-neutral-ivory/60 mb-10 leading-relaxed font-light" style={{ transitionDelay: '200ms' }}>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="text-xl text-neutral-ivory/60 mb-10 leading-relaxed font-light"
+          >
             Whether you're looking for a place to eat, or you know a place others should find — Sehri Finder is for you. Join the movement.
-          </p>
+          </motion.p>
 
           {/* Action Buttons */}
-          <div className="reveal flex flex-col sm:flex-row justify-center gap-4 mb-16" style={{ transitionDelay: '300ms' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="flex flex-col sm:flex-row justify-center gap-4 mb-16"
+          >
             <button
               onClick={onEnterApp}
               className="btn-gold text-emerald-midnight px-10 py-4 rounded-full font-landing-accent font-bold text-lg transition-transform hover:-translate-y-1 hover:scale-105 active:scale-95 animate-glow-pulse"
@@ -684,10 +712,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             >
               Add a Sehri Spot
             </button>
-          </div>
+          </motion.div>
 
           {/* Quranic Verse — Premium framed card */}
-          <div className="reveal" style={{ transitionDelay: '400ms' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          >
             <div className="relative max-w-2xl mx-auto bg-white/[0.02] border border-gold-lantern/15 rounded-2xl px-8 py-10 backdrop-blur-sm">
               {/* Top shimmer line */}
               <div className="absolute top-0 left-1/4 right-1/4 h-px shimmer-border rounded-full" />
@@ -705,7 +738,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               </p>
               <p className="text-xs uppercase tracking-widest text-gold-antique/60 mt-2">— Qur'an (76:9)</p>
             </div>
-          </div>
+          </motion.div>
+
         </div>
       </section>
 
@@ -754,7 +788,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
       </section>
 
       {/* DISCLAIMER SECTION */}
-      <DisclaimerSection />
+      < DisclaimerSection />
 
       {/* FOOTER */}
       <footer className="bg-[#020a08] pt-20 pb-10 border-t border-white/5 relative overflow-hidden font-landing-body text-neutral-400">
@@ -906,7 +940,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             </div>
           </div>
         </div>
-      </footer>
+      </footer >
 
     </div >
   );

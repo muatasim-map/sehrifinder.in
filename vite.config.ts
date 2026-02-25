@@ -158,7 +158,10 @@ export default defineConfig({
       output: {
         manualChunks: {
           'vendor-react': ['react', 'react-dom'],
-          'vendor-ui': ['lucide-react'],
+          'vendor-motion': ['framer-motion'],
+          'vendor-maps': ['react-simple-maps', 'topojson-client'],
+          'vendor-leaflet': ['leaflet', 'react-leaflet'],
+          'vendor-ui': ['lucide-react', 'sonner'],
         },
       },
     },

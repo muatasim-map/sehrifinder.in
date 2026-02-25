@@ -23,12 +23,14 @@ interface Globe2DProps {
 }
 
 export const Globe2D: React.FC<Globe2DProps> = ({ className }) => {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
     const markers = [
         // India (Chennai / Mumbai)
-        { name: "Chennai", coordinates: [80.2707, 13.0827] as [number, number] },
-        { name: "Mumbai", coordinates: [72.8777, 19.0760] as [number, number] },
+        { name: "Chennai", coordinates: [80.2707, 13.0827] as [number, number], priority: true },
+        { name: "Mumbai", coordinates: [72.8777, 19.0760] as [number, number], priority: true },
         // UK (London)
-        { name: "London", coordinates: [-0.1276, 51.5072] as [number, number] },
+        { name: "London", coordinates: [-0.1276, 51.5072] as [number, number], priority: true },
         // Canada (Toronto)
         { name: "Toronto", coordinates: [-79.3832, 43.6532] as [number, number] },
         // USA (New York)
@@ -37,16 +39,25 @@ export const Globe2D: React.FC<Globe2DProps> = ({ className }) => {
         { name: "Kuala Lumpur", coordinates: [101.6869, 3.1390] as [number, number] },
     ];
 
+    // All markers show on all devices — only the infinite pulse ring is gated on mobile
+    const markersToRender = markers;
+
     return (
-        <div className={`w-full relative ${className || ''}`} style={{ filter: 'drop-shadow(0px 0px 30px rgba(212, 175, 55, 0.05))' }}>
+        <div
+            className={`w-full relative ${className || ''}`}
+            style={{
+                filter: 'drop-shadow(0px 0px 30px rgba(212, 175, 55, 0.05))',
+                pointerEvents: isMobile ? 'none' : 'auto'
+            }}
+        >
 
             {/* SVG Pattern Definitions for Dot Matrix Effect */}
             <svg width="0" height="0">
                 <defs>
-                    <pattern id="dots-base" x="0" y="0" width="2.5" height="2.5" patternUnits="userSpaceOnUse">
+                    <pattern id="dots-base" x="0" y="0" width={isMobile ? "4" : "2.5"} height={isMobile ? "4" : "2.5"} patternUnits="userSpaceOnUse">
                         <circle fill="rgba(102, 170, 120, 0.12)" cx="0.8" cy="0.8" r="0.6"></circle>
                     </pattern>
-                    <pattern id="dots-active" x="0" y="0" width="2.5" height="2.5" patternUnits="userSpaceOnUse">
+                    <pattern id="dots-active" x="0" y="0" width={isMobile ? "4" : "2.5"} height={isMobile ? "4" : "2.5"} patternUnits="userSpaceOnUse">
                         <circle fill="rgba(212, 175, 55, 0.9)" cx="1" cy="1" r="0.8"></circle>
                     </pattern>
                 </defs>
@@ -62,7 +73,13 @@ export const Globe2D: React.FC<Globe2DProps> = ({ className }) => {
                 height={500}
                 style={{ width: "100%", height: "auto" }}
             >
-                <ZoomableGroup center={[15, 30]} zoom={1} minZoom={1} maxZoom={1}>
+                <ZoomableGroup
+                    center={[15, 30]}
+                    zoom={1}
+                    minZoom={1}
+                    maxZoom={isMobile ? 1 : 4}
+                    translateExtent={isMobile ? [[0, 0], [0, 0]] : undefined}
+                >
                     <Geographies geography={geoUrl}>
                         {({ geographies }) =>
                             geographies.map((geo) => {
@@ -86,7 +103,7 @@ export const Globe2D: React.FC<Globe2DProps> = ({ className }) => {
                     </Geographies>
 
                     {/* Markers */}
-                    {markers.map(({ name, coordinates }) => (
+                    {markersToRender.map(({ name, coordinates }) => (
                         <Marker key={name} coordinates={coordinates}>
                             {/* Outer Atmospheric Glow */}
                             <circle
@@ -116,21 +133,23 @@ export const Globe2D: React.FC<Globe2DProps> = ({ className }) => {
                                 }}
                                 style={{ filter: 'drop-shadow(0 0 10px rgba(255, 215, 0, 0.9))' }}
                             />
-                            {/* Pulse Effect */}
-                            <motion.circle
-                                r={18}
-                                fill="none"
-                                stroke="#FFD700"
-                                strokeWidth={1}
-                                initial={{ opacity: 0, scale: 0.5 }}
-                                animate={{ opacity: [0, 0.4, 0], scale: [0.5, 2.5] }}
-                                transition={{
-                                    duration: 3,
-                                    repeat: Infinity,
-                                    ease: "easeOut",
-                                    delay: Math.random() * 2
-                                }}
-                            />
+                            {/* Pulse Effect - Limited to priority markers on mobile */}
+                            {(!isMobile || markersToRender.find(m => m.name === name)?.priority) && (
+                                <motion.circle
+                                    r={18}
+                                    fill="none"
+                                    stroke="#FFD700"
+                                    strokeWidth={1}
+                                    initial={{ opacity: 0, scale: 0.5 }}
+                                    animate={{ opacity: [0, 0.4, 0], scale: [0.5, 2.5] }}
+                                    transition={{
+                                        duration: 3,
+                                        repeat: Infinity,
+                                        ease: "easeOut",
+                                        delay: Math.random() * 2
+                                    }}
+                                />
+                            )}
                         </Marker>
                     ))}
                 </ZoomableGroup>
