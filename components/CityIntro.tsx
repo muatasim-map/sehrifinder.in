@@ -111,7 +111,7 @@ export const CityIntro: React.FC<CityIntroProps> = ({ data }) => {
                 <div className="mt-8 pt-6 border-t border-white/5 flex flex-wrap items-center gap-4">
                     <span className="text-[10px] text-white/20 uppercase tracking-[0.25em] font-bold whitespace-nowrap">From the creators of</span>
                     <a href="https://dev.quranlingo.in" target="_blank" rel="noopener noreferrer" className="hover:scale-105 transition-transform" title="Learn 85% of Quranic Arabic">
-                        <img src="/quranlingo-logo.png" alt="QurAnLingo" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" loading="lazy" />
+                        <img src="/quranlingo-logo.png" alt="QurAnLingo" className="h-9 object-contain opacity-70 hover:opacity-100 transition-opacity" loading="lazy" />
                     </a>
                     <span className="w-px h-4 bg-white/10"></span>
                     <span className="font-brand text-sm text-white/30">Deen<span className="text-gold-antique/50">Flix</span></span>

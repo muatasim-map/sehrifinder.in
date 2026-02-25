@@ -242,7 +242,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                             className="mt-10 md:mt-14 flex items-center gap-3 md:gap-5"
                         >
                             <span className="text-[9px] md:text-[11px] text-[#FFD700]/50 uppercase tracking-[0.3em] font-sans whitespace-nowrap">From the creators of</span>
-                            <img src="/quranlingo-logo.png" alt="QurAnLingo" className="h-6 md:h-7 object-contain opacity-60" loading="lazy" />
+                            <img src="/quranlingo-logo.png" alt="QurAnLingo" className="h-8 md:h-9 object-contain opacity-60" loading="lazy" />
                             <span className="w-px h-4 bg-[#FFD700]/15"></span>
                             <span className="font-serif text-sm md:text-base text-[#FFD700]/35 tracking-wide">Deen<span className="text-[#B8860B]/40">Flix</span></span>
                         </motion.div>

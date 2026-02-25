@@ -18,7 +18,6 @@ import { FeatureCard } from './landing/FeatureCard';
 import { HelpCard } from './landing/HelpCard';
 import { DisclaimerSection } from './landing/DisclaimerSection';
 import { CityCard } from './landing/CityCard';
-import { CreatorsStrip } from './landing/CreatorsBanner';
 import { COUNTRIES } from '../data/locations';
 import { toSlug } from '../utils/slug';
 import { useSEO } from '../hooks/useSEO';
