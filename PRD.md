@@ -28,11 +28,12 @@ The application categorizes and serves several distinct subgroups, often identif
 - **The Curator (Admin):** The product team responsible for maintaining high data fidelity, preventing spam, and approving community submissions.
 
 ## 4. Scope & Supported Cities
-The initial MVP focuses on four major Indian metropolitan areas with significant Ramadan observances:
-- Chennai (Primary Launch Market)
-- Bengaluru
-- Mumbai
-- Hyderabad
+The platform has evolved from its initial 4-city MVP into a global directory covering **19+ cities across 5 countries** (India, UK, USA, Canada, Malaysia), including major hubs like:
+- **India:** Chennai, Bengaluru, Mumbai, Hyderabad.
+- **UK:** London.
+- **USA:** New York, San Francisco, Chicago, Houston, Detroit.
+- **Canada:** Toronto, Edmonton, Montreal, Brampton, Calgary, Ottawa, Cambridge, Kanata.
+- **Malaysia:** Kuala Lumpur.
 
 ---
 
@@ -57,21 +58,29 @@ The initial MVP focuses on four major Indian metropolitan areas with significant
 - **REQ-09 Review Dashboard:** A table/list of all `pending_spots` with options to Edit, Approve, or Reject.
 - **REQ-10 Approval Mechanism:** Approving a spot alters its state in the database and pushes it to the live public dataset fed to consumers.
 
+### 5.4 Advanced & SEO Features
+- **REQ-11 Programmatic SEO:** Dynamic meta-tag injection and static site generation (SSG) for all 19+ cities to capture hyper-local search volume.
+- **REQ-12 Schema.org Domination:** Comprehensive JSON-LD implementation for `FAQPage`, `LocalBusiness`, and `BreadcrumbList` to achieve rich results.
+- **REQ-13 Live Sehri Countdown:** Real-time countdown widget to the next Fajr/Suhoor deadline per city.
+- **REQ-14 PWA Support:** Fully installable progressive web app with offline fallback pages and caching via `vite-plugin-pwa`.
+- **REQ-15 E-E-A-T Signals:** "Community Verified" badges and "Live Update" banners to signify human curation and build trust (Experience-Expertise-Authoritativeness-Trustworthiness).
+
 ---
 
 ## 6. Technical Architecture & Tech Stack
 
 ### 6.1 Frontend
-- **Framework:** React 18+ via Vite.
-- **Routing:** React Router DOM (v6).
-- **Styling:** Tailwind CSS with custom thematic config (Islamic geometric patterns, modern gradients, glassmorphism).
-- **Animations:** Framer Motion for layout transitions, micro-interactions, and the cinematic splash screen.
-- **Mapping:** Leaflet & React-Leaflet with Marker Clustering.
+- **Framework:** React 19 (Latest stable release).
+- **Routing:** React Router DOM (v7).
+- **Styling:** Tailwind CSS (v4) with vanilla CSS layer-based tokenization.
+- **Animations:** Framer Motion (v12) for volumetric lanterns, cinematic lighting, and 2D globe renders.
+- **Mapping:** Leaflet & React-Leaflet with aggressive Marker Clustering and custom Islamic tile patterns.
+- **Architecture:** Static Site Generation (SSG) using headless Chrome for zero-JS tax on social crawlers.
 
 ### 6.2 Backend & Data
-- **Database:** Supabase (PostgreSQL) holding relational data for `spots` and `pending_spots`.
-- **State Management:** React Context API (`SehriContext`) for global state (City, Filters, Saved Spots) to prevent prop-drilling.
-- **Data Transformation:** A dedicated transformer utility (`transformRawSpot`) acts as an anti-corruption layer between the database schema and the frontend UI models.
+- **Database:** Supabase (PostgreSQL) + Edge Functions for moderation.
+- **State Management:** React Context API for cross-city hydration and filter persistence.
+- **Analytics:** Vercel Web Analytics, Speed Insights, and real-time INP (Interaction to Next Paint) monitoring.
 
 ### 6.3 Infrastructure & DevOps
 - **Hosting:** Vercel (Free Tier).
@@ -118,7 +127,7 @@ The initial MVP focuses on four major Indian metropolitan areas with significant
 ---
 
 ## 10. Future Roadmap (Post-MVP)
-- **User Accounts (v2):** Implement Supabase Auth for consumers to sync saved spots across devices.
-- **Real-Time Statuses (v2):** Allow users on the ground to tap "Food Finished" or "Overcrowded" to update the UI dynamically for others.
-- **Automated Moderation (v3):** Introduce Edge Functions to auto-reject spam submissions before they reach the admin queue.
-- **Multi-lingual Support (v3):** Add Hindi, Tamil, and Urdu localizations.
+- **Verified Verified Status (v2):** A two-tier verification system where users can upload photos of the menu/masjid to earn "Gold Trust" badges.
+- **City Lead Program (v2):** Appoint local community moderators to manage specific city clusters directly.
+- **Advanced Social Integration (v2):** Personal Iftar/Suhoor maps that users can share with their private circles via dynamic Open Graph cards.
+- **Crowdsourced Real-Time Data (v3):** "Is Nombu Kanji still being served?" — One-tap user polls with 15-minute expiration.

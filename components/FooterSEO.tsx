@@ -61,6 +61,23 @@ export const FooterSEO: React.FC = () => {
                     ))}
                     <div className="flex flex-col gap-3">
                         <h3 className="text-white/20 text-[10px] uppercase tracking-[0.2em] font-bold">
+                            Information
+                        </h3>
+                        <ul className="flex flex-col gap-2">
+                            <li>
+                                <a href="/about" className="text-white/40 hover:text-gold-antique text-sm transition-colors">
+                                    About & Verification
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/submit" className="text-white/40 hover:text-gold-antique text-sm transition-colors">
+                                    Submit a Spot
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="flex flex-col gap-3">
+                        <h3 className="text-white/20 text-[10px] uppercase tracking-[0.2em] font-bold">
                             Popular Areas
                         </h3>
                         <ul className="flex flex-col gap-2">

@@ -1,7 +1,8 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { SehriSpot } from '../types';
 import { IslamicPattern } from './Pattern';
+import { toSlug } from '../utils/slug';
 
 // Import sub-components
 import { ListingCardHeader } from './ListingCardHeader';
@@ -13,15 +14,6 @@ interface ListingCardProps {
   isSaved?: boolean;
   onToggleSave?: (id: number) => void;
 }
-
-const HOVER_ANIMATION = {
-  y: -4,
-  scale: 1.01,
-  borderColor: "#D4AF37", // gold-bright
-  boxShadow: "0 15px 40px -10px rgba(212,175,55,0.3), 0 0 25px 0px rgba(255,215,0,0.2)"
-};
-
-const SPRING_TRANSITION = { type: "spring", stiffness: 300, damping: 20 } as const;
 
 /**
  * The main Card container.
@@ -35,17 +27,30 @@ export const ListingCard: React.FC<ListingCardProps> = ({
   onToggleSave
 }) => {
   const isFree = data.foodType === 'Free';
+  const navigate = useNavigate();
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Prevent navigation if clicking on interactive elements like buttons/links inside the card
+    const target = e.target as HTMLElement;
+    if (target.closest('button') || target.closest('a')) {
+      return;
+    }
+    navigate(`/spot/${data.id}-${toSlug(data.name)}`);
+  };
 
   return (
-    <motion.div
-      whileHover={HOVER_ANIMATION}
-      transition={SPRING_TRANSITION}
+    <div
+      onClick={handleCardClick}
+      style={{
+        transition: 'all 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+      }}
       className={`
         relative group overflow-hidden h-full flex flex-col
         bg-gradient-to-b from-white to-[#fffdf5] 
         rounded-3xl p-4 border-2 border-gold/60
         shadow-[0_4px_20px_-5px_rgba(0,0,0,0.1),0_0_15px_-5px_rgba(212,175,55,0.2)] 
         cursor-pointer
+        hover:-translate-y-1 hover:scale-[1.01] hover:border-[#D4AF37] hover:shadow-[0_15px_40px_-10px_rgba(212,175,55,0.3),0_0_25px_0px_rgba(255,215,0,0.2)]
       `}>
 
       {/* Background Pattern - Four-Fold Octagon & Star Grid - Reduced Opacity */}
@@ -75,6 +80,6 @@ export const ListingCard: React.FC<ListingCardProps> = ({
         {/* Action Footer */}
         <ListingCardActions data={data} />
       </div>
-    </motion.div>
+    </div>
   );
 };

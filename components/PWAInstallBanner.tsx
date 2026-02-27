@@ -34,9 +34,9 @@ export const PWAInstallBanner: React.FC = () => {
     const dismiss = () => {
         setDismissed(true);
         setShowIOSGuide(false);
-        // Suppress for 30 days
+        // Suppress for 1 hour
         try {
-            localStorage.setItem(DISMISS_KEY, String(Date.now() + 30 * 24 * 60 * 60 * 1000));
+            localStorage.setItem(DISMISS_KEY, String(Date.now() + 1 * 60 * 60 * 1000));
         } catch { /* noop */ }
     };
 

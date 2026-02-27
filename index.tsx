@@ -28,10 +28,5 @@ root.render(
   </React.StrictMode>
 );
 
-// Signal to vite-plugin-prerender that we're done
-const timer = setTimeout(() => {
-  document.dispatchEvent(new Event('render-event'));
-}, 1000);
-
 // Service Worker is registered automatically by vite-plugin-pwa (Workbox).
 // Do NOT manually register /sw.js here — it conflicts with the generated SW.

@@ -63,7 +63,7 @@ const CountUpStat: React.FC<{ target: number; suffix?: string; label: string }> 
 
   return (
     <div ref={ref}>
-      <div className="text-[48px] font-landing-heading text-neutral-pearl leading-none mb-3 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)] tabular-nums">
+      <div className="text-[48px] font-serif text-neutral-pearl leading-none mb-3 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)] tabular-nums">
         {count}{suffix}
       </div>
       <div className="text-[10px] uppercase tracking-[0.3em] text-gold-lantern font-bold opacity-80">{label}</div>
@@ -83,6 +83,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
   // Parallax Transforms - disabled on mobile for performance
   const heroBgY = useTransform(scrollY, [0, 1000], isMobile ? [0, 0] : [0, 150]);
   const bismillahY = useTransform(scrollY, [0, 1000], isMobile ? [0, 0] : [0, 200]);
+  const bismillahBlur = useTransform(scrollY, [0, 600], ["blur(0px)", "blur(15px)"]);
   const heroContentY = useTransform(scrollY, [0, 1000], isMobile ? [0, 0] : [0, 250]);
   const heroOpacity = useTransform(scrollY, [0, 500], isMobile ? [1, 1] : [1, 0]);
 
@@ -110,6 +111,44 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
     setMobileMenuOpen(false);
   };
 
+  // --- JOSH COMEAU: MAGNETIC BUTTON LOGIC ---
+  const magneticButtonRef = useRef<HTMLButtonElement>(null);
+  const [magneticPos, setMagneticPos] = useState({ x: 0, y: 0 });
+
+  const handleMagneticMove = (e: React.MouseEvent) => {
+    if (isMobile) return;
+    const btn = magneticButtonRef.current;
+    if (!btn) return;
+
+    const { left, top, width, height } = btn.getBoundingClientRect();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+
+    const distanceX = e.clientX - centerX;
+    const distanceY = e.clientY - centerY;
+
+    // Magnetic pull strength
+    const strength = 0.35;
+    setMagneticPos({ x: distanceX * strength, y: distanceY * strength });
+  };
+
+  const handleMagneticLeave = () => {
+    setMagneticPos({ x: 0, y: 0 });
+  };
+
+  // --- JOSH COMEAU: GLOBE ROTATION LOGIC ---
+  // Interpolate longitude based on scroll progress (0 to 1)
+  const globeLongitude = useTransform(scrollYProgress, [0.5, 0.9], [15, -40]);
+  // We need to pass [number, number] to Globe2D, so we'll map it to a tuple
+  const [globeCenter, setGlobeCenter] = useState<[number, number]>([15, 30]);
+
+  useEffect(() => {
+    const unsubscribe = globeLongitude.on("change", (latest) => {
+      setGlobeCenter([latest, 30]);
+    });
+    return () => unsubscribe();
+  }, [globeLongitude]);
+
   const handleVolunteer = () => {
     onOpenSubmit();
   };
@@ -117,7 +156,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
   const currentYear = 2026;
 
   return (
-    <div className="font-landing-body text-neutral-800 overflow-x-hidden w-full bg-emerald-midnight">
+    <div className="font-sans text-neutral-800 overflow-x-hidden w-full bg-emerald-midnight">
       {/* GLOBAL STYLES */}
       <style>{`
         @keyframes sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
@@ -152,7 +191,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             <Logo variant="gold" />
           </div>
 
-          <div className="hidden md:flex items-center gap-8 text-sm font-landing-accent font-medium text-neutral-pearl/90 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <div className="hidden md:flex items-center gap-8 text-sm font-sans font-medium text-neutral-pearl/90 animate-fade-in" style={{ animationDelay: '0.1s' }}>
             <button onClick={() => scrollToSection('story')} className="hover:text-gold-lantern transition-colors">About</button>
             <button onClick={() => scrollToSection('features')} className="hover:text-gold-lantern transition-colors">Features</button>
             <button onClick={handleVolunteer} className="hover:text-gold-lantern transition-colors">Volunteer</button>
@@ -198,7 +237,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
           style={{ y: heroBgY }}
           className="absolute inset-0 will-change-transform pointer-events-none"
         >
-          <IslamicPattern variant="geometric" opacity={0.15} className="text-gold-lantern scale-110" />
+          <IslamicPattern variant="geometric" opacity={0.25} className="text-gold-lantern scale-110" />
         </motion.div>
 
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-emerald-midnight/50 to-emerald-midnight z-0 pointer-events-none"></div>
@@ -206,9 +245,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
         {/* ARABIC BACKGROUND - hidden on mobile for performance */}
         <motion.div
           style={{ y: bismillahY }}
-          className="absolute top-[25%] md:top-[20%] left-1/2 -translate-x-1/2 z-10 opacity-35 md:opacity-20 pointer-events-none select-none w-full text-center"
+          className="absolute top-[25%] md:top-[20%] left-1/2 -translate-x-1/2 z-10 opacity-35 md:opacity-25 pointer-events-none select-none w-full text-center"
         >
-          <span className="font-arabic-calligraphy text-[120px] md:text-[280px] text-gold-antique leading-none whitespace-nowrap text-shadow-gold">
+          <span className="font-amiri text-[120px] md:text-[280px] text-gold-antique leading-none whitespace-nowrap text-shadow-gold">
             رمضان كريم
           </span>
         </motion.div>
@@ -239,7 +278,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             variants={textReveal}
             initial="hidden"
             animate="visible"
-            className="font-landing-heading text-4xl md:text-8xl text-neutral-pearl mb-6 drop-shadow-2xl leading-[1.2] md:leading-[1.1]"
+            className="fluid-h1 font-serif text-neutral-pearl mb-6 drop-shadow-2xl text-balance"
           >
             Find Verified <br className="hidden md:block" />
             <span className="text-gold-lantern font-script italic px-2">
@@ -252,19 +291,24 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.8 }}
-            className="font-landing-body text-xl md:text-2xl text-neutral-ivory/80 max-w-2xl mx-auto mb-10 leading-relaxed font-light"
+            className="font-sans text-xl md:text-2xl text-neutral-ivory/80 max-w-2xl mx-auto mb-10 leading-relaxed font-light"
           >
             Find verified Sehri spots, free community meals, and Masjid distributions near you.
           </motion.p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 animate-slide-up mb-12" style={{ animationDelay: '0.3s' }}>
-            <button
+            <motion.button
+              ref={magneticButtonRef}
               onClick={onEnterApp}
-              className="group relative px-10 py-5 bg-[#D4AF37] hover:bg-[#C5A028] text-emerald-midnight font-bold rounded-full text-lg transition-all duration-300 hover:scale-105 shadow-[0_4px_20px_rgba(212,175,55,0.3)] hover:shadow-[0_8px_30px_rgba(255,215,0,0.4)] flex items-center gap-3"
+              onMouseMove={handleMagneticMove}
+              onMouseLeave={handleMagneticLeave}
+              animate={{ x: magneticPos.x, y: magneticPos.y }}
+              transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+              className="group relative px-10 py-5 bg-gold hover:bg-gold-antique text-emerald-midnight font-bold rounded-full text-lg transition-colors duration-300 shadow-[0_4px_20px_rgba(212,175,55,0.3)] hover:shadow-[0_8px_30px_rgba(255,215,0,0.4)] flex items-center gap-3"
             >
               <span>Find Spots Near Me</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
+            </motion.button>
 
             <button
               onClick={handleVolunteer}
@@ -277,15 +321,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
 
           <div className="grid grid-cols-3 gap-2 md:gap-12 text-center border-t border-white/10 pt-8 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: '0.4s' }}>
             <div>
-              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-landing-heading">12</div>
+              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-serif tabular-nums">12</div>
               <div className="text-[8px] md:text-xs text-neutral-400 uppercase tracking-widest mt-1">Cities</div>
             </div>
             <div>
-              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-landing-heading">400+</div>
+              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-serif tabular-nums">400+</div>
               <div className="text-[8px] md:text-xs text-neutral-400 uppercase tracking-widest mt-1">Spots</div>
             </div>
             <div>
-              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-landing-heading">100%</div>
+              <div className="text-xl md:text-3xl font-bold text-gold-lantern font-serif tabular-nums">100%</div>
               <div className="text-[8px] md:text-xs text-neutral-400 uppercase tracking-widest mt-1">Verified</div>
             </div>
           </div>
@@ -319,12 +363,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               <IslamicDivider className="text-gold-antique/50 w-full" />
             </div>
 
-            <blockquote className="font-serif font-medium text-2xl md:text-3xl lg:text-4xl text-emerald-midnight leading-snug mb-6 italic px-4 relative tracking-wide">
+            <blockquote className="font-landing-body font-medium text-2xl md:text-3xl lg:text-4xl text-emerald-midnight leading-snug mb-6 italic px-4 relative tracking-wide">
               "Whoever provides food for a fasting person to break his fast will have a reward like his, without decreasing the reward of the fasting person."
             </blockquote>
           </div>
 
-          <cite className="block text-sm md:text-base text-emerald-sacred/70 font-landing-accent font-bold tracking-widest uppercase mt-4">
+          <cite className="block text-sm md:text-base text-emerald-sacred/70 font-sans font-bold tracking-widest uppercase mt-4">
             — Jami’ at-Tirmidhi (Hasan Sahih)
           </cite>
         </div>
@@ -356,7 +400,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={textReveal}
-                className="font-landing-heading text-4xl md:text-6xl text-emerald-midnight leading-tight"
+                className="font-serif text-4xl md:text-6xl text-emerald-midnight leading-tight"
               >
                 Every Ramadan, thousands wake before dawn — <span className="text-gold-antique italic relative inline-block">
                   but too many wake alone.
@@ -371,7 +415,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
-                className="font-landing-body text-lg text-emerald-midnight/70 space-y-6 leading-relaxed bg-white/50 backdrop-blur-sm p-8 rounded-lg border-2 border-gold-lantern/60 shadow-sm relative hover:shadow-lg transition-shadow duration-300"
+                className="font-sans text-lg text-emerald-midnight/70 space-y-6 leading-relaxed bg-white/50 backdrop-blur-sm p-8 rounded-lg border-2 border-gold-lantern/60 shadow-sm relative hover:shadow-lg transition-shadow duration-300"
               >
                 <div className="absolute -top-2 -left-2 text-gold-antique">
                   <IslamicCorner />
@@ -385,10 +429,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
                 </p>
 
                 <div className="my-8 pl-6 md:pl-8 border-l-[3px] border-gold-antique py-3 bg-emerald-50/30 rounded-r-xl relative shadow-sm">
-                  <p className="font-landing-body italic text-[1.2875rem] md:text-[1.545rem] text-emerald-midnight mb-4 leading-snug tracking-wider">
+                  <p className="font-sans italic text-[1.2875rem] md:text-[1.545rem] text-emerald-midnight mb-4 leading-snug tracking-wider">
                     "He is not a believer whose stomach is filled while the neighbor to his side goes hungry."
                   </p>
-                  <p className="text-[11.3px] md:text-[12.3px] font-bold uppercase tracking-[0.2em] text-gold-antique font-landing-accent">
+                  <p className="text-[11.3px] md:text-[12.3px] font-bold uppercase tracking-[0.2em] text-gold-antique font-sans">
                     — PROPHET MUHAMMAD (ﷺ)
                   </p>
                 </div>
@@ -426,7 +470,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               What You Will Find
               <span className="h-px w-8 bg-gold-lantern/50"></span>
             </div>
-            <h2 className="font-landing-heading text-4xl md:text-5xl text-neutral-pearl">
+            <h2 className="font-serif text-4xl md:text-5xl text-neutral-pearl">
               More Than a Meal. <span className="text-gold-lantern italic">A Community.</span>
             </h2>
           </motion.div>
@@ -501,11 +545,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               <IslamicDivider className="text-gold-antique/30" />
             </div>
 
-            <p className="font-landing-body text-base md:text-lg text-neutral-ivory/70 leading-relaxed italic max-w-xl mx-auto mb-8">
+            <p className="font-sans text-base md:text-lg text-neutral-ivory/70 leading-relaxed italic max-w-xl mx-auto mb-8">
               “And eat and drink until the white thread of dawn becomes distinct from the black thread [of night]. Then complete the fast until sunset…”
             </p>
 
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gold-antique/10 bg-gold-antique/5 text-gold-antique/70 text-[10px] font-landing-accent uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gold-antique/10 bg-gold-antique/5 text-gold-antique/70 text-[10px] font-sans uppercase tracking-widest">
               <span>Surah Al-Baqarah</span>
               <span className="w-px h-3 bg-gold-antique/20"></span>
               <span>2:187</span>
@@ -533,7 +577,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               Global Reach
               <IslamicStar className="w-3 h-3 text-gold-antique" />
             </div>
-            <h2 className="font-landing-heading text-4xl md:text-6xl text-neutral-pearl max-w-4xl mx-auto leading-tight">
+            <h2 className="font-serif text-4xl md:text-6xl text-neutral-pearl max-w-4xl mx-auto leading-tight">
               From One City, <span className="text-gold-lantern italic drop-shadow-[0_0_15px_rgba(212,175,55,0.3)] block md:inline">Growing Together</span>
             </h2>
           </motion.div>
@@ -557,7 +601,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
                 <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-emerald-sacred/20 blur-[100px] rounded-full pointer-events-none" />
 
                 {/* Title with live pulse dot */}
-                <h3 className="text-[20px] font-landing-heading tracking-[0.4em] uppercase text-gold-lantern mb-10 flex items-center gap-4">
+                <h3 className="text-[20px] font-serif tracking-[0.4em] uppercase text-gold-lantern mb-10 flex items-center gap-4">
                   <div className="p-2.5 bg-gold-lantern/10 rounded-xl border border-gold-lantern/30 shadow-[0_0_15px_rgba(212,175,55,0.1)]">
                     <MapPin className="w-5 h-5 flex-shrink-0" />
                   </div>
@@ -616,7 +660,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
               className="order-1 lg:order-2 relative aspect-square w-full max-w-[600px] mx-auto lg:mr-0 flex items-center justify-center -my-10 lg:my-0"
             >
               <div className="absolute inset-x-[10%] inset-y-[20%] bg-[#D4AF37]/5 blur-[80px] rounded-full pointer-events-none" />
-              <Globe className="z-10 mix-blend-lighten" />
+              <Globe center={globeCenter} className="z-10 mix-blend-lighten" />
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 opacity-60 z-20 pointer-events-none bg-black/50 px-4 py-1.5 rounded-full border border-white/10 backdrop-blur-sm">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-lantern opacity-75"></span>
@@ -676,7 +720,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="font-landing-heading text-5xl md:text-7xl text-neutral-pearl mb-6 leading-[1.05]"
+            className="font-serif text-5xl md:text-7xl text-neutral-pearl mb-6 leading-[1.05]"
           >
             This Ramadan, <br />
             <span className="italic text-gold-lantern">Let No One Go Hungry</span>
@@ -702,15 +746,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
           >
             <button
               onClick={onEnterApp}
-              className="btn-gold text-emerald-midnight px-10 py-4 rounded-full font-landing-accent font-bold text-lg transition-transform hover:-translate-y-1 hover:scale-105 active:scale-95 animate-glow-pulse"
+              className="btn-gold text-emerald-midnight px-10 py-4 rounded-full font-sans font-bold text-lg transition-transform hover:-translate-y-1 hover:scale-105 active:scale-95 animate-glow-pulse"
             >
               Open Sehri Finder
             </button>
             <button
               onClick={onOpenSubmit}
-              className="bg-emerald-sacred/40 hover:bg-emerald-sacred/60 text-neutral-pearl px-10 py-4 rounded-full font-landing-accent font-bold text-lg border border-white/10 backdrop-blur-md transition-colors hover:border-gold-lantern/30"
+              className="bg-emerald-sacred/40 hover:bg-emerald-sacred/60 text-neutral-pearl px-10 py-4 rounded-full font-sans font-bold text-lg border border-white/10 backdrop-blur-md transition-colors hover:border-gold-lantern/30"
             >
-              Add a Sehri Spot
+              Suggest a Spot
             </button>
           </motion.div>
 
@@ -733,7 +777,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
                 <span className="w-1.5 h-1.5 rounded-full bg-gold-antique/40" />
                 <span className="h-px w-12 bg-gold-antique/20" />
               </div>
-              <p className="font-landing-heading italic text-lg text-neutral-ivory/50 mb-2">
+              <p className="font-serif italic text-lg text-neutral-ivory/50 mb-2">
                 "We feed you only for the countenance of Allah. We wish not from you reward or gratitude."
               </p>
               <p className="text-xs uppercase tracking-widest text-gold-antique/60 mt-2">— Qur'an (76:9)</p>
@@ -750,10 +794,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             <div className="text-gold-antique text-xs font-bold uppercase tracking-widest mb-3 flex items-center justify-center gap-2">
               <span>•</span> Community Effort <span>•</span>
             </div>
-            <h2 className="font-landing-heading text-4xl md:text-5xl text-emerald-midnight mb-6">
+            <h2 className="font-serif text-4xl md:text-5xl text-emerald-midnight mb-6">
               Help Us <span className="italic text-gold-antique">Serve Better</span>
             </h2>
-            <p className="font-landing-body text-neutral-600 max-w-2xl mx-auto leading-relaxed text-lg">
+            <p className="font-sans text-neutral-600 max-w-2xl mx-auto leading-relaxed text-lg">
               This directory relies on people like you. Accuracy is our amanah. Help us keep this list updated for everyone.
             </p>
           </div>
@@ -791,7 +835,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
       < DisclaimerSection />
 
       {/* FOOTER */}
-      <footer className="bg-[#020a08] pt-20 pb-10 border-t border-white/5 relative overflow-hidden font-landing-body text-neutral-400">
+      <footer className="bg-[#020a08] pt-20 pb-10 border-t border-white/5 relative overflow-hidden font-sans text-neutral-400">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
           <IslamicPattern variant="hexagonal" className="text-white" />
         </div>
@@ -805,7 +849,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
                 <div className="w-16 h-16 rounded-full bg-emerald-sacred/10 border border-gold-lantern/20 flex items-center justify-center mb-2 shadow-[0_0_30px_rgba(212,175,55,0.1)] group-hover:shadow-[0_0_50px_rgba(212,175,55,0.2)] transition-shadow animate-float">
                   <Heart className="w-8 h-8 text-red-500 fill-red-500/20" />
                 </div>
-                <h2 className="font-landing-heading text-4xl md:text-6xl lg:text-7xl text-neutral-pearl tracking-tight">
+                <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl text-neutral-pearl tracking-tight">
                   Built with Love for the <span className="text-gold-lantern italic font-serif">Ummah</span>
                 </h2>
               </div>
@@ -816,7 +860,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
             <div className="lg:col-span-5 space-y-8">
               <div className="flex items-center gap-2 text-neutral-pearl">
                 <Moon className="w-6 h-6 text-gold-lantern fill-current" />
-                <span className="font-brand text-2xl font-bold tracking-wide">
+                <span className="font-serif text-2xl font-bold tracking-wide">
                   Sehri<span className="text-gold-lantern">Finder</span>
                 </span>
               </div>
@@ -889,7 +933,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
 
             <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10">
               {/* Label */}
-              <p className="text-[11px] text-neutral-500 uppercase tracking-[0.3em] font-landing-accent font-semibold whitespace-nowrap">
+              <p className="text-[11px] text-neutral-500 uppercase tracking-[0.3em] font-sans font-semibold whitespace-nowrap">
                 From the Creators of
               </p>
 
@@ -920,10 +964,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenSubm
 
                 {/* DeenFlix — clean text, no container */}
                 <div className="flex flex-col">
-                  <span className="font-brand text-2xl md:text-3xl text-neutral-pearl/60 tracking-wide leading-none">
+                  <span className="font-serif text-2xl md:text-3xl text-neutral-pearl/60 tracking-wide leading-none">
                     Deen<span className="text-gold-antique">Flix</span>
                   </span>
-                  <span className="text-[8px] uppercase tracking-[0.3em] text-gold-antique/50 font-landing-accent mt-1.5">
+                  <span className="text-[8px] uppercase tracking-[0.3em] text-gold-antique/50 font-sans mt-1.5">
                     Coming Soon
                   </span>
                 </div>

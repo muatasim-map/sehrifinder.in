@@ -33,7 +33,7 @@ const StatItem: React.FC<StatItemProps> = ({ label, value, suffix = "", icon }) 
                 {icon}
             </div>
             <div className="flex flex-col items-center">
-                <div className="text-3xl md:text-4xl font-landing-heading text-white flex items-baseline">
+                <div className="text-3xl md:text-4xl font-serif text-white flex items-baseline">
                     <motion.span>{displayValue}</motion.span>
                     <span>{suffix}</span>
                 </div>
@@ -74,7 +74,7 @@ export const StatsBar: React.FC = () => {
                         <Heart className="w-6 h-6" />
                     </div>
                     <div className="flex flex-col items-center">
-                        <div className="text-3xl md:text-4xl font-landing-heading text-gold-lantern uppercase tracking-wider">
+                        <div className="text-3xl md:text-4xl font-serif text-gold-lantern uppercase tracking-wider">
                             FREE
                         </div>
                         <div className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-gold-lantern/60 mt-1 text-center">

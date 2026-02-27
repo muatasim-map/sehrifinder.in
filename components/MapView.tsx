@@ -1,6 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import MarkerClusterGroup from 'react-leaflet-cluster';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
@@ -140,51 +141,58 @@ export const MapView: React.FC<MapViewProps> = ({
                     url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
                 />
 
-                {validSpots.map(spot => (
-                    <Marker
-                        key={spot.id}
-                        position={[spot.latitude!, spot.longitude!]}
-                        icon={spot.foodType === 'Free' ? freeIcon : paidIcon}
-                    >
-                        <Popup className="custom-popup-premium" maxWidth={320} closeButton={false}>
-                            <div className="p-0 overflow-hidden rounded-lg font-sans">
-                                {/* Header Gradient */}
-                                <div className={`h-2 w-full ${spot.foodType === 'Free' ? 'bg-gradient-to-r from-emerald-600 to-emerald-400' : 'bg-gradient-to-r from-gold-lantern to-yellow-300'}`}></div>
+                <MarkerClusterGroup
+                    chunkedLoading
+                    maxClusterRadius={50}
+                    spiderfyOnMaxZoom={true}
+                    showCoverageOnHover={false}
+                >
+                    {validSpots.map(spot => (
+                        <Marker
+                            key={spot.id}
+                            position={[spot.latitude!, spot.longitude!]}
+                            icon={spot.foodType === 'Free' ? freeIcon : paidIcon}
+                        >
+                            <Popup className="custom-popup-premium" maxWidth={320} closeButton={false}>
+                                <div className="p-0 overflow-hidden rounded-lg font-sans">
+                                    {/* Header Gradient */}
+                                    <div className={`h-2 w-full ${spot.foodType === 'Free' ? 'bg-gradient-to-r from-emerald-600 to-emerald-400' : 'bg-gradient-to-r from-gold-lantern to-yellow-300'}`}></div>
 
-                                <div className="bg-white p-4">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <h3 className="font-serif font-bold text-xl text-emerald-midnight leading-tight pr-4">{spot.name}</h3>
-                                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-sm border ${spot.foodType === 'Free' ? 'border-emerald-200 text-emerald-700 bg-emerald-50' : 'border-gold-dark text-gold-dark bg-yellow-50'}`}>
-                                            {spot.foodType}
-                                        </span>
+                                    <div className="bg-white p-4">
+                                        <div className="flex justify-between items-start mb-2">
+                                            <h3 className="font-serif font-bold text-xl text-emerald-midnight leading-tight pr-4">{spot.name}</h3>
+                                            <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-sm border ${spot.foodType === 'Free' ? 'border-emerald-200 text-emerald-700 bg-emerald-50' : 'border-gold-dark text-gold-dark bg-yellow-50'}`}>
+                                                {spot.foodType}
+                                            </span>
+                                        </div>
+
+                                        <div className="flex items-center gap-2 text-gray-500 text-xs mb-3 font-medium uppercase tracking-wide">
+                                            {spot.venueType === 'Masjid' ? <Home size={12} /> :
+                                                spot.venueType === 'Restaurant' ? <Utensils size={12} /> :
+                                                    <Building2 size={12} />}
+                                            {spot.area} • {spot.venueType}
+                                        </div>
+
+                                        <div className="flex items-center gap-2 text-sm text-gray-700 font-medium bg-gray-50 p-2 rounded mb-3">
+                                            <Clock size={14} className="text-gold-dark" />
+                                            {spot.timing}
+                                        </div>
+
+                                        <a
+                                            href={spot.googleMapsLink && spot.googleMapsLink.startsWith('http') ? spot.googleMapsLink : (spot.latitude && spot.longitude ? `https://www.google.com/maps/dir/?api=1&destination=${spot.latitude},${spot.longitude}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.address)}`)}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center justify-center gap-2 w-full py-2 bg-emerald-midnight text-gold-lantern text-xs font-bold uppercase tracking-widest hover:bg-emerald-900 transition-colors rounded"
+                                        >
+                                            <Navigation size={12} />
+                                            Get Directions
+                                        </a>
                                     </div>
-
-                                    <div className="flex items-center gap-2 text-gray-500 text-xs mb-3 font-medium uppercase tracking-wide">
-                                        {spot.venueType === 'Masjid' ? <Home size={12} /> :
-                                            spot.venueType === 'Restaurant' ? <Utensils size={12} /> :
-                                                <Building2 size={12} />}
-                                        {spot.area} • {spot.venueType}
-                                    </div>
-
-                                    <div className="flex items-center gap-2 text-sm text-gray-700 font-medium bg-gray-50 p-2 rounded mb-3">
-                                        <Clock size={14} className="text-gold-dark" />
-                                        {spot.timing}
-                                    </div>
-
-                                    <a
-                                        href={spot.googleMapsLink && spot.googleMapsLink.startsWith('http') ? spot.googleMapsLink : (spot.latitude && spot.longitude ? `https://www.google.com/maps/dir/?api=1&destination=${spot.latitude},${spot.longitude}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.address)}`)}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center justify-center gap-2 w-full py-2 bg-emerald-midnight text-gold-lantern text-xs font-bold uppercase tracking-widest hover:bg-emerald-900 transition-colors rounded"
-                                    >
-                                        <Navigation size={12} />
-                                        Get Directions
-                                    </a>
                                 </div>
-                            </div>
-                        </Popup>
-                    </Marker>
-                ))}
+                            </Popup>
+                        </Marker>
+                    ))}
+                </MarkerClusterGroup>
             </MapContainer>
 
             {validSpots.length === 0 && (

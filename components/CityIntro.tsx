@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { HelpCircle, ChevronDown, ChevronUp, MapPin } from 'lucide-react';
 import { CitySEOData, FAQItem } from '../data/seoData';
+import { COUNTRIES } from '../data/locations';
+import { toSlug } from '../utils/slug';
 
 interface CityIntroProps {
     data: CitySEOData;
@@ -39,6 +41,29 @@ const FAQAccordion: React.FC<{ item: FAQItem }> = ({ item }) => {
 };
 
 export const CityIntro: React.FC<CityIntroProps> = ({ data }) => {
+    // Top intent categories
+    const topCategories = [
+        { label: 'Free Community Meals', slug: 'free-community-meal' },
+        { label: 'Drive-Thrus', slug: 'drive-thru' },
+        { label: 'Sehri Buffets', slug: 'buffet' },
+        { label: '24-Hour Spots', slug: '24-hour' },
+    ];
+
+    const currentSlug = toSlug(data.city);
+
+    // Find nearby cities (cities in same country)
+    let nearbyCities: { name: string; slug: string }[] = [];
+    for (const country of COUNTRIES) {
+        const cityNames = country.cities.map(c => c.name);
+        if (cityNames.includes(data.city)) {
+            nearbyCities = cityNames
+                .filter(name => name !== data.city)
+                .slice(0, 5)
+                .map(name => ({ name, slug: toSlug(name) }));
+            break;
+        }
+    }
+
     return (
         <motion.article
             initial={{ opacity: 0, y: 10 }}
@@ -92,6 +117,47 @@ export const CityIntro: React.FC<CityIntroProps> = ({ data }) => {
                     </section>
                 )}
 
+                {/* Internal Linking: Programmatic Categories & Nearby Cities */}
+                <div className="flex flex-col md:flex-row gap-6 mb-8 border-t border-white/10 pt-8 mt-2">
+                    {/* Top Categories */}
+                    <div className="flex-1">
+                        <h3 className="text-white/40 text-[11px] uppercase tracking-[0.15em] font-bold mb-3 flex items-center gap-2">
+                            Browse by Category
+                        </h3>
+                        <div className="flex flex-wrap gap-2">
+                            {topCategories.map(cat => (
+                                <a
+                                    key={cat.slug}
+                                    href={`/find/${currentSlug}/${cat.slug}`}
+                                    className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-gold-antique/20 hover:text-gold-antique text-white/70 text-xs font-medium transition-all border border-white/5 hover:border-gold-antique/30"
+                                >
+                                    {cat.label}
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Nearby Cities */}
+                    {nearbyCities.length > 0 && (
+                        <div className="flex-1">
+                            <h3 className="text-white/40 text-[11px] uppercase tracking-[0.15em] font-bold mb-3 flex items-center gap-2">
+                                Nearby Region
+                            </h3>
+                            <div className="flex flex-wrap gap-2">
+                                {nearbyCities.map(city => (
+                                    <a
+                                        key={city.slug}
+                                        href={`/find/${city.slug}`}
+                                        className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-gold-antique/20 hover:text-gold-antique text-white/70 text-xs font-medium transition-all border border-white/5 hover:border-gold-antique/30"
+                                    >
+                                        Sehri in {city.name}
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+
                 {data.faqItems.length > 0 && (
                     <section className="mt-8 pt-8 border-t border-white/10">
                         <div className="flex items-center gap-2 mb-4">
@@ -111,10 +177,10 @@ export const CityIntro: React.FC<CityIntroProps> = ({ data }) => {
                 <div className="mt-8 pt-6 border-t border-white/5 flex flex-wrap items-center gap-4">
                     <span className="text-[10px] text-white/20 uppercase tracking-[0.25em] font-bold whitespace-nowrap">From the creators of</span>
                     <a href="https://dev.quranlingo.in" target="_blank" rel="noopener noreferrer" className="hover:scale-105 transition-transform" title="Learn 85% of Quranic Arabic">
-                        <img src="/quranlingo-logo.png" alt="QurAnLingo" className="h-9 object-contain opacity-70 hover:opacity-100 transition-opacity" loading="lazy" />
+                        <img src="/quranlingo-logo.png" alt="QurAnLingo" width="100" height="36" className="h-9 object-contain opacity-70 hover:opacity-100 transition-opacity" loading="lazy" />
                     </a>
                     <span className="w-px h-4 bg-white/10"></span>
-                    <span className="font-brand text-sm text-white/30">Deen<span className="text-gold-antique/50">Flix</span></span>
+                    <span className="font-serif text-sm text-white/30">Deen<span className="text-gold-antique/50">Flix</span></span>
                 </div>
             </div>
         </motion.article>

@@ -84,13 +84,13 @@ export const Logo: React.FC<LogoProps> = ({
             {showText && (
                 <div className={`flex items-center leading-none ${textSizeClasses[size]}`}>
                     {/* "Sehri" — lighter, pearl */}
-                    <span className={`font-brand font-semibold tracking-wide ${c.text}`}>
+                    <span className={`font-serif font-semibold tracking-wide ${c.text}`}>
                         Sehri
                     </span>
                     {/* Separator dot */}
                     <span className={`mx-1.5 w-1 h-1 rounded-full inline-block ${c.sep}`} />
                     {/* "Finder" — bold, gold */}
-                    <span className={`font-brand font-bold tracking-tight ${c.highlight}`}>
+                    <span className={`font-serif font-bold tracking-tight ${c.highlight}`}>
                         Finder
                     </span>
                 </div>

@@ -27,7 +27,7 @@ export const DisclaimerSection = React.memo(() => {
                             <ShieldAlert className="w-3 h-3" />
                             <span>Community Advisory</span>
                         </div>
-                        <h2 className="font-landing-heading text-3xl md:text-5xl text-neutral-pearl mb-6">
+                        <h2 className="font-serif text-3xl md:text-5xl text-neutral-pearl mb-6">
                             Important <span className="text-red-500 italic">Disclaimer</span>
                         </h2>
                         <div className="h-1 w-24 bg-red-900/30 mx-auto rounded-full relative">

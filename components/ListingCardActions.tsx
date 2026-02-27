@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { AnimatePresence, motion } from 'framer-motion';
 import { Share2, Flag, Phone, Navigation, X, MessageCircle } from 'lucide-react';
 import { SehriSpot } from '../types';
 import { APP_CONFIG } from '../config';
@@ -147,22 +146,15 @@ export const ListingCardActions: React.FC<ListingCardActionsProps> = ({ data }) 
 
       {/* Contact Modal Portal */}
       {mounted && createPortal(
-        <AnimatePresence>
+        <>
           {isContactModalOpen && (
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute inset-0 bg-neutral-900/60 backdrop-blur-sm"
+              <div
+                className="absolute inset-0 bg-neutral-900/60 backdrop-blur-sm animate-in fade-in duration-200"
                 onClick={() => setIsContactModalOpen(false)}
               />
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                className="relative bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full border border-gold/20"
+              <div
+                className="relative bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full border border-gold/20 animate-in zoom-in-95 duration-200"
               >
                 <button
                   onClick={() => setIsContactModalOpen(false)}
@@ -176,7 +168,7 @@ export const ListingCardActions: React.FC<ListingCardActionsProps> = ({ data }) 
                     <Phone className="text-emerald-600 fill-emerald-600/10" size={24} />
                   </div>
 
-                  <h3 className="font-brand text-xl font-bold text-emerald-midnight mb-2">{t('contactModalTitle')}</h3>
+                  <h3 className="font-serif text-xl font-bold text-emerald-midnight mb-2">{t('contactModalTitle')}</h3>
                   <p className="text-sm text-gray-500 mb-6 font-medium">
                     {data.name}
                   </p>
@@ -204,31 +196,24 @@ export const ListingCardActions: React.FC<ListingCardActionsProps> = ({ data }) 
                     </button>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           )}
-        </AnimatePresence>,
+        </>,
         document.body
       )}
 
       {/* Report Modal Portal */}
       {mounted && createPortal(
-        <AnimatePresence>
+        <>
           {isReportModalOpen && (
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute inset-0 bg-neutral-900/60 backdrop-blur-sm"
+              <div
+                className="absolute inset-0 bg-neutral-900/60 backdrop-blur-sm animate-in fade-in duration-200"
                 onClick={() => setIsReportModalOpen(false)}
               />
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, rotateX: 10 }}
-                animate={{ opacity: 1, scale: 1, rotateX: 0 }}
-                exit={{ opacity: 0, scale: 0.95, rotateX: 10 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full border border-gold/20"
+              <div
+                className="relative bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full border border-gold/20 animate-in zoom-in-95 duration-200"
               >
                 <button
                   onClick={() => setIsReportModalOpen(false)}
@@ -242,7 +227,7 @@ export const ListingCardActions: React.FC<ListingCardActionsProps> = ({ data }) 
                     <Flag className="text-red-500 fill-red-500/20" size={24} />
                   </div>
 
-                  <h3 className="font-brand text-xl font-bold text-emerald-midnight mb-2">{t('reportIssue')}</h3>
+                  <h3 className="font-serif text-xl font-bold text-emerald-midnight mb-2">{t('reportIssue')}</h3>
                   <p className="text-sm text-gray-500 mb-6 font-medium leading-relaxed">
                     You are about to report an issue for <span className="font-bold text-gray-800">{data.name}</span>. This will open WhatsApp to contact our admin.
                   </p>
@@ -262,10 +247,10 @@ export const ListingCardActions: React.FC<ListingCardActionsProps> = ({ data }) 
                     </button>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           )}
-        </AnimatePresence>,
+        </>,
         document.body
       )}
     </div>

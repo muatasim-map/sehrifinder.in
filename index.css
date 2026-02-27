@@ -36,11 +36,15 @@
   --color-emerald-sacred: #1B4D3E;
   --color-emerald-forest: #2D5F4F;
   --color-emerald-sage: #4A7C6B;
+  /* The "Golden Ratio" - CSS HSL Variables for semantic lighting */
+  --gold-h: 46;
+  --gold-s: 65%;
+  --gold-l: 52%;
 
-  --color-gold: #d4af37;
-  --color-gold-DEFAULT: #d4af37;
+  --color-gold: hsl(var(--gold-h), var(--gold-s), var(--gold-l));
+  --color-gold-DEFAULT: hsl(var(--gold-h), var(--gold-s), var(--gold-l));
   --color-gold-antique: #B8860B;
-  --color-gold-lantern: #d4af37;
+  --color-gold-lantern: hsl(var(--gold-h), var(--gold-s), var(--gold-l));
   --color-gold-amber: #F4A460;
   --color-gold-highlight: #FFF9C4;
   --color-gold-light: #f0e6d2;
@@ -59,24 +63,8 @@
   /* FONTS */
   --font-sans: "Outfit", sans-serif;
   --font-serif: "Cormorant Garamond", serif;
-  --font-brand: "Cinzel", serif;
   --font-script: "Great Vibes", cursive;
-
-  /* Landing Page Typography */
-  --font-landing-heading: "Playfair Display", serif;
-  --font-landing-subhead: "Lora", serif;
-  --font-landing-body: "Source Serif 4", serif;
-  --font-landing-accent: "Montserrat", sans-serif;
-
-  /* Arabic Fonts */
-  --font-reem: "Reem Kufi", sans-serif;
-  --font-amiri: "Amiri", serif;
-  --font-arabic-calligraphy: "Amiri", serif;
-  --font-arabic-text: "Amiri", serif;
-
-  /* Additional Languages */
-  --font-tamil: "Noto Sans Tamil", sans-serif;
-  --font-urdu: "Noto Nastaliq Urdu", serif;
+  --font-arabic: "Amiri", serif;
 
   /* ANIMATIONS */
   --animate-fade-in: fadeIn 0.6s ease-out forwards;
@@ -164,6 +152,9 @@
 @layer base {
   body {
     @apply bg-neutral-moonlight text-neutral-charcoal font-sans antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1,
@@ -172,15 +163,18 @@
   h4,
   h5,
   h6 {
-    @apply font-reem;
+    @apply font-serif;
+  }
+
+  /* Global Branded Focus State (Accessibility + Polish) */
+  *:focus-visible {
+    outline: 2px solid var(--color-gold-lantern);
+    outline-offset: 4px;
+    border-radius: inherit;
   }
 }
 
 @layer components {
-  .font-reem {
-    font-family: 'Reem Kufi', sans-serif;
-  }
-
   .font-amiri {
     font-family: 'Amiri', serif;
   }
@@ -221,6 +215,42 @@
   .text-stroke-sm {
     -webkit-text-stroke: 2px white;
     paint-order: stroke fill;
+  }
+
+  /* Josh Comeau Inspired Utilities */
+  .fluid-h1 {
+    font-size: clamp(2.5rem, 8vw + 1rem, 6rem);
+    line-height: 1.1;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mix-blend-overlay {
+    mix-blend-mode: overlay;
+  }
+
+  .mix-blend-soft-light {
+    mix-blend-mode: soft-light;
+  }
+
+  /* Rich Immersive Typography Utilities */
+  .letterpress {
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.1), 0 -1px 1px rgba(0, 0, 0, 0.8);
+  }
+
+  .text-liquid-gold {
+    background: linear-gradient(to right, #D4AF37 0%, #FFF9C4 50%, #B8860B 100%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 3s linear infinite;
   }
 
   /* Hide scrollbar for Chrome, Safari and Opera */

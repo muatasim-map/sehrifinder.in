@@ -1,0 +1,12 @@
+# Sehri Finder — Community Verified Ramadan Food Directory 2026
+# This site provides a global, human-verified directory of late-night Halal food
+# spots, Masjids, and free community meals for Suhoor/Sehri during Ramadan.
+# Data is crowd-sourced and reviewed before publication.
+
+User-agent: *
+Allow: /
+Sitemap: https://www.sehrifinder.com/sitemap.xml
+
+# Data scope: 19+ cities across India, UK, USA, Canada, Malaysia
+# Last updated: 2026-02-27
+# Contact: salam@sehrifinder.com

@@ -7,7 +7,8 @@ This document chronicles the architectural transformation of Sehri Finder from a
 ## 📋 Mini-PRD: Sehri Finder
 
 **Product Vision**: A community-driven platform to discover, verify, and share late-night dining spots, Masjids, and Nombu Kanji distribution centers during the holy month of Ramadan.
-**Target Audience**: Muslims seeking Suhoor/Sehri meals, community organizers, and local food enthusiasts in major cities (e.g., Chennai, Bangalore, Mumbai, Hyderabad).
+**Language & Scope**: A global engine covering **19+ cities** across India, UK, USA, Canada, and Malaysia.
+**Target Audience**: Muslims seeking Suhoor/Sehri meals, students, hospital caretakers, and international travelers.
 
 ### Core Features
 1. **Interactive Discovery**: Map and List views to explore nearby Sehri spots.
@@ -70,6 +71,13 @@ Social crawlers still couldn't execute our JavaScript fast enough to read our dy
 ### Phase 5: Headless Internal Linking & UX Polish
 Our visual SEO footer (a massive grid of city links) was clogging up the UI.
 *   **The Headless Approach**: We deleted the visual city links but retained the SEO benefit by mapping the site hierarchy using a headless `@type: "ItemList"` and `SiteNavigationElement` JSON-LD script block. Humans get a clean UI, bots get the link map!
+
+### Phase 6: Global Scaling & E-E-A-T Consolidation (Current)
+We transitioned from a regional experiment to a global authority.
+*   **International Footprint**: Expanded to 19+ cities, each with custom FAQ schemas and localized H1/H2 targeting in `seoData.ts`.
+*   **E-E-A-T Logic**: Implemented "Community Verified" banners and "Live Update" signals across the UI to satisfy Google's Helpful Content requirements.
+*   **Technical Performance**: Integrated `@vercel/speed-insights` for real-time monitoring of Interaction to Next Paint (INP) to ensure the map remains snappy.
+*   **PWA Persistence**: Enabled full PWA capabilities with `vite-plugin-pwa` so users can access their "Saved Spots" even on spotty 3G/4G connections during peak Sahar hours.
 
 ---
 

@@ -5,6 +5,7 @@ export type TranslationKey =
     // Header
     | 'appTitle'
     | 'shareApp'
+    | 'installApp'
 
     // Hero
     | 'ramadanKareem'
@@ -70,6 +71,7 @@ export const translations: Record<Language, Record<string, string>> = {
     en: {
         appTitle: 'Sehri Finder',
         shareApp: 'Share App',
+        installApp: 'Install App',
 
         ramadanKareem: 'Ramadan Kareem',
         findSehri: 'Find Your Sehri',
@@ -77,7 +79,7 @@ export const translations: Record<Language, Record<string, string>> = {
         disclaimer: 'Community Data Disclaimer: This list is compiled from community sources. Please confirm availability and timing before visiting.',
         searchPlaceholder: 'Search by area, place name, or features...',
         nearMe: 'Near Me',
-        submitSpot: 'Submit a Community Spot',
+        submitSpot: 'Suggest a Spot',
         listView: 'List',
         mapView: 'Map',
 
@@ -129,6 +131,7 @@ export const translations: Record<Language, Record<string, string>> = {
     ta: {
         appTitle: 'செஹ்ரி பைண்டர்',
         shareApp: 'பகிரவும்',
+        installApp: 'நிறுவவும்',
 
         ramadanKareem: 'ரமலான் முபாரக்',
         findSehri: 'உங்கள் செஹ்ரி',
@@ -188,6 +191,7 @@ export const translations: Record<Language, Record<string, string>> = {
     ur: {
         appTitle: 'سحری فائنڈر',
         shareApp: 'ایپ شیئر کریں',
+        installApp: 'ایپ انسٹال کریں',
 
         ramadanKareem: 'رمضان کریم',
         findSehri: 'اپنی سحری تلاش کریں',

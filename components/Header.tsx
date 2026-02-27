@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, X, Share2, Info, Flag, PlusCircle, Globe, BookOpen } from 'lucide-react';
+import { Menu, X, Share2, Info, Flag, PlusCircle, Globe, BookOpen, Download } from 'lucide-react';
 import { Logo } from './Logo';
 import { IslamicPattern } from './Pattern';
 import { useLanguage } from '../context/LanguageContext';
+import { usePWAInstall } from '../hooks/usePWAInstall';
+import { ManualInstallModal } from './ManualInstallModal';
 
 interface HeaderProps {
   onOpenSubmit?: () => void;
@@ -12,7 +14,17 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onOpenSubmit }) => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [installModalOpen, setInstallModalOpen] = useState(false);
   const { language, setLanguage, t, dir } = useLanguage();
+  const { canInstall, isInstalled, install } = usePWAInstall();
+
+  const handleInstallClick = async () => {
+    if (canInstall) {
+      await install();
+    } else {
+      setInstallModalOpen(true);
+    }
+  };
 
   const toggleLanguage = () => {
     const nextLang: Record<string, 'en' | 'ta' | 'ur'> = {
@@ -110,7 +122,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSubmit }) => {
             </button>
 
             <div className={`flex flex-col ${language === 'ur' ? 'items-end' : 'items-start'}`}>
-              <div className={`font-brand text-2xl mb-1 ${language === 'ur' ? 'font-urdu' : ''}`}>
+              <div className={`font-serif text-2xl mb-1 ${language === 'ur' ? 'font-urdu' : ''}`}>
                 Sehri <span className="text-gold-lantern">Finder</span>
               </div>
               <p className="text-sm text-muted-foreground italic font-serif">Connecting the community</p>
@@ -145,6 +157,17 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSubmit }) => {
                 <span>Learn Quranic Arabic</span>
               </a>
 
+
+              {!isInstalled && (
+                <button
+                  onClick={handleInstallClick}
+                  className={`flex items-center gap-4 w-full p-3 rounded-lg text-gold-lantern hover:bg-gold-lantern/5 transition-colors font-bold ${dir === 'rtl' ? 'flex-row-reverse text-right' : 'text-left'}`}
+                >
+                  <Download size={20} />
+                  <span>{t('installApp')}</span>
+                </button>
+              )}
+
               <MenuItem icon={<Info size={20} />} label="About This Service" dir={dir} />
               <MenuItem icon={<Flag size={20} />} label={t('reportIssue')} dir={dir} />
               <MenuItem icon={<Share2 size={20} />} label={t('shareApp')} dir={dir} />
@@ -158,6 +181,10 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSubmit }) => {
           </div>
         </div>
       )}
+      <ManualInstallModal
+        isOpen={installModalOpen}
+        onClose={() => setInstallModalOpen(false)}
+      />
     </>
   );
 };

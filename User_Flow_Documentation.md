@@ -1,12 +1,12 @@
 # Sehri Finder - User Flow Documentation
 
 ## 1. High-Level Overview
-**Product Purpose:** Sehri Finder is a specialized web application designed to help users locate, filter, and share venues offering Sehri (pre-dawn meal during Ramadan). It acts as a community-driven directory that highlights both free (Sadaqah) and paid food options across major cities.
+**Product Purpose**: Sehri Finder is a specialized web application designed to help users locate, filter, and share venues offering Sehri (pre-dawn meal during Ramadan). It acts as a global, community-driven directory across **19+ cities** in India, UK, USA, Canada, and Malaysia.
 
-**Target Users:**
-1. **Consumers (Seekers):** Individuals looking for reliable Sehri spots near them with specific preferences (e.g., free/paid, family-friendly, masjid vs. restaurant).
-2. **Contributors (Community Members):** Users who know of local Sehri spots and want to share them with the community.
-3. **Administrators (Curators):** The product team or volunteers responsible for verifying and approving user-submitted spots to maintain data quality.
+**Target Users**:
+1. **Consumers (Seekers)**: Individuals (students, travelers, locals) looking for reliable Sehri spots near them.
+2. **Contributors (Community Members)**: Users who submit local Sehri spots via the in-app form or WhatsApp.
+3. **Administrators (Curators)**: The team responsible for multi-city verification and E-E-A-T signals.
 
 ---
 
@@ -47,16 +47,16 @@ The system is designed to serve several distinct subgroups, categorized by their
 ### Flow A: The Consumer Flow (Finding a Spot)
 **Description:** A user searches for, filters, and saves a spot for Sehri.
 
-1. **User Action:** Explores the Landing Page and clicks "Enter App" or selects a city.
-   - *System Response:* Routes user to `/find/:city`. The app fetches raw data from Supabase, passes it through the `transformRawSpot` transformer (handling schema normalization and formatting), and loads it into Context.
-2. **User Action:** Toggles to Map View or stays in List View.
-   - *System Response:* 
-     - If Map View: Renders `MapView` with instances of `MarkerClusterGroup` to group dense map points together for better performance.
-     - If List View: Renders a grid of `ListingCard` components.
-3. **User Action:** Opens Filter Bar and selects "Free (Sadaqah)" and a specific area, OR clicks "Near Me".
-   - *System Response:* 
-     - Standard Filters: Instantly applies filters to the internal spot array via `useSpotFilter`.
-     - Near Me: Requests HTML5 Geolocation. If granted, calculates distances to all spots using the Haversine formula, appends distance string, sorts the dataset by proximity, and re-renders the list/map.
+1. **User Action**: Explores the Landing Page and clicks "Enter App" or selects a city.
+   - *System Response*: Routes user to `/find/:city`. The app utilizes **Static Site Generation (SSG)** to provide immediate SEO-rich content. The client-side hydration then takes over, fetching real-time data from Supabase.
+2. **User Action**: Toggles to Map View or navigates via the 2D Globe.
+   - *System Response*: 
+     - If Map View: Renders `MapView` with `MarkerClusterGroup` for clustering points.
+     - If Globe View: Renders a cinematic 2D globe with country-specific highlights.
+3. **User Action**: Opens Filter Bar and selects "Free (Sadaqah)" or clicks "Near Me".
+   - *System Response*: 
+     - Standard Filters: Instantly applies filters to the Context-managed spot array.
+     - Near Me: Requests HTML5 Geolocation, calculates distances via the Haversine formula, and sorts by proximity.
 4. **User Action:** Clicks the "Save" (Heart) icon on a specific card.
    - *System Response:* Adds the spot ID to `savedSpotIds` in LocalStorage, updates tab counter.
    - *Data Change:* LocalStorage `sehri_saved_spots` updated.
@@ -140,10 +140,9 @@ The system is designed to serve several distinct subgroups, categorized by their
 ---
 
 ## 11. Opportunities for Improvement
-- **User Accounts (Optional):** Allowing consumers to create accounts to sync saved spots across devices.
-- **Gamification for Contributors:** Rewarding volunteers who submit accurate spots with a "Trusted Contributor" badge.
-- **Real-time Status Updates:** A system for users to report "Food Ran Out" or "Crowded" to update the listing in real-time for others.
-- **Admin Automation:** Auto-rejecting obvious spam using edge functions or basic AI validation before it hits the admin queue.
+- **E-E-A-T Badges (v2)**: Reward users who provide "Live Status" updates with specialized badges.
+- **Social Maps (v2)**: User-created collections of "My Favorite Sehri Spots" shareable via OG Image cards.
+- **Multi-lingual AI (v3)**: Use Edge Functions to auto-translate descriptions into Arabic, Urdu, and local dialects.
 
 ---
 

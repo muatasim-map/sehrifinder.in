@@ -282,7 +282,7 @@ export const SubmitSpot: React.FC<SubmitSpotProps> = ({ onBack }) => {
                             className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 group transform active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                             <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            {isSubmitting ? 'Saving...' : 'Submit Spot'}
+                            {isSubmitting ? 'Saving...' : 'Suggest a Spot'}
                         </button>
 
                         <p className="text-center text-xs text-gray-400 px-4">

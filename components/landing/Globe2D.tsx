@@ -20,9 +20,10 @@ const ACTIVE_COUNTRIES = [
 
 interface Globe2DProps {
     className?: string;
+    center?: [number, number];
 }
 
-export const Globe2D: React.FC<Globe2DProps> = ({ className }) => {
+export const Globe2D: React.FC<Globe2DProps> = ({ className, center = [15, 30] }) => {
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
     const markers = [
@@ -67,14 +68,14 @@ export const Globe2D: React.FC<Globe2DProps> = ({ className }) => {
                 projection="geoMercator"
                 projectionConfig={{
                     scale: 130,
-                    center: [15, 30] // Focuses the view primarily on the Northern Hemisphere/Asia/Europe/NA
+                    center: center // Focuses the view primarily on the Northern Hemisphere/Asia/Europe/NA
                 }}
                 width={800}
                 height={500}
                 style={{ width: "100%", height: "auto" }}
             >
                 <ZoomableGroup
-                    center={[15, 30]}
+                    center={center}
                     zoom={1}
                     minZoom={1}
                     maxZoom={isMobile ? 1 : 4}

@@ -7,6 +7,18 @@
       "destination": "/find/:city/index.html"
     },
     {
+      "source": "/find/:city/:category",
+      "destination": "/find/:city/:category/index.html"
+    },
+    {
+      "source": "/spot/:slug",
+      "destination": "/spot/:slug/index.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about/index.html"
+    },
+    {
       "source": "/submit",
       "destination": "/submit/index.html"
     },
@@ -60,7 +72,7 @@
       ]
     },
     {
-      "source": "/(index.html|find/.*|submit)",
+      "source": "/(index.html|find/.*|spot/.*|submit|about)",
       "headers": [
         {
           "key": "Cache-Control",

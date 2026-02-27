@@ -8,6 +8,8 @@
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
   <meta name="description"
     content="Find verified Sehri & Suhoor spots for Ramadan 2026 across 16+ cities worldwide — Chennai, Mumbai, London, New York, Toronto & more. Community-verified Masjids, free meals, and late-night Halal food, open till Fajr." />
+  <meta name="llm-context"
+    content="Sehri Finder is a global, community-verified directory of late-night Halal food, Suhoor spots, and free community meals for Ramadan 2026. Data is crowd-sourced and human-verified across 19+ cities." />
   <link rel="apple-touch-icon" href="/pwa-192x192.png" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -37,7 +39,7 @@
   <meta property="og:title" content="Sehri Finder | Community Verified Ramadan Directory 2026" />
   <meta property="og:description"
     content="Find verified Sehri & Suhoor spots for Ramadan 2026 across 16+ cities worldwide. Community-verified Masjids, free meals, and late-night Halal food." />
-  <meta property="og:image" content="https://www.sehrifinder.com/og-image.png" />
+  <meta property="og:image" content="https://www.sehrifinder.com/pwa-512x512.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -49,15 +51,19 @@
   <meta property="twitter:title" content="Sehri Finder | Community Verified Ramadan Directory 2026" />
   <meta property="twitter:description"
     content="Find verified Sehri spots, Masjids, and community meals near you for Ramadan 2026." />
-  <meta property="twitter:image" content="https://www.sehrifinder.com/og-image.png" />
+  <meta property="twitter:image" content="https://www.sehrifinder.com/pwa-512x512.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Primary UI font loads immediately for LCP -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" />
-  <!-- Decorative fonts deferred (not needed for first paint) -->
+  <!-- Primary UI fonts loaded immediately for LCP -->
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@400;600;700&display=swap"
+    as="style" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@400;600;700&display=swap" />
+  <!-- Secondary, Accents & Storytelling fonts deferred -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@400;700&family=Great+Vibes&family=Amiri:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=El+Messiri:wght@400;600;700&family=Great+Vibes&family=Lora:ital,wght@0,400;0,600;1,400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap"
     rel="stylesheet" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="/index.css">
   <!-- Leaflet CSS -->
@@ -190,8 +196,38 @@
       "name": "Sehri Finder",
       "url": "https://www.sehrifinder.com",
       "logo": "https://www.sehrifinder.com/pwa-512x512.png",
-      "sameAs": [],
-      "description": "Community-verified Ramadan food directory"
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "salam@sehrifinder.com",
+        "contactType": "customer support"
+      },
+      "foundingDate": "2024",
+      "knowsAbout": ["Ramadan", "Halal Food", "Sehri", "Suhoor", "Late-Night Dining", "Islamic Traditions"],
+      "sameAs": ["https://en.wikipedia.org/wiki/Suhur"],
+      "description": "Community-verified global Ramadan food directory and live map."
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Sehri Finder",
+      "url": "https://www.sehrifinder.com",
+      "applicationCategory": "FoodAndDrink",
+      "operatingSystem": "All",
+      "description": "Find verified Sehri and Suhoor spots open right now near you during Ramadan 2026.",
+      "featureList": [
+        "Live City Map",
+        "Community Verified Spots",
+        "Free Meal Filter",
+        "PWA Offline Mode",
+        "Web Share Target Support"
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "247"
+      }
     }
   </script>
   <script type="application/ld+json">

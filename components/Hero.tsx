@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, MapPin, Filter, AlertCircle, PlusCircle } from 'lucide-react';
 import { IslamicPattern } from './Pattern';
 import { motion, Variants, useScroll, useTransform } from 'framer-motion';
@@ -55,10 +55,16 @@ export const Hero: React.FC<HeroProps> = ({
   const yBg = useTransform(scrollY, SCROLL_RANGE_BG, Y_OFFSET_BG);
   const yText = useTransform(scrollY, SCROLL_RANGE_TEXT, Y_OFFSET_TEXT);
 
+  // Debounce search input to prevent main-thread freezing with 600+ items
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onSearch(localSearch);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [localSearch, onSearch]);
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setLocalSearch(val);
-    onSearch(val);
+    setLocalSearch(e.target.value);
   };
 
   return (

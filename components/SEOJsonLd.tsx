@@ -1,12 +1,13 @@
 import React from 'react';
 
 interface SEOJsonLdProps {
-    type: 'WebSite' | 'LocalBusiness' | 'ItemList' | 'BreadcrumbList';
-    data: any;
+    type?: 'WebSite' | 'LocalBusiness' | 'ItemList' | 'BreadcrumbList' | 'Restaurant' | 'FAQPage' | 'Dataset' | 'WebApplication' | string;
+    data?: any;
+    schema?: any;
 }
 
-export const SEOJsonLd: React.FC<SEOJsonLdProps> = ({ type, data }) => {
-    const baseSchema = {
+export const SEOJsonLd: React.FC<SEOJsonLdProps> = ({ type, data, schema }) => {
+    const finalSchema = schema || {
         "@context": "https://schema.org",
         "@type": type,
         ...data
@@ -15,7 +16,7 @@ export const SEOJsonLd: React.FC<SEOJsonLdProps> = ({ type, data }) => {
     return (
         <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(baseSchema) }}
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(finalSchema) }}
         />
     );
 };

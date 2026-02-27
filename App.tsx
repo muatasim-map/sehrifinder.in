@@ -5,15 +5,18 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Toaster, toast } from 'sonner';
-import { ReloadPrompt } from './components/ReloadPrompt';
 import { SplashScreen } from './components/SplashScreen';
 import { IslamicPattern } from './components/Pattern';
 import { PWAInstallBanner } from './components/PWAInstallBanner';
+import { SWUpdateToast } from './components/SWUpdateToast';
 
 // Pages
 import LandingPage from './pages/LandingPage';
 import AppPage from './pages/AppPage';
+import SpotPage from './pages/SpotPage';
 import SubmitPage from './pages/SubmitPage';
+import AboutPage from './pages/AboutPage';
+import EmbedBadgePage from './pages/EmbedBadgePage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 
@@ -64,7 +67,7 @@ export default function App() {
         {/* Global Toast Notification */}
         <Toaster position="top-center" richColors />
 
-        <ReloadPrompt />
+        <SWUpdateToast />
 
         {/* Splash Screen - only for sessions that haven't seen it */}
         {showSplash && (
@@ -79,9 +82,13 @@ export default function App() {
             {/* Main App Routes */}
             <Route path="/find" element={<AppPage />} />
             <Route path="/find/:city" element={<AppPage />} />
+            <Route path="/find/:city/:category" element={<AppPage />} />
+            <Route path="/spot/:slug" element={<SpotPage />} />
 
             {/* Feature Routes */}
             <Route path="/submit" element={<SubmitPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/embed/badge/:slug" element={<EmbedBadgePage />} />
 
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminLoginPage />} />

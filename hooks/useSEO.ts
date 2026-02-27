@@ -3,21 +3,35 @@ import { SEO_DATA } from '../data/seoData';
 
 import { toSlug } from '../utils/slug';
 
-export const useSEO = (city: string) => {
+export const useSEO = (city: string, category?: string) => {
     useEffect(() => {
         const slugCity = toSlug(city);
         const data = SEO_DATA[slugCity];
 
-        // Base title and description
+        const getCategoryName = (cat: string) => {
+            if (cat === 'free-community-meal' || cat === 'free') return 'Free Community Meals';
+            if (cat === 'drive-thru') return 'Drive-Thrus';
+            if (cat === 'buffet') return 'Buffets';
+            if (cat === '24-hour' || cat === '24-hours') return '24-Hour Spots';
+            if (cat === 'dessert' || cat === 'sweets') return 'Desserts';
+            if (cat === 'masjid' || cat === 'mosque') return 'Masjids';
+            return cat.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        };
+
         const siteName = "Sehri Finder";
         const currentYear = new Date().getFullYear();
-        const title = data
-            ? `Sehri Spots in ${data.city} ${currentYear} | ${siteName} — Ramadan Directory`
-            : `${siteName} | Community Verified Ramadan Directory`;
 
-        const description = data
-            ? data.shortDescription
-            : "Find verified Sehri spots, Masjids, and community meals during Ramadan 2026.";
+        let title = `${siteName} | Community Verified Ramadan Directory`;
+        let description = "Find verified Sehri spots, Masjids, and community meals during Ramadan 2026.";
+
+        if (data && category) {
+            const catName = getCategoryName(category);
+            title = `${catName} for Sehri in ${data.city} ${currentYear} | ${siteName}`;
+            description = `Find the best ${catName.toLowerCase()} for Sehri and Suhoor in ${data.city}. Verified Ramadan 2026 timings and locations.`;
+        } else if (data) {
+            title = `Sehri Spots in ${data.city} ${currentYear} | ${siteName} — Ramadan Directory`;
+            description = data.shortDescription;
+        }
 
         const keywords = data?.keywords?.join(', ') || "sehri, suhoor, ramadan, sehri finder, masjid, community meals";
 
@@ -60,9 +74,12 @@ export const useSEO = (city: string) => {
 
         // 5. Update Canonical
         const baseUrl = "https://www.sehrifinder.com";
-        const canonicalUrl = data
-            ? `${baseUrl}/find/${slugCity}`
-            : baseUrl;
+        let canonicalUrl = baseUrl;
+        if (data && category) {
+            canonicalUrl = `${baseUrl}/find/${slugCity}/${category}`;
+        } else if (data) {
+            canonicalUrl = `${baseUrl}/find/${slugCity}`;
+        }
 
         let canonical = document.querySelector('link[rel="canonical"]');
         if (!canonical) {

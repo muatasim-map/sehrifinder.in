@@ -10,9 +10,8 @@
 ## 📖 About the Project
 
 **Sehri Finder** was born from a simple problem: *"Where can I eat at 3:30 AM?"*
-During Ramadan, finding reliable, open establishments for Sehri is a challenge. WhatsApp forwards are often outdated, and Google Maps doesn't filter by "Open for Sehri".
 
-This project aims to solve that by building a **verified, crowd-sourced digital compass** for Ramadan. We focus on **Trust** (Verified Badges), **Accessibility** (PWA/Offline), and **Beauty** (Islamic Art Direction).
+This project is a **verified, crowd-sourced digital compass** for Ramadan. It has evolved from a local experiment into a global engine covering **19+ cities across 5 countries** (India, UK, USA, Canada, and Malaysia). We focus on **Trust** (Community Verification), **Accessibility** (PWA/Offline), and **Cinematic Aesthetics** (Islamic Art Direction & Parallax UI).
 
 **We are open source and welcome contributors from all backgrounds to help expand this map to more cities!** 🌍
 
@@ -29,9 +28,10 @@ This project aims to solve that by building a **verified, crowd-sourced digital 
     *   **Near Me**: Sort spots by distance using the Haversine formula.
     *   **Navigation**: Deep linking to Google Maps/Uber.
 4.  **Premium Aesthetics**:
-    *   Dark Mode by default (CartoDB Dark Matter tiles).
-    *   Custom Iconography: Emerald (Free) vs Gold (Paid).
-    *   Animations: Framer Motion spring transitions.
+    - **Cinematic Experience**: 3D-styled parallax lanterns and a 2D interactive globe.
+    - **Glassmorphism**: Modern, semi-transparent UI elements with blur effects.
+    - **Islamic Patterns**: High-fidelity geometric overlays and calligraphy.
+    - **Animations**: Framer Motion (v12) for smooth, high-performance transitions.
 
 ### User Personas
 *   **The Traveler**: Needs a Masjid for Tahajjud + a nearby place to eat.
@@ -45,14 +45,14 @@ This project aims to solve that by building a **verified, crowd-sourced digital 
 This project uses a modern, lightweight stack optimized for performance and developer experience.
 
 ### Tech Stack
-*   **Runtime**: React 19 (Functional Components + Hooks).
-*   **Language**: TypeScript (Strict Mode).
-*   **Build Tool**: Vite 6 (ESBuild).
-*   **Styling**: 
-    *   Tailwind CSS v4 (using the new `@theme` directive).
-    *   Framer Motion (for complex UI transitions).
-*   **Maps**: React-Leaflet v5 + OpenStreetMap + MarkerCluster.
-*   **State Management**: React Context API (for global Theme/Language) + Local State.
+*   **Runtime**: React 19 + TypeScript (Strict Mode).
+*   **Routing**: React Router v7.
+*   **Styling**: Tailwind CSS v4 + Vanilla CSS Layering.
+*   **Motion**: Framer Motion v12.
+*   **Database**: Supabase (PostgreSQL) + Edge Functions.
+*   **Maps**: React-Leaflet + MarkerCluster.
+*   **SEO**: Programmatic injection via `headless Chrome` and `meta` tag SSG.
+*   **PWA**: `vite-plugin-pwa` for full offline availability.
 
 ### Directory Structure
 ```
@@ -110,11 +110,10 @@ npm run build
 We love pull requests! Here are a few ways you can help:
 
 ### 🏙️ Add a New City
-1.  Duplicate `src/data/chennai.ts`.
-2.  Rename it to `your-city.ts`.
-3.  Add 5-10 verified spots.
-4.  Import and add it to `services/spotService.ts`.
-5.  Submit a PR!
+1.  **Update Locations**: Add the city coordinates to `src/data/locations.ts`.
+2.  **Add SEO Data**: Create a new entry in `src/data/seoData.ts` with localized H1, description, and keywords.
+3.  **Populate Spots**: Submit spots via the in-app `/submit` form or directly into the Supabase database.
+4.  **Verify**: Your city will appear in the footer and global search after admin approval!
 
 ### 🐛 Fix Bugs & Polish UI
 *   Check the [Issues](https://github.com/yourusername/sehri-finder/issues) tab.
@@ -129,10 +128,12 @@ We love pull requests! Here are a few ways you can help:
 
 ## 🗺️ Roadmap
 
-- [x] **Phase 1**: MVP with Static Data (Chennai/Hyderabad).
-- [x] **Phase 2**: Premium UI Overhaul & Parallax Headers.
-- [ ] **Phase 3**: Supabase Backend for Real-time User Submissions.
-- [ ] **Phase 4**: "Iftar Mode" Toggle.
+- [x] **Phase 1**: MVP with Static Data (4 Cities).
+- [x] **Phase 2**: Global Scaling (19 Cities, 5 Countries).
+- [x] **Phase 3**: Supabase Integration & Admin Dashboard.
+- [x] **Phase 4**: Cinematic UI & 2D Interactive Globe.
+- [ ] **Phase 5**: Real-time "Food Status" User Crowdsourcing.
+- [ ] **Phase 6**: Multi-lingual Support (Urdu, Hindi, Tamil).
 
 ---
 

@@ -191,7 +191,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
             {/* Header */}
             <div className="bg-emerald-midnight text-white px-6 py-4 flex items-center justify-between shadow-md relative z-10 border-b border-gold-lantern/20">
                 <div className="flex items-center gap-4">
-                    <h1 className="font-bold text-2xl flex items-center gap-2 font-reem">
+                    <h1 className="font-bold text-2xl flex items-center gap-2 font-serif">
                         <span className="text-gold-lantern">Sehri Finder</span> Admin
                     </h1>
                     <button
@@ -266,7 +266,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
                 <div className="flex justify-between items-end mb-6">
                     <div>
-                        <h2 className="text-3xl font-bold text-emerald-900 font-reem">
+                        <h2 className="text-3xl font-bold text-emerald-900 font-serif">
                             {activeTab === 'pending' ? 'Pending Submissions' : 'Active Spots Management'}
                         </h2>
                         <p className="text-gray-500 text-sm mt-1">
@@ -357,7 +357,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                                                     <Clock size={10} /> {new Date(spot.submitted_at).toLocaleDateString()}
                                                 </span>
                                             </div>
-                                            <h3 className="text-xl font-bold text-gray-900 mb-1 font-reem">{spot.venue_name}</h3>
+                                            <h3 className="text-xl font-bold text-gray-900 mb-1 font-serif">{spot.venue_name}</h3>
                                             <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
                                                 <div className="flex items-center gap-1">
                                                     <MapPin className="w-4 h-4 text-emerald-600" />
@@ -409,7 +409,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                             <div key={spot.location_id} className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:border-gold-lantern/50 transition-all group">
                                 <div className="flex justify-between items-start mb-3">
                                     <div>
-                                        <h3 className="text-lg font-bold text-emerald-900 font-reem line-clamp-1" title={spot.venue_name}>{spot.venue_name}</h3>
+                                        <h3 className="text-lg font-bold text-emerald-900 font-serif line-clamp-1" title={spot.venue_name}>{spot.venue_name}</h3>
                                         <p className="text-xs text-gray-500 font-medium">{spot.primary_area}, {spot.city}</p>
                                     </div>
                                     <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wide ${spot.food_type === 'Free' ? 'bg-green-50 text-green-700' : 'bg-orange-50 text-orange-700'}`}>

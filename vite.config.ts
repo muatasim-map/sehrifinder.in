@@ -19,7 +19,7 @@ export default defineConfig({
       ext: '.br',
     }),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg', 'quranlingo-logo.png'],
       manifest: {
         // Stable ID prevents duplicate installs when start_url changes

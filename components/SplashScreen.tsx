@@ -108,20 +108,24 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
     const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
-        // Full cinematic duration allowing shimmer and particles to complete
+        // Full cinematic duration - requested to always play on every load
         const timer = setTimeout(() => {
             setIsVisible(false);
-            setTimeout(onComplete, 1000);
         }, 7000);
 
         return () => clearTimeout(timer);
-    }, [onComplete]);
+    }, []);
+
+    const handleSkip = () => {
+        setIsVisible(false);
+    };
 
     return (
-        <AnimatePresence>
+        <AnimatePresence onExitComplete={onComplete}>
             {isVisible && (
                 <motion.div
-                    className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#001A13] overflow-hidden px-6 md:px-0" // Deep Premium Emerald
+                    onClick={handleSkip}
+                    className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-emerald-midnight cursor-pointer overflow-hidden px-6 md:px-0"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0, scale: 1.05, filter: "blur(12px)", transition: { duration: 1.2, ease: "easeInOut" } }}
@@ -241,12 +245,21 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                             transition={{ delay: 2.5, duration: 1.0, ease: "easeOut" }}
                             className="mt-10 md:mt-14 flex items-center gap-3 md:gap-5"
                         >
-                            <span className="text-[9px] md:text-[11px] text-[#FFD700]/50 uppercase tracking-[0.3em] font-sans whitespace-nowrap">From the creators of</span>
-                            <img src="/quranlingo-logo.png" alt="QurAnLingo" className="h-8 md:h-9 object-contain opacity-60" loading="lazy" />
-                            <span className="w-px h-4 bg-[#FFD700]/15"></span>
-                            <span className="font-serif text-sm md:text-base text-[#FFD700]/35 tracking-wide">Deen<span className="text-[#B8860B]/40">Flix</span></span>
+                            <span className="text-[9px] md:text-[11px] text-gold-lantern/50 uppercase tracking-[0.3em] font-sans whitespace-nowrap">From the creators of</span>
+                            <img src="/quranlingo-logo.png" alt="QurAnLingo" width="100" height="36" className="h-8 md:h-9 object-contain opacity-60" loading="lazy" />
+                            <span className="w-px h-4 bg-gold-lantern/15"></span>
+                            <span className="font-serif text-sm md:text-base text-gold-lantern/35 tracking-wide">Deen<span className="text-gold-bronze/40">Flix</span></span>
                         </motion.div>
 
+                        {/* Skip Hint */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 0.4 }}
+                            transition={{ delay: 3 }}
+                            className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[10px] text-gold-lantern/50 uppercase tracking-[0.3em] pointer-events-none"
+                        >
+                            Click anywhere to skip
+                        </motion.div>
                     </div>
                 </motion.div>
             )}

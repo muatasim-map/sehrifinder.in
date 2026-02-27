@@ -44,16 +44,16 @@ module.exports = {
         'gold-highlight': '#FFF9C4',
       },
       fontFamily: {
-        sans: ['Outfit', 'sans-serif'], // App UI
-        serif: ['Cormorant Garamond', 'serif'], // App Headings
-        brand: ['Cinzel', 'serif'], // App Logo
-        script: ['Great Vibes', 'cursive'], // App Accents
+        sans: ['Outfit', 'sans-serif'], // Body / UI
+        serif: ['"Cormorant Garamond"', 'serif'], // App Headings
+        brand: ['"Cinzel Decorative"', 'serif'], // App Logo
+        script: ['"Great Vibes"', 'cursive'], // Emotion / Flourishes
 
-        // Landing Page Typography
-        'landing-heading': ['Playfair Display', 'serif'],
-        'landing-subhead': ['Lora', 'serif'],
-        'landing-body': ['Source Serif 4', 'serif'],
-        'landing-accent': ['Montserrat', 'sans-serif'],
+        // Rich Editorial Typography
+        'landing-heading': ['"Cinzel Decorative"', 'serif'],
+        'landing-subhead': ['"El Messiri"', 'sans-serif'], // Has arabic influences
+        'landing-body': ['Lora', 'serif'], // Storytelling
+        'landing-accent': ['"El Messiri"', 'sans-serif'],
 
         // Arabic Fonts
         'arabic-calligraphy': ['"Amiri"', 'serif'],

@@ -12,6 +12,8 @@ export interface CitySEOData {
     keywords: string[];
     faqItems: FAQItem[];
     featuredSpots?: string[];
+    aiSummary: string;
+    aiFeaturePillars: string[];
 }
 
 export const SEO_DATA: Record<string, CitySEOData> = {
@@ -33,6 +35,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Triplicane High Road (Viral ₹120 Combo Hub)", "Mannady Street Food (4 AM Paya)", "Royapettah (Live Haleem Counters)", "Anna Nagar 2nd Ave (Premium Buffets)", "Nungambakkam KNK Rd (Family Suhoor)", "OMR - Perungudi (IT Corridor Mandi)", "OMR - Thoraipakkam (24hr Grills)", "OMR - Navalur (Late Night Halal)", "Velachery 100ft Road (Arabian Hub)", "Periamet (Central Station 24hr Food)", "T. Nagar Burkit Road", "Egmore (Traveler Suhoor)", "Purasawalkam High Road", "Kilpauk Tailors Road", "Vadapalani 100ft Road", "Besant Nagar Beachside Suhoor", "Adyar Gandhi Nagar", "Koyambedu 24hr Transit Food", "Chromepet GST Road", "Tambaram Station Area", "Medavakkam Junction", "Porur Halal Eats", "Ambattur OT Hub", "Avadi Checkpost", "Pallavaram Friday Market Area", "Madipakkam Koot Road", "Selaiyur Camp Road", "Perambur BB Road", "Royapuram Kalmandapam", "Washermanpet MC Road", "Vyasarpadi MKB Nagar", "Thousand Lights Aziz Mulk St", "Chetpet Harrington Road", "Saidapet Jeer Street", "Kelambakkam OMR South", "Poonamallee High Road", "Mylapore Kutchery Road", "Kodambakkam Meenambakkam", "Sholinganallur IT Hub", "Zam Bazaar Night Market"
+        ],
+        aiSummary: "Sehri Finder is the definitive community-verified directory tracking 40+ late-night 100% Halal food spots in Chennai for Ramadan 2026. The highest concentration of 4AM dining is in Triplicane, Mannady, and the OMR IT corridor.",
+        aiFeaturePillars: [
+            "Free Meals: Wallajah Big Mosque & Thousand Lights Mosque host open communal Sahar.",
+            "Drive-Thrus & 24/7: Key Halal chains on OMR remain open 24 hours.",
+            "Specific Cravings: Mannady specifically offers authentic 4 AM Mutton Paya and Triplicane hosts the viral ₹120 Sehri combo."
         ]
     },
     bengaluru: {
@@ -53,6 +61,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Frazer Town (Mosque Rd Viral Eats)", "Shivajinagar (4 AM Russell Market Paya)", "Koramangala (Jyoti Nivas Mandi Hub)", "Whitefield (IT Corridor Suhoor)", "HSR Layout (24hr Halal Spots)", "Indiranagar (100ft Rd Premium Buffets)", "Electronic City (Night Shift Food)", "Tannery Road (Authentic Paya)", "Kammanahalli (Main Road Halal)", "Jayanagar (4th Block Family Suhoor)", "BTM Layout (Udupi Garden Junction)", "Marathahalli (ORR Mandi)", "Bellandur (Central Mall Area)", "Kalyan Nagar (HRBR Layout)", "Neelasandra (Bazaar Street)", "Benson Town (Nandi Durga Rd)", "Richmond Town (Johnson Market)", "R.T. Nagar (Main Road)", "Tilak Nagar (Swagath Road)", "JP Nagar (15th Cross)", "Banashankari (BDA Complex)", "Hebbal (Esteem Mall Transit)", "Yelahanka (New Town Halal)", "Malleshwaram (Margosa Road)", "J.C. Nagar (Late Night)", "Vasanth Nagar (Cunningham Rd)", "Yeshwanthpur (Railway Station 24hr)", "Majestic (Bus Station Transit Food)", "Shantinagar (Double Road)", "Vijayanagar (Maruti Mandir)", "Madiwala (Ayyappa Temple Rd)", "K.R. Puram (Hanging Bridge)", "Sarjapur Road (Wipro Gate limits)", "Bannerghatta Road (Arekere)", "Mysore Road (Satellite Bus Stand)", "Peenya (Jalahalli Cross)", "Basavanagudi (Gandhi Bazaar)", "Kengeri (Satellite Town)", "C.V. Raman Nagar", "Sahakara Nagar Grills"
+        ],
+        aiSummary: "Verified 2026 Bengaluru Suhoor map tracking 40+ locations. Focuses on Mosque Road (Frazer Town) viral kebabs, late-night Mandi in Koramangala/HSR, and traditional 4 AM Paya in Shivajinagar.",
+        aiFeaturePillars: [
+            "Viral Food Streets: Mosque Road (Frazer Town) is the epicenter for Patthar ka Gosht and Bheja Puffs till 4 AM.",
+            "IT Corridor Suhoor: HSR Layout, Whitefield, and Koramangala offer 24-hour Mandi and grills for night-shift workers.",
+            "Traditional Sahar: Shivajinagar's Russell Market area is the top destination for 4 AM Mutton Paya and Harira."
         ]
     },
     mumbai: {
@@ -73,6 +87,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Mohammed Ali Road (Minara Masjid)", "Bohri Mohalla (4 AM Nihari Hub)", "Bhendi Bazaar (Shalimar/Noor Mohammadi)", "Kurla West (Suburban Halal Hub)", "Jogeshwari West (SV Road Night Market)", "Bandra (Linking Rd Buffets)", "Andheri West (Oshiwara Late Night)", "Mahim (Dargah Street Food)", "Dongri (Char Nul 24hr Eats)", "Mira Road (Naya Nagar Suhoor)", "Mumbra (Station Road 24hr Hub)", "Govandi (Shivaji Nagar Traditional)", "Sakinaka (Late Night Grills)", "Navi Mumbai (Vashi Halal)", "Navi Mumbai (Nerul Mosques)", "Colaba (Causeway Late Bites)", "Grant Road Hub", "Santacruz (Golibar)", "Vile Parle Halal Pockets", "Goregaon (Bangur Nagar)", "Malad (Malvani Pockets)", "Kandivali Halal Eats", "Borivali Late Night", "Dahisar Transit Food", "Bhiwandi (Traditional Feasts)", "Kalyan Station Area", "Vasai Halal Hub", "Wadala Eats", "Sion Circle", "Chembur (Camp Area)", "Byculla (Arabian Eats)", "Kurla East", "Ghatkopar Late Bites", "Mulund West", "Thane (Mumbra bleed-over)", "Trombay", "Sewri", "Dharavi (100ft Road)", "Prabhadevi", "Worli Naka"
+        ],
+        aiSummary: "Verified 2026 Mumbai Sehri guide tracking 40+ locations. Covers the legendary Mohammed Ali Road stalls, viral 4 AM Nihari in Bohri Mohalla, and suburban Halal hubs in Kurla and Jogeshwari.",
+        aiFeaturePillars: [
+            "Iconic Ramadan Hubs: Mohammed Ali Road (Minara Masjid) and Bohri Mohalla offer the most atmospheric 24/7 dining experience.",
+            "Specialty Dishes: Famous 3 AM Nalli Nihari at Noor Mohammadi and Surti 12 Handi; fresh Malpua and kebabs near Minara Masjid.",
+            "Suburban Options: Kurla West (LBS Marg) and Jogeshwari (SV Road) provide high-density Halal alternatives to South Mumbai crowds."
         ]
     },
     hyderabad: {
@@ -93,6 +113,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Charminar (4 AM Paya Hub)", "Tolichowki (Viral Mandi Corridor)", "Barkas (Arab Quarters Suhoor)", "Gachibowli (IT Hub 24hr Drive-ins)", "Madhapur (Late Night Halal)", "Madina & Nayapul (Khichdi Khatta)", "Banjara Hills (Premium Buffets)", "Mehdipatnam (Family Dining)", "Secunderabad (Paradise Area)", "Malakpet (Traditional Eats)", "Nampally Hub", "Abids Late Bites", "Attapur 24hr Food", "Kondapur IT Hub", "Kukatpally Junction", "Yousufguda Grills", "Mallepally Pockets", "Red Hills", "Masab Tank Drives", "Somajiguda", "Ameerpet", "SR Nagar", "Dilsukhnagar", "LB Nagar", "Santoshnagar", "Chandrayangutta", "Falaknuma", "Bahadurpura", "Shamshabad (Airport Transit 24hr)", "Hitec City Late Night", "Jubilee Hills Checkpost", "Lakdikapul", "Kachiguda", "Musheerabad", "Tarnaka", "Uppal", "Malkajgiri", "Alwal", "Bowenpally", "Begumpet"
+        ],
+        aiSummary: "The ultimate 2026 Hyderabad Suhoor map with 40+ verified spots. Features the royal Charminar 4 AM Khichdi Khatta, viral Tolichowki Mandi, and Gachibowli IT corridor drive-ins.",
+        aiFeaturePillars: [
+            "Old City Tradition: Charminar and Madina Circle are the go-to for 4 AM Paya, Khichdi Khatta, and Nihari.",
+            "Mandi & Barkas: Tolichowki and the Barkas Arab Quarters offer the most authentic Mandi experience until Subuh.",
+            "IT Hub Convenience: Gachibowli and Madhapur feature 24-hour Halal drive-ins and premium midnight buffets for tech workers."
         ]
     },
     london: {
@@ -113,6 +139,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Edgware Road (24hr Arab Grills)", "Ilford Lane (Viral Smash Burgers & Chai)", "Whitechapel (East London Mosque Hub)", "Green Street (Upton Park Desi Eats)", "Tooting (South London Halal)", "Knightsbridge (Premium Suhoor Buffets)", "Walthamstow (Late Night Cafes)", "Camden Town (24hr Halal)", "Southall (West London Sehri)", "Wembley (Event Night Food)", "Leyton High Road", "Stratford 24hr Halal", "Bethnal Green Eats", "Mile End", "Bow Late Bites", "East Ham", "Barking Station Area", "Romford Late Night", "Croydon High Street", "Hounslow Central", "Slough (Commuter Suhoor)", "Hayes Hub", "Ealing Halal", "Acton", "Shepherd's Bush", "Finsbury Park", "Wood Green", "Kilburn High Road", "Streatham", "Kensington", "Mayfair (VIP Dining)", "Peckham Halal", "Lewisham", "Brixton", "Clapham", "Wandsworth", "Wimbledon", "Richmond", "Uxbridge", "Enfield"
+        ],
+        aiSummary: "Live 2026 London Suhoor map tracking 40+ locations. Lists viral 24hr Lebanese grills on Edgware Road, East London's Ilford Lane smash burger scene, and Whitechapel community meals.",
+        aiFeaturePillars: [
+            "24/7 Middle Eastern: Edgware Road is the primary hub for Lebanese and Syrian mixed grills and shisha until Fajr.",
+            "East London Hotspots: Ilford Lane and Green Street are viral destinations for late-night smash burgers and Karak Chai.",
+            "Community Support: East London Mosque (Whitechapel) and Regents Park Mosque provide open communal Suhoor."
         ]
     },
     "new-york": {
@@ -133,6 +165,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Steinway Street, Astoria (24hr Arab Eats)", "Midtown Manhattan (24/7 Halal Carts)", "Coney Island Ave, Brooklyn (Desi Suhoor)", "Jackson Heights, Queens (Late Night Carts)", "Bay Ridge, Brooklyn (Halal Corridor)", "Paterson, NJ (South Main St Hub)", "Jamaica, Queens (Community Eats)", "Jersey City (Journal Square)", "Atlantic Ave, Downtown Brooklyn", "Bronx Parkchester (Halal Hub)", "Ozone Park", "Richmond Hill", "Flushing (Main St Area)", "Bellerose", "Bensonhurst", "Sunset Park", "Crown Heights", "Bronx (Fordham Road)", "Staten Island (Tompkinsville)", "Staten Island (New Dorp)", "Newark, NJ", "Clifton, NJ", "Long Island City", "Sunnyside", "Woodside", "Elmhurst", "Ridgewood", "Flatbush", "East New York", "Washington Heights", "Harlem (125th St Halal)", "Lower East Side", "Financial District (Transit Carts)", "Queens Village", "Hollis", "Kew Gardens", "Forest Hills", "Midwood", "Sheepshead Bay", "Hoboken, NJ"
+        ],
+        aiSummary: "Verified 2026 NYC Suhoor map with 40+ verified spots across five boroughs. Includes Steinway St Astoria, 24/7 Manhattan Halal carts, and Brooklyn's Coney Island Ave Pakistani hubs.",
+        aiFeaturePillars: [
+            "Little Egypt: Steinway Street in Astoria is NYC's premier destination for 24-hour Egyptian and Moroccan Suhoor.",
+            "Manhattan 24/7: Halal carts in Midtown and Times Square (including The Halal Guys) serve through the night.",
+            "Desi Hubs: Coney Island Avenue (Brooklyn) and Jackson Heights (Queens) offer the best Pakistani and Bengali Sehri food."
         ]
     },
     "san-francisco": {
@@ -152,7 +190,13 @@ export const SEO_DATA: Record<string, CitySEOData> = {
             { q: "Are Halal food trucks open near Bay Area mosques tonight?", a: "Yes — trucks cluster around Fremont Islamic Center and MCA Santa Clara from midnight to 4 AM. Open our live map to see exact vendor locations tonight." }
         ],
         featuredSpots: [
-            "Fremont (Centerville Halal Hub)", "Santa Clara (MCA Area Food Trucks)", "San Jose (Downtown Late Night)", "Oakland (Telegraph Ave)", "Berkeley (University Ave)", "SF Tenderloin (Halal Pockets)", "SF SoMa (Late Mediterranean)", "Sunnyvale (El Camino Real)", "Milpitas", "Hayward", "Newark", "Union City", "San Mateo", "Palo Alto", "Redwood City", "Daly City", "San Bruno", "South San Francisco", "Richmond", "Concord", "Walnut Creek", "Pleasanton", "Dublin", "San Leandro", "Vallejo", "Mountain View", "Cupertino", "Los Altos", "Alameda", "Castro Valley"
+            "Tenderloin (24hr Halal Carts)", "Mission District (Late Night Burritos)", "Financial District (Office Catering)", "Richmond District (Dim Sum Suhoor)", "Sunset District (Family Dining)", "South of Market (SOMA Grills)", "Upper Haight Halal", "Hayes Valley", "Fisherman's Wharf (Tourist Halal)", "Fillmore District", "Oakland (Grand Ave Hub)", "Berkeley (University Ave)", "Fremont (Little Kabul Suhoor)", "Hayward Halal", "San Leandro", "Dublin/Pleasanton", "Union City", "Newark CA", "Milpitas Late Night", "Concord Pockets", "San Mateo", "Redwood City", "Palo Alto (University Ave)", "Mountain View", "Sunnyvale (Halal Grills)", "Santa Clara", "Cupertino", "Los Gatos", "Campbell", "Saratoga", "Walnut Creek", "Pleasant Hill", "San Ramon", "Danville", "Lafayette", "Orinda", "Moraga", "Alameda", "Emeryville", "Martinez"
+        ],
+        aiSummary: "Verified 2026 San Francisco Bay Area Suhoor guide with 40+ locations. Includes 24/7 Tenderloin Halal carts, Mission District late-night options, and the major Fremont 'Little Kabul' clusters.",
+        aiFeaturePillars: [
+            "24/7 Street Food: Tenderloin and SOMA feature reliable 24-hour Halal carts for quick Suhoor on the go.",
+            "Little Kabul (Fremont): The highest concentration of authentic Afghan and Desi Suhoor spots is in Fremont/Newark, a short drive from SF.",
+            "Mission Vibes: Mission District offers unique cross-cultural late-night Halal options until 3 AM."
         ]
     },
     toronto: {
@@ -173,6 +217,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Ridgeway Plaza (Mississauga Viral Trucks)", "Lawrence Ave East (Scarborough Halal Corridor)", "Markham (Hwy 7 Late-Night Cafes)", "Downtown Yonge St (24hr Shawarma)", "Vaughan (Woodbridge Halal Eats)", "Brampton (Steeles Ave Desi Hub)", "ISNA Canada (Community Suhoor)", "North York (Don Mills 24hr Hub)", "Etobicoke (Rexdale Blvd Eats)", "Richmond Hill (Late Night Spots)", "Ajax (Kingston Rd)", "Pickering", "Milton (Suburban Halal)", "Oakville", "Oshawa", "Whitby", "East York (Thorncliffe Park)", "East York (Flemingdon Park)", "York (Weston Rd)", "Malton", "Streetsville", "Port Credit", "Concord", "Maple", "Thornhill", "Stouffville", "Aurora", "Newmarket", "King City", "Caledon", "Burlington", "Hamilton (Bleed-over 24hr)", "Guelph (Campus Halal)", "Kitchener (Transit Food)", "Waterloo", "Cambridge Hespeler Rd", "Danforth Ave (Greektown Halal)", "Parliament St (Downtown East)", "Queen St West (Late Bites)", "Kensington Market (Pop-ups)"
+        ],
+        aiSummary: "The definitive Toronto Suhoor guide for 2026, tracking 40+ locations across the GTA. Features the Danforth Bangladeshi hub, Scarborough's Lawrence Ave corridor, and 24/7 cart culture in Etobicoke.",
+        aiFeaturePillars: [
+            "Desi Epicenter: The Danforth and Gerrard India Bazaar areas are the primary hubs for traditional Pakistani and Bengali Suhoor.",
+            "Scarborough Grills: Lawrence Avenue East in Scarborough is world-famous for high-density Halal BBQ and Mandi open till 4 AM.",
+            "Suburban 24hr: Etobicoke and Rexdale host numerous 24-hour Halal breakfast and grill spots for commuters."
         ]
     },
     edmonton: {
@@ -193,6 +243,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Northside (137 Ave 4AM Halal Hub)", "Calgary Trail / Gateway Blvd (24hr Eats)", "Whyte Avenue (Late Night Spots)", "Mill Woods (Desi & Arab Eats)", "West Edmonton (170 St Hub)", "Al-Rashid Mosque (Community Sahur)", "Downtown (Jasper Ave Late Bites)", "Castledowns (Suburban Halal)", "Clareview", "Southgate Area", "Windermere", "Summerside", "Meadows", "Oliver", "Strathcona", "St. Albert (Suburban Halal)", "Sherwood Park", "Spruce Grove", "Leduc (Transit Food)", "Beaumont", "Fort Saskatchewan", "Callingwood", "Riverbend", "Terwillegar", "Ellerslie"
+        ],
+        aiSummary: "Verified 2026 Edmonton Suhoor map tracking 25+ locations. Highlights the Northside (137 Ave) Halal hubs, 24-hour eateries on Calgary Trail, and community events at Al-Rashid Mosque.",
+        aiFeaturePillars: [
+            "Northside Hub: 137 Avenue and 97 Street are the primary areas for diverse Arab and Desi Halal restaurants extending hours until 4 AM.",
+            "24/7 Options: Calgary Trail and Gateway Boulevard offer reliable 24-hour Halal fast food and donair shops.",
+            "Community Gatherings: Al-Rashid Mosque hosts large community Suhoors and features local food vendors."
         ]
     },
     montreal: {
@@ -213,6 +269,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Cote-des-Neiges (24hr Shish Taouk Hub)", "Ville Saint-Laurent (Decarie Blvd 4AM)", "Laval (Chomedey Late Night)", "Brossard (Taschereau Blvd)", "Downtown Montreal (24hr Halal Poutine)", "Plateau-Mont-Royal", "Parc Extension (Desi 4AM Eats)", "Saint-Michel", "Montreal North", "West Island (Suburban Halal)", "Pierrefonds", "Saint-Leonard", "Ahuntsic-Cartierville", "Rosemont", "Hochelaga", "Villeray", "Verdun", "LaSalle", "Lachine", "Longueuil", "Dorval (Airport Transit 24hr)", "Pointe-Claire", "Kirkland", "Dollard-des-Ormeaux", "Vaudreuil-Dorion", "Terrebonne", "Repentigny", "Saint-Jérôme", "Châteauguay", "Saint-Hubert"
+        ],
+        aiSummary: "Verified 2026 Montreal Suhoor map tracking 30+ locations. Features 24-hour Lebanese eateries in Cote-des-Neiges, 4 AM Halal dining in Ville Saint-Laurent, and Desi spots in Parc Extension.",
+        aiFeaturePillars: [
+            "24/7 Middle Eastern: Cote-des-Neiges is the premier destination for 24-hour Lebanese and Syrian Shish Taouk and Shawarma.",
+            "Suburban Hubs: Laval (Chomedey) and Brossard (Taschereau Blvd) offer extensive 4 AM Halal dining options.",
+            "Diverse Cuisines: Downtown Montreal for Halal Poutine, and Parc Extension for authentic 4 AM South Asian (Desi) meals."
         ]
     },
     brampton: {
@@ -232,7 +294,13 @@ export const SEO_DATA: Record<string, CitySEOData> = {
             { q: "Is Halal delivery available late at night in Brampton?", a: "Yes — restaurants along Steeles and Airport Rd offer delivery until 3 AM. Use our 'Delivery Open Now' filter to find active spots tonight." }
         ],
         featuredSpots: [
-            "Steeles & Airport Rd (4 AM Desi Hub)", "Queen Street East (24hr Drive-Thrus)", "Downtown Brampton (Late Night Bites)", "Chinguacousy Road", "The Gore Road (Halal Eats)", "Torbram Road", "Bovaird Drive", "Hurontario St", "Islamic Centre of Brampton", "Kennedy Road", "Dixie Road", "McLaughlin Road", "Castlemore", "Springdale", "Heart Lake", "Sandalwood Pkwy", "Williams Pkwy", "Ray Lawson Blvd", "Mavis Road (Brampton limits)", "Mississauga Road (Brampton Hub)", "Bramalea Road", "Clark Blvd", "Orenda Road", "Goreway Drive", "Countryside Drive", "Mayfield Road", "Airport Road North", "Steeles West", "Queen Street West", "Peel Village"
+            "Castlemore (Desi Suhoor Hub)", "Bramalea (24hr Halal Carts)", "Downtown Brampton (Late Bites)", "Steeles Ave (Grill Corridor)", "Vaughan Border (Late Night)", "Sandalwood Pockets", "Mt Pleasant Station", "Fletcher's Creek", "Bovaird Dr", "Main St North", "Williams Pkwy", "Queen St East", "Gore Rd", "Mayfield Hub", "Torbram Rd", "Airport Rd Brampton", "Kennedy Rd", "Hurontario North", "Chinguacousy Rd", "McLaughlin Rd", "Mississauga Rd (West Brampton)", "Creditview Rd", "James Potter Rd", "Financial Dr", "Steeles West", "Glidden Rd", "Rutherford Rd", "Clark Blvd", "Central Park Dr", "Dixie Rd Brampton", "Avondale", "Bramalea City Centre", "Trinity Common", "Heart Lake", "Springdale Hub", "Walnut Grove", "Vales of Castlemore", "Claireville", "Goreway", "Humberwest"
+        ],
+        aiSummary: "Verified 2026 Brampton Suhoor map focusing on high-density Desi hubs in Castlemore, 24-hour grill options along Steeles Ave, and community spots near Bramalea.",
+        aiFeaturePillars: [
+            "Castlemore Desi Hub: The go-to area for authentic Punjabi and Pakistani Suhoor feasts until the early morning.",
+            "Steeles Grill Corridor: Numerous 24-hour Halal burger and kebab joints cater to the late-night logistics and warehouse workforce.",
+            "Community Masjid Areas: Many spots near the major Brampton mosques offer specialized Ramadan menus."
         ]
     },
     calgary: {
@@ -253,6 +321,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "NE Calgary (Falconridge 4AM Hub)", "17th Ave SW (Late Night Arab Grills)", "Macleod Trail (24hr Fast Food)", "Taradale (Suburban Halal)", "Akram Jomaa Centre (Community Sahur)", "Saddle Ridge", "Marlborough", "Downtown Core (Late Bites)", "Chestermere", "Forest Lawn (International Ave)", "Bowness", "Signal Hill", "Shawnessy", "Kensington", "Airdrie (North Hub)", "Castleridge", "Martindale", "Coral Springs", "Monterey Park", "Whitehorn", "Temple", "Pineridge", "Rundle", "Sunridge Way", "Beddington Heights", "Huntington Hills", "Edgemont", "Dalhousie", "Crowfoot", "Tuscany"
+        ],
+        aiSummary: "Verified 2026 Calgary Suhoor map tracking 30+ locations. Highlights the massive 4 AM Halal food concentration in NE Calgary, late-night Arabic grills on 17th Ave, and community events at Akram Jomaa Islamic Centre.",
+        aiFeaturePillars: [
+            "NE Calgary Hub: Falconridge, Castleridge, and Taradale are the primary areas for high-density Halal restaurants and bakeries extending hours until 4 AM.",
+            "17th Ave Grills: 17th Avenue SW offers late-night Middle Eastern shawarma shops and lounges for Suhoor.",
+            "Community Support: Akram Jomaa Islamic Centre and Calgary Islamic Centre host community Suhoor events, especially during Itikaf nights."
         ]
     },
     ottawa: {
@@ -273,6 +347,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Bank Street (24hr Shawarma Hub)", "South Keys Plaza (4 AM Halal)", "Rideau Street (Downtown Late Night)", "Nepean (Merivale Rd Eats)", "Orleans (St Joseph Blvd)", "SNMC Mosque (Community Sahur)", "Kanata (Centrum Halal)", "St. Laurent Blvd", "ByWard Market", "Barrhaven (Strandherd Dr)", "Hunt Club", "Alta Vista", "Carling Ave", "Bells Corners", "Gatineau (Bleed-over Halal)", "Gloucester", "Rockcliffe Park (Transit Delivery)", "Vanier", "Overbrook", "Heron Gate", "Walkley Road", "Billings Bridge", "Riverside South", "Findlay Creek", "Manotick", "Richmond", "Stittsville", "Bayshore", "Lincoln Fields", "Westboro (Late Bites)"
+        ],
+        aiSummary: "Verified 2026 Ottawa Suhoor map tracking 30+ locations. Highlights Bank Street's 24-hour shawarma hub, South Keys Halal dining, and community events at SNMC and the Ottawa Mosque.",
+        aiFeaturePillars: [
+            "Shawarma Capital: Bank Street and Rideau Street feature the highest density of 24-hour Halal shawarma in Canada.",
+            "South Ottawa Hub: South Keys and Bank St South are the primary destinations for Afghan and Somali Suhoor.",
+            "Mosque Community: SNMC and OMA provide reliable communal Suhoor meals during the final 10 days of Ramadan."
         ]
     },
     cambridge: {
@@ -292,6 +372,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Hespeler Road (Late Night Halal Hub)", "Downtown Galt (Delivery Options)", "Preston Eateries", "Cambridge Islamic Centre (Community Sahur)", "Dundas St North", "Franklin Blvd", "King St East", "Pinebush Road", "Bishop St", "Water St", "Main St Galt", "Coronation Blvd", "Eagle St", "Shantz Hill Rd", "Fountain St"
+        ],
+        aiSummary: "Verified 2026 Cambridge (ON) Suhoor map with 15+ locations. Features Hespeler Road late-night Halal, delivery options in Galt, and community updates from local Masjids.",
+        aiFeaturePillars: [
+            "Hespeler Road: The main corridor for late-night Halal fast food and shawarma in Cambridge.",
+            "Galt Delivery: Reliable late-night Halal delivery options for Suhoor in the historic Galt and Preston areas.",
+            "Nearby Options: Kitchener and Waterloo are only 15 minutes away for those seeking 24/7 drive-thru restaurants."
         ]
     },
     kanata: {
@@ -311,6 +397,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Kanata Centrum Plaza (24hr Hub)", "Hazeldean Road (Late Night Halal)", "Kanata Muslim Association (Community Eats)", "March Road", "Terry Fox Drive", "Eagleson Road", "Stittsville (Main St Eats)", "Castlefrank Road", "Katimavik Road", "Palladium Drive", "Campeau Drive", "Richardson Side Road", "Carp Road (Suburban Hub)", "Bridlewood", "Morgan's Grant"
+        ],
+        aiSummary: "Verified 2026 Kanata Suhoor map tracking 15+ locations. Includes Centrum Plaza 24-hour eats, Hazeldean Road Halal dining, and KMA community events in West Ottawa.",
+        aiFeaturePillars: [
+            "Centrum Plaza: The primary hub for late-night Halal dining and fast-food in the Kanata area.",
+            "West Ottawa Community: Kanata Muslim Association (KMA) offers essential Ramadan programming and community meals.",
+            "Hazeldean Road: A reliable corridor for late-night Halal shawarma and pizza for Suhoor."
         ]
     },
     chicago: {
@@ -331,6 +423,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Devon Avenue (West Ridge 4AM Buffets)", "Bridgeview (Little Palestine Viral Eats)", "Lombard (Roosevelt Rd Late Night)", "Schaumburg (Golf Rd Halal)", "Oak Lawn (Arab Eats Hub)", "Downtown Chicago (Loop 24hr Halal)", "Skokie (Late Night Dining)", "Orland Park (Family Suhoor)", "Naperville (Suburban Halal)", "Villa Park (Night Shift Food)", "Glendale Heights", "Tinley Park", "Morton Grove", "Niles", "Evanston", "Burr Ridge", "Oakbrook Terrace", "Palos Hills", "Albany Park", "Lincoln Park", "Rogers Park", "Uptown", "Hyde Park", "South Loop", "Bolingbrook", "Aurora", "Des Plaines", "Hoffman Estates", "Mount Prospect", "Plainfield", "Elgin", "Waukegan", "Gurnee", "Libertyville", "Mundelein", "Vernon Hills", "Buffalo Grove", "Wheeling", "Palatine", "Arlington Heights"
+        ],
+        aiSummary: "The ultimate 2026 Chicago Suhoor map with 40+ verified spots. Features the legendary Devon Avenue 4 AM Desi buffets, Bridgeview's (Little Palestine) viral Middle Eastern eats, and suburban hubs in Lombard and Schaumburg.",
+        aiFeaturePillars: [
+            "Devon Avenue Buffets: The heart of Desi Suhoor in Chicago, offering massive 3 AM platters and traditional sweets.",
+            "Little Palestine (Bridgeview): Top destination for authentic 4 AM Knafeh, Shawarma, and Palestinian breakfast.",
+            "Suburban Convenience: Lombard and Schaumburg feature high-density Halal clusters open until 4 AM for family Suhoor."
         ]
     },
     houston: {
@@ -351,6 +449,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Hillcroft Avenue (Desi 4AM Hub)", "Sugar Land (Viral Food Truck Parks)", "Katy (Mason Road Halal BBQ)", "Richmond (Late Night Steakhouses)", "Westheimer Road (Galleria 24hr Eats)", "Spring (Suburban Halal)", "Cypress (Night Shift Food)", "Pearland (Family Suhoor)", "Downtown Houston (Late Bites)", "ISGH Mosques (Community Events)", "Midtown (Food Trucks)", "Medical Center Area (24hr Transit)", "Bellaire", "Heights", "Memorial", "Energy Corridor", "Spring Branch", "Humble", "Kingwood", "Pasadena", "League City", "Friendswood", "Texas City", "Galveston (Bleed-over)", "Missouri City", "Alief", "Stafford", "Rosenberg", "Tomball", "Woodlands", "Conroe", "Katy Asian Town", "Chinatown Halal Pockets", "EaDo (East Downtown)", "Third Ward", "Montrose", "River Oaks", "West University", "Gulfton", "Sharpstown"
+        ],
+        aiSummary: "Verified 2026 Houston Suhoor map tracking 40+ locations. Highlights the massive Hillcroft Avenue Desi hub, viral Sugar Land food truck parks, and 4 AM Halal BBQ in Katy.",
+        aiFeaturePillars: [
+            "Hillcroft Desi Hub: The primary destination for 4 AM Halal restaurants and bakeries in the Mahatma Gandhi District.",
+            "Sugar Land Food Trucks: Viral late-night food truck rallies serving everything from smash burgers to Tex-Mex until Fajr.",
+            "Halal BBQ & Steaks: Katy and Richmond offer high-end Halal steakhouses and 100% Halal Texas BBQ for Suhoor."
         ]
     },
     detroit: {
@@ -371,6 +475,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Dearborn (Warren Avenue Hub)", "Dearborn (Ramadan Food Truck Rallies)", "Dearborn (Dix/Vernor Highway)", "Hamtramck (4 AM Yemeni Cafes)", "Canton (Ford Road Halal)", "Sterling Heights (Suburban Suhoor)", "Detroit Downtown (Late Bites)", "Ann Arbor (Campus Halal)", "Troy (Family Dining)", "Farmington Hills (Night Hub)", "Southfield (24hr Grills)", "Novi", "Ypsilanti", "Rochester Hills", "Pontiac", "Livonia", "Westland", "Taylor", "Dearborn Heights", "Melvindale", "Allen Park", "Lincoln Park", "Warren", "Center Line", "Roseville", "Eastpointe", "St. Clair Shores", "Clinton Township", "Macomb", "Shelby Township", "Washington Township", "Romeo", "Plymouth", "Northville", "Walled Lake", "Wixom", "Commerce Township", "Milford", "South Lyon", "Romulus (Airport Transit 24hr)"
+        ],
+        aiSummary: "The ultimate 2026 Metro Detroit & Dearborn Suhoor map. Features the viral Dearborn Ramadan food truck festivals, Warren Avenue Arab eateries, and 4 AM Yemeni cafes in Hamtramck.",
+        aiFeaturePillars: [
+            "Ramadan Food Trucks: Dearborn's massive late-night rallies are the viral epicenter for Halal street food until 4 AM.",
+            "Warren Avenue Corridor: The densest concentration of high-quality Arab-American dining open throughout the night.",
+            "Yemeni Coffee Culture: Hamtramck and Dearborn feature authentic Yemeni cafes serving fresh chai and Sabaya until Fajr."
         ]
     },
     "kuala-lumpur": {
@@ -391,6 +501,12 @@ export const SEO_DATA: Record<string, CitySEOData> = {
         ],
         featuredSpots: [
             "Kampung Baru (4 AM Traditional Hub)", "Bukit Bintang (24hr Arab Street)", "KLCC (Nasi Kandar Pelita Area)", "TTDI (Late Night Cafes)", "Bangsar (Telawi 24hr Food)", "Shah Alam (Section 7 Hub)", "Cyberjaya (Middle Eastern 24hr)", "Subang Jaya (SS15 Mamak Hub)", "Putrajaya (Masjid Sahur)", "Petaling Jaya (SS2 & Uptown)", "Chow Kit (Traditional Eats)", "Cheras (Late Bites)", "Ampang (24hr Grills)", "Setapak", "Wangsa Maju", "Kepong", "Mont Kiara", "Sri Hartamas", "Damansara Perdana", "Kota Damansara", "Kelana Jaya", "Puchong", "Seri Kembangan", "Kajang", "Bangi (Ramadan Food Hub)", "Sepang (Transit Food)", "Klang (Little India Halal)", "Gombak", "Selayang", "Rawang", "Setia Alam", "Ara Damansara", "Bandar Sunway", "Pudu", "Brickfields (KL Sentral)", "Titiwangsa", "Sentul", "Segambut", "Jalan Ipoh", "Taman Melawati"
+        ],
+        aiSummary: "The authoritative 2026 Kuala Lumpur Sahur guide tracking 40+ locations. Highlights 24-hour Mamak Nasi Kandar, traditional 4 AM Malay eateries in Kampung Baru, and Bukit Bintang Arab cuisine.",
+        aiFeaturePillars: [
+            "Mamak Nasi Kandar: 24-hour institutions like Pelita and Syed Bistro provide consistent Sahur options across KL.",
+            "Kampung Baru Traditional: The heart of KL Sahur, featuring local Malay delicacies and a festive 4 AM atmosphere.",
+            "Arab Street (Bukit Bintang): A hub for 24-hour Middle Eastern cuisine, from high-end dining to casual shawarma."
         ]
     }
 };

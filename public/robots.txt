@@ -1,3 +1,9 @@
+# Primary Sitemap
+Sitemap: https://www.sehrifinder.com/sitemap.xml
+# AI Discovery
+Sitemap: https://www.sehrifinder.com/llms.txt
+
+# Global AI & Bot Directives
 User-agent: *
 Allow: /
 Disallow: /admin
@@ -5,8 +11,24 @@ Disallow: /admin/login
 Disallow: /api/
 Crawl-delay: 1
 
-# Primary Sitemap
-Sitemap: https://www.sehrifinder.com/sitemap.xml
+# Explicitly allow AI Search Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
 
 # Individual Search Engine Crawlers
 User-agent: Googlebot

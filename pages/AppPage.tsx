@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import { Header } from '../components/Header';
 import { Hero } from '../components/Hero';
 import { FilterBar } from '../components/FilterBar';
 import { ListingCard } from '../components/ListingCard';
 import { BottomNav } from '../components/BottomNav';
 import { Loader2, Heart } from 'lucide-react';
-import { MapView } from '../components/MapView';
 import { EmptyState } from '../components/EmptyState';
 import { useSehri } from '../context/SehriContext';
 import { COUNTRIES } from '../data/locations';
 import { useSEO } from '../hooks/useSEO';
+
+// Dynamically import MapView to drastically reduce initial JS load
+const MapView = React.lazy(() => import('../components/MapView').then(module => ({ default: module.MapView })));
 import { SEOJsonLd, getCitySchema } from '../components/SEOJsonLd';
 import { SEO_DATA } from '../data/seoData';
 import { CityIntro } from '../components/CityIntro';
@@ -20,7 +22,7 @@ import { SehriCountdown } from '../components/SehriCountdown';
 
 const AppPage: React.FC = () => {
     const navigate = useNavigate();
-    const { city } = useParams<{ city?: string }>();
+    const { city, category } = useParams<{ city?: string, category?: string }>();
     const [viewType, setViewType] = useState<'list' | 'map'>('list');
 
     const {
@@ -50,7 +52,7 @@ const AppPage: React.FC = () => {
     } = useSehri();
 
     // SEO Sync
-    useSEO(selectedCity);
+    useSEO(selectedCity, category);
 
     // City Schema Data
     const citySEO = SEO_DATA[toSlug(selectedCity)];
@@ -94,6 +96,28 @@ const AppPage: React.FC = () => {
         }
     }, [city, selectedCity, setSelectedCity]);
 
+    // Derived category spots based on intent slug
+    const categorySpots = React.useMemo(() => {
+        let result = filteredData;
+        if (category) {
+            const cat = category.toLowerCase();
+            if (cat === 'free-community-meal' || cat === 'free') {
+                result = result.filter(s => s.foodType === 'Free');
+            } else if (cat === 'drive-thru') {
+                result = result.filter(s => s.features?.some(f => f.toLowerCase().includes('drive')) || s.specialNotes.toLowerCase().includes('drive'));
+            } else if (cat === 'buffet') {
+                result = result.filter(s => s.features?.some(f => f.toLowerCase().includes('buffet')) || s.specialNotes.toLowerCase().includes('buffet'));
+            } else if (cat === '24-hour' || cat === '24-hours') {
+                result = result.filter(s => s.timing.includes('24') || s.features?.some(f => f.toLowerCase().includes('24')));
+            } else if (cat === 'dessert' || cat === 'sweets') {
+                result = result.filter(s => s.features?.some(f => f.toLowerCase().includes('dessert') || f.toLowerCase().includes('sweet')));
+            } else if (cat === 'masjid' || cat === 'mosque') {
+                result = result.filter(s => s.venueType === 'Masjid');
+            }
+        }
+        return result;
+    }, [filteredData, category]);
+
     // URL is the Single Source of Truth.
     // We only listen to URL changes to update state (above).
     // We do NOT automatically push state changes to URL to avoid loops.
@@ -116,6 +140,7 @@ const AppPage: React.FC = () => {
     };
 
     // Handle Bottom Nav Tab Change
+    // Tab change
     const handleTabChange = (tab: 'home' | 'search' | 'saved') => {
         setActiveTab(tab);
         if (tab === 'home') {
@@ -124,7 +149,30 @@ const AppPage: React.FC = () => {
         }
     };
 
-    const hasResults = filteredData.length > 0;
+    const hasResults = categorySpots.length > 0;
+
+    // --- Virtualization Logic ---
+    const [cols, setCols] = useState(1);
+
+    useEffect(() => {
+        const updateCols = () => {
+            if (window.innerWidth >= 1280) setCols(4); // xl
+            else if (window.innerWidth >= 1024) setCols(3); // lg
+            else if (window.innerWidth >= 640) setCols(2); // sm
+            else setCols(1);
+        };
+        updateCols();
+        window.addEventListener('resize', updateCols);
+        return () => window.removeEventListener('resize', updateCols);
+    }, []);
+
+    const rowCount = Math.ceil(categorySpots.length / cols);
+
+    const virtualizer = useWindowVirtualizer({
+        count: rowCount,
+        estimateSize: () => 380, // Estimated height of ListingCard + gap
+        overscan: 3,
+    });
 
     return (
         <div className="relative z-10 flex flex-col min-h-screen">
@@ -162,7 +210,7 @@ const AppPage: React.FC = () => {
                     onToggleFilter={handleToggleFilter}
                     areas={availableAreas}
                     zones={availableZones}
-                    totalSpots={filteredData.length}
+                    totalSpots={categorySpots.length}
                 />
 
                 {isLoadingData ? (
@@ -182,33 +230,53 @@ const AppPage: React.FC = () => {
                                     onClear={handleClearFilters}
                                 />
                             ) : (
-                                <motion.div
-                                    layout
-                                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-24"
-                                >
-                                    <AnimatePresence mode='popLayout'>
-                                        {filteredData.map((spot) => (
-                                            <motion.div
-                                                layout
-                                                key={spot.id}
-                                                initial={{ opacity: 0, scale: 0.9 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                exit={{ opacity: 0, scale: 0.9 }}
-                                                transition={{ duration: 0.3 }}
-                                            >
-                                                <ListingCard
-                                                    data={spot}
-                                                    isSaved={savedSpotIds.includes(spot.id)}
-                                                    onToggleSave={toggleSave}
-                                                />
-                                            </motion.div>
-                                        ))}
-                                    </AnimatePresence>
-                                </motion.div>
+                                <div className="pb-24">
+                                    <div
+                                        style={{
+                                            height: `${virtualizer.getTotalSize()}px`,
+                                            width: '100%',
+                                            position: 'relative',
+                                        }}
+                                    >
+                                        {virtualizer.getVirtualItems().map((virtualRow) => {
+                                            const startIdx = virtualRow.index * cols;
+                                            const rowSpots = categorySpots.slice(startIdx, startIdx + cols);
+
+                                            return (
+                                                <div
+                                                    key={virtualRow.index}
+                                                    data-index={virtualRow.index}
+                                                    ref={virtualizer.measureElement}
+                                                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 absolute top-0 left-0 w-full"
+                                                    style={{
+                                                        transform: `translateY(${virtualRow.start}px)`,
+                                                        paddingBottom: '1.5rem', // Match the gap-6 equivalent for rows
+                                                    }}
+                                                >
+                                                    {rowSpots.map((spot) => (
+                                                        <ListingCard
+                                                            key={spot.id}
+                                                            data={spot}
+                                                            isSaved={savedSpotIds.includes(spot.id)}
+                                                            onToggleSave={toggleSave}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
                             )
                         ) : (
                             <div className="pb-24">
-                                <MapView spots={filteredData} />
+                                <React.Suspense fallback={
+                                    <div className="flex flex-col items-center justify-center p-20 opacity-70">
+                                        <Loader2 className="w-10 h-10 animate-spin text-emerald-600 mb-2" />
+                                        <p className="text-xs font-bold tracking-widest text-emerald-midnight">LOADING MAP...</p>
+                                    </div>
+                                }>
+                                    <MapView spots={categorySpots} />
+                                </React.Suspense>
                             </div>
                         )}
                     </>
@@ -220,7 +288,7 @@ const AppPage: React.FC = () => {
                 <div className="container mx-auto px-4 mt-6 mb-2">
                     <div className="flex items-center gap-2 text-primary-dark border-b border-gray-200 pb-2">
                         <Heart className="fill-primary text-primary w-5 h-5" />
-                        <h2 className="font-brand font-bold text-lg">My Saved Spots</h2>
+                        <h2 className="font-serif font-bold text-lg">My Saved Spots</h2>
                     </div>
                 </div>
             )}

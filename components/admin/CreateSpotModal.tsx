@@ -132,7 +132,7 @@ export const CreateSpotModal: React.FC<CreateSpotModalProps> = ({ onClose, onSuc
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 bg-cream sticky top-0 z-10 border-b border-emerald-100">
                     <div>
-                        <h2 className="text-xl font-bold text-emerald-midnight flex items-center gap-2 font-reem">
+                        <h2 className="text-xl font-bold text-emerald-midnight flex items-center gap-2 font-serif">
                             <PlusCircle className="text-emerald-600 bg-emerald-100 rounded-full p-1" size={24} />
                             Create New Spot
                         </h2>
@@ -157,7 +157,7 @@ export const CreateSpotModal: React.FC<CreateSpotModalProps> = ({ onClose, onSuc
                                 name="venue_name"
                                 value={formData.venue_name}
                                 onChange={handleChange}
-                                className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all font-reem text-lg text-emerald-900 bg-gray-50 focus:bg-white"
+                                className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all font-serif text-lg text-emerald-900 bg-gray-50 focus:bg-white"
                             />
                         </div>
 

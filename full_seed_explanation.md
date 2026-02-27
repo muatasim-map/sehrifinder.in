@@ -9,15 +9,14 @@ Based on its header (`-- Generated: 2026-02-18T20:11:20.553Z`), it was likely ex
 The file performs three main operations:
 1. **Schema Updates:** Ensures necessary columns exist (`address`, `last_verified`, `zone`, `target_audience`, `google_maps_link`).
 2. **Clean Slate:** Runs `TRUNCATE TABLE public.spots;` to wipe existing data.
-3. **Insert Data:** Bulk inserts 268 records into the `spots` table in a single `INSERT INTO` statement.
+3. **Insert Data:** Bulk inserts **500+ records** into the `spots` table across multiple global regions.
 
 ## 2. Database Schema (`public.spots`)
-
-The following table describes the columns in the `spots` table and how they are used:
+The schema has been expanded to support internationalized data and E-E-A-T verification signals.
 
 | Column | Type | Description |
 | :--- | :--- | :--- |
-| `location_id` | `INTEGER` | Unique ID. Range determines city: `<1000` (Chennai), `3000s` (Bengaluru), `4000s` (Mumbai), `5000s` (Hyderabad). |
+| `location_id` | `INTEGER` | Unique ID. Range determines city/country: `<1000` (India), `7000s` (UK), `8000s` (US), `9000s` (Canada), `9500s` (Malaysia). |
 | `venue_name` | `TEXT` | The primary name of the location (e.g., "Hotel Topper"). |
 | `city` | `TEXT` | City name. If NULL in `full_seed.sql`, `update_sql.py` infers it from ID. |
 | `primary_area` | `TEXT` | General neighborhood or locality (e.g., "Adyar"). |
@@ -56,4 +55,4 @@ To update the seed data:
 1. Export or manually update `full_seed.sql` with new raw data.
 2. Run `python update_sql.py`.
 3. The script reads `full_seed.sql` and generates `updated_seed.sql`.
-4. Execute `updated_seed.sql` on your database to safely reset and seed the tables with the enhanced data.
+4. Execute `updated_seed.sql` on your Supabase instance to safely reset and seed the global platform with verified late-night dining data.
